@@ -7,13 +7,31 @@
 #include "main.h"
 #include "SSD1306_OLED.h"
 
+
+static uint8_t SSD1306_Buffer[SSD1306_BUFFER_SIZE];
+
 void SSD1306_Command(SSD1306_t *OLED, uint8_t Command)
 {
 	HAL_I2C_Mem_Write(OLED->I2c, (OLED->Address<<1), 0x00, 1, &Command, 1, SSD1306_TIMEOUT);
 }
-void SSD1306_Data(SSD1306_t *OLED, uint8_t Data)
+
+void SSD1306_Data(SSD1306_t *OLED, uint8_t *Data, uint16_t Size)
 {
-	HAL_I2C_Mem_Write(OLED->I2c, (OLED->Address<<1), 0x40, 1, &Data, 1, SSD1306_TIMEOUT);
+	HAL_I2C_Mem_Write(OLED->I2c, (OLED->Address<<1), 0x40, 1, Data, Size, SSD1306_TIMEOUT);
+}
+//
+// Functions
+//
+void SSD1306_Display(SSD1306_t *OLED)
+{
+	SSD1306_Command(OLED, SSD1306_PAGEADDR);
+	SSD1306_Command(OLED, 0);                   // Page start address
+	SSD1306_Command(OLED, 0xFF);                // Page end (not really, but works here)
+	SSD1306_Command(OLED, SSD1306_COLUMNADDR); // Column start address
+	SSD1306_Command(OLED, 0);                   // Page start address
+	SSD1306_Command(OLED, SSD1306_LCDWIDTH - 1); // Column end address
+
+	SSD1306_Data(OLED, SSD1306_Buffer, SSD1306_BUFFER_SIZE);
 }
 
 void SSD1306_Init(SSD1306_t *OLED, uint8_t Address, I2C_HandleTypeDef *I2C)

@@ -57,7 +57,7 @@
 // Deprecated size stuff for backwards compatibility with old sketches
 #define SSD1306_LCDWIDTH 128 ///< DEPRECATED: width w/SSD1306_128_64 defined
 #define SSD1306_LCDHEIGHT 64 ///< DEPRECATED: height w/SSD1306_128_64 defined
-
+#define SSD1306_BUFFER_SIZE ((SSD1306_LCDHEIGHT * SSD1306_LCDWIDTH) / 8)
 //
 //REGISTERS
 //
@@ -70,5 +70,7 @@ typedef struct
 }SSD1306_t;
 
 void SSD1306_Init(SSD1306_t *OLED, uint8_t Address, I2C_HandleTypeDef *I2C);
+
+void SSD1306_Display(SSD1306_t *OLED);
 
 #endif /* INC_SSD1306_OLED_H_ */

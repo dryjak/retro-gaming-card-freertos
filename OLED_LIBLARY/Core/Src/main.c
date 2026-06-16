@@ -92,6 +92,7 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   SSD1306_Init(&OLED, 0x3C, &hi2c1);
+  SSD1306_Display(&OLED);
 
   /* USER CODE END 2 */
 
