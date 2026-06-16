@@ -77,7 +77,6 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-SSD1306_Init(&OLED, 0x31, &hi2c1);
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -92,6 +91,7 @@ SSD1306_Init(&OLED, 0x31, &hi2c1);
   MX_USART2_UART_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
+  SSD1306_Init(&OLED, 0x3C, &hi2c1);
 
   /* USER CODE END 2 */
 

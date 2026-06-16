@@ -37,15 +37,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_macro  0001574c  00000000  00000000  00011761  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0000cf17  00000000  00000000  00026ead  2**0
+ 17 .debug_line   0000cf13  00000000  00000000  00026ead  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    00084b6b  00000000  00000000  00033dc4  2**0
+ 18 .debug_str    00084b6b  00000000  00000000  00033dc0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  000b892f  2**0
+ 19 .comment      00000043  00000000  00000000  000b892b  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  000025d0  00000000  00000000  000b8974  2**2
+ 20 .debug_frame  000025d0  00000000  00000000  000b8970  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 0000005d  00000000  00000000  000baf44  2**0
+ 21 .debug_line_str 0000005d  00000000  00000000  000baf40  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -439,12 +439,12 @@ void SSD1306_Init(SSD1306_t *OLED, uint8_t Address, I2C_HandleTypeDef *I2C)
  8000564:	2180      	movs	r1, #128	@ 0x80
  8000566:	68f8      	ldr	r0, [r7, #12]
  8000568:	f7ff ffcc 	bl	8000504 <SSD1306_Command>
-	SSD1306_Command(OLED, SSD1306_LCDHEIGHT-1);
- 800056c:	213f      	movs	r1, #63	@ 0x3f
+	SSD1306_Command(OLED, SSD1306_SETMULTIPLEX);
+ 800056c:	21a8      	movs	r1, #168	@ 0xa8
  800056e:	68f8      	ldr	r0, [r7, #12]
  8000570:	f7ff ffc8 	bl	8000504 <SSD1306_Command>
-	SSD1306_Command(OLED, SSD1306_SETMULTIPLEX);
- 8000574:	21a8      	movs	r1, #168	@ 0xa8
+	SSD1306_Command(OLED, (uint8_t)(SSD1306_LCDHEIGHT - 1));
+ 8000574:	213f      	movs	r1, #63	@ 0x3f
  8000576:	68f8      	ldr	r0, [r7, #12]
  8000578:	f7ff ffc4 	bl	8000504 <SSD1306_Command>
 	SSD1306_Command(OLED, SSD1306_SETDISPLAYOFFSET);
@@ -851,27 +851,28 @@ int main(void)
  80007f8:	f000 f98a 	bl	8000b10 <HAL_Init>
 
   /* USER CODE BEGIN Init */
-SSD1306_Init(&OLED, 0x31, &hi2c1);
- 80007fc:	4a07      	ldr	r2, [pc, #28]	@ (800081c <main+0x28>)
- 80007fe:	2131      	movs	r1, #49	@ 0x31
- 8000800:	4807      	ldr	r0, [pc, #28]	@ (8000820 <main+0x2c>)
- 8000802:	f7ff fe9a 	bl	800053a <SSD1306_Init>
   /* USER CODE END Init */
 
   /* Configure the system clock */
   SystemClock_Config();
- 8000806:	f000 f80d 	bl	8000824 <SystemClock_Config>
+ 80007fc:	f000 f812 	bl	8000824 <SystemClock_Config>
   /* USER CODE BEGIN SysInit */
 
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
- 800080a:	f7ff ff0f 	bl	800062c <MX_GPIO_Init>
+ 8000800:	f7ff ff14 	bl	800062c <MX_GPIO_Init>
   MX_USART2_UART_Init();
- 800080e:	f000 f8e3 	bl	80009d8 <MX_USART2_UART_Init>
+ 8000804:	f000 f8e8 	bl	80009d8 <MX_USART2_UART_Init>
   MX_I2C1_Init();
- 8000812:	f7ff ff79 	bl	8000708 <MX_I2C1_Init>
+ 8000808:	f7ff ff7e 	bl	8000708 <MX_I2C1_Init>
+  /* USER CODE BEGIN 2 */
+  SSD1306_Init(&OLED, 0x3C, &hi2c1);
+ 800080c:	4a03      	ldr	r2, [pc, #12]	@ (800081c <main+0x28>)
+ 800080e:	213c      	movs	r1, #60	@ 0x3c
+ 8000810:	4803      	ldr	r0, [pc, #12]	@ (8000820 <main+0x2c>)
+ 8000812:	f7ff fe92 	bl	800053a <SSD1306_Init>
 
   /* USER CODE END 2 */
 
