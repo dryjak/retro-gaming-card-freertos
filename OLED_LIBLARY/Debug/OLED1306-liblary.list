@@ -35,17 +35,17 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  15 .debug_rnglists 0000075c  00000000  00000000  000111a0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  00016035  00000000  00000000  000118fc  2**0
+ 16 .debug_macro  00001c26  00000000  00000000  000118fc  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0000d14b  00000000  00000000  00027931  2**0
+ 17 .debug_line   0000d14b  00000000  00000000  00013522  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    00087e02  00000000  00000000  00034a7c  2**0
+ 18 .debug_str    00087e01  00000000  00000000  0002066d  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  000bc87e  2**0
+ 19 .comment      00000043  00000000  00000000  000a846e  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00002640  00000000  00000000  000bc8c4  2**2
+ 20 .debug_frame  00002640  00000000  00000000  000a84b4  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 0000005d  00000000  00000000  000bef04  2**0
+ 21 .debug_line_str 0000005d  00000000  00000000  000aaaf4  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -526,9 +526,9 @@ void SSD1306_Clear(uint8_t Color)
  80005fa:	bd80      	pop	{r7, pc}
  80005fc:	20000028 	.word	0x20000028
 
-08000600 <SSD1306_Draw_Pixel>:
+08000600 <SSD1306_DrawPixel>:
 
-void SSD1306_Draw_Pixel(uint16_t x, uint16_t y, uint8_t Color)
+void SSD1306_DrawPixel(uint16_t x, uint16_t y, uint8_t Color)
 {
  8000600:	b480      	push	{r7}
  8000602:	b083      	sub	sp, #12
@@ -542,27 +542,27 @@ void SSD1306_Draw_Pixel(uint16_t x, uint16_t y, uint8_t Color)
 	if((y <= SSD1306_LCDHEIGHT) && (y > 0) && (x <= SSD1306_LCDWIDTH) && (x > 0))
  8000612:	88bb      	ldrh	r3, [r7, #4]
  8000614:	2b40      	cmp	r3, #64	@ 0x40
- 8000616:	d864      	bhi.n	80006e2 <SSD1306_Draw_Pixel+0xe2>
+ 8000616:	d864      	bhi.n	80006e2 <SSD1306_DrawPixel+0xe2>
  8000618:	88bb      	ldrh	r3, [r7, #4]
  800061a:	2b00      	cmp	r3, #0
- 800061c:	d061      	beq.n	80006e2 <SSD1306_Draw_Pixel+0xe2>
+ 800061c:	d061      	beq.n	80006e2 <SSD1306_DrawPixel+0xe2>
  800061e:	88fb      	ldrh	r3, [r7, #6]
  8000620:	2b80      	cmp	r3, #128	@ 0x80
- 8000622:	d85e      	bhi.n	80006e2 <SSD1306_Draw_Pixel+0xe2>
+ 8000622:	d85e      	bhi.n	80006e2 <SSD1306_DrawPixel+0xe2>
  8000624:	88fb      	ldrh	r3, [r7, #6]
  8000626:	2b00      	cmp	r3, #0
- 8000628:	d05b      	beq.n	80006e2 <SSD1306_Draw_Pixel+0xe2>
+ 8000628:	d05b      	beq.n	80006e2 <SSD1306_DrawPixel+0xe2>
 	{
 		switch(Color)
  800062a:	78fb      	ldrb	r3, [r7, #3]
  800062c:	2b02      	cmp	r3, #2
- 800062e:	d03d      	beq.n	80006ac <SSD1306_Draw_Pixel+0xac>
+ 800062e:	d03d      	beq.n	80006ac <SSD1306_DrawPixel+0xac>
  8000630:	2b02      	cmp	r3, #2
- 8000632:	dc56      	bgt.n	80006e2 <SSD1306_Draw_Pixel+0xe2>
+ 8000632:	dc56      	bgt.n	80006e2 <SSD1306_DrawPixel+0xe2>
  8000634:	2b00      	cmp	r3, #0
- 8000636:	d01c      	beq.n	8000672 <SSD1306_Draw_Pixel+0x72>
+ 8000636:	d01c      	beq.n	8000672 <SSD1306_DrawPixel+0x72>
  8000638:	2b01      	cmp	r3, #1
- 800063a:	d152      	bne.n	80006e2 <SSD1306_Draw_Pixel+0xe2>
+ 800063a:	d152      	bne.n	80006e2 <SSD1306_DrawPixel+0xe2>
 		{
 		case SSD1306_WHITE:
 			SSD1306_Buffer[x + (y / 8) * SSD1306_LCDWIDTH] |= (1 << (y & 7));
@@ -573,7 +573,7 @@ void SSD1306_Draw_Pixel(uint16_t x, uint16_t y, uint8_t Color)
  8000644:	4603      	mov	r3, r0
  8000646:	01db      	lsls	r3, r3, #7
  8000648:	4413      	add	r3, r2
- 800064a:	4a29      	ldr	r2, [pc, #164]	@ (80006f0 <SSD1306_Draw_Pixel+0xf0>)
+ 800064a:	4a29      	ldr	r2, [pc, #164]	@ (80006f0 <SSD1306_DrawPixel+0xf0>)
  800064c:	5cd3      	ldrb	r3, [r2, r3]
  800064e:	b25a      	sxtb	r2, r3
  8000650:	88bb      	ldrh	r3, [r7, #4]
@@ -588,10 +588,10 @@ void SSD1306_Draw_Pixel(uint16_t x, uint16_t y, uint8_t Color)
  8000666:	01db      	lsls	r3, r3, #7
  8000668:	4413      	add	r3, r2
  800066a:	b2c9      	uxtb	r1, r1
- 800066c:	4a20      	ldr	r2, [pc, #128]	@ (80006f0 <SSD1306_Draw_Pixel+0xf0>)
+ 800066c:	4a20      	ldr	r2, [pc, #128]	@ (80006f0 <SSD1306_DrawPixel+0xf0>)
  800066e:	54d1      	strb	r1, [r2, r3]
 		break;
- 8000670:	e037      	b.n	80006e2 <SSD1306_Draw_Pixel+0xe2>
+ 8000670:	e037      	b.n	80006e2 <SSD1306_DrawPixel+0xe2>
 		case SSD1306_BLACK:
 			SSD1306_Buffer[x + (y / 8) * SSD1306_LCDWIDTH] &= ~(1 << (y & 7));
  8000672:	88fa      	ldrh	r2, [r7, #6]
@@ -601,7 +601,7 @@ void SSD1306_Draw_Pixel(uint16_t x, uint16_t y, uint8_t Color)
  800067a:	4603      	mov	r3, r0
  800067c:	01db      	lsls	r3, r3, #7
  800067e:	4413      	add	r3, r2
- 8000680:	4a1b      	ldr	r2, [pc, #108]	@ (80006f0 <SSD1306_Draw_Pixel+0xf0>)
+ 8000680:	4a1b      	ldr	r2, [pc, #108]	@ (80006f0 <SSD1306_DrawPixel+0xf0>)
  8000682:	5cd3      	ldrb	r3, [r2, r3]
  8000684:	b25a      	sxtb	r2, r3
  8000686:	88bb      	ldrh	r3, [r7, #4]
@@ -618,10 +618,10 @@ void SSD1306_Draw_Pixel(uint16_t x, uint16_t y, uint8_t Color)
  80006a0:	01db      	lsls	r3, r3, #7
  80006a2:	4413      	add	r3, r2
  80006a4:	b2c9      	uxtb	r1, r1
- 80006a6:	4a12      	ldr	r2, [pc, #72]	@ (80006f0 <SSD1306_Draw_Pixel+0xf0>)
+ 80006a6:	4a12      	ldr	r2, [pc, #72]	@ (80006f0 <SSD1306_DrawPixel+0xf0>)
  80006a8:	54d1      	strb	r1, [r2, r3]
 		break;
- 80006aa:	e01a      	b.n	80006e2 <SSD1306_Draw_Pixel+0xe2>
+ 80006aa:	e01a      	b.n	80006e2 <SSD1306_DrawPixel+0xe2>
 		case SSD1306_INVERSE:
 			SSD1306_Buffer[x + (y / 8) * SSD1306_LCDWIDTH] ^= (1 << (y & 7));
  80006ac:	88fa      	ldrh	r2, [r7, #6]
@@ -631,7 +631,7 @@ void SSD1306_Draw_Pixel(uint16_t x, uint16_t y, uint8_t Color)
  80006b4:	4603      	mov	r3, r0
  80006b6:	01db      	lsls	r3, r3, #7
  80006b8:	4413      	add	r3, r2
- 80006ba:	4a0d      	ldr	r2, [pc, #52]	@ (80006f0 <SSD1306_Draw_Pixel+0xf0>)
+ 80006ba:	4a0d      	ldr	r2, [pc, #52]	@ (80006f0 <SSD1306_DrawPixel+0xf0>)
  80006bc:	5cd3      	ldrb	r3, [r2, r3]
  80006be:	b25a      	sxtb	r2, r3
  80006c0:	88bb      	ldrh	r3, [r7, #4]
@@ -646,7 +646,7 @@ void SSD1306_Draw_Pixel(uint16_t x, uint16_t y, uint8_t Color)
  80006d6:	01db      	lsls	r3, r3, #7
  80006d8:	4413      	add	r3, r2
  80006da:	b2c9      	uxtb	r1, r1
- 80006dc:	4a04      	ldr	r2, [pc, #16]	@ (80006f0 <SSD1306_Draw_Pixel+0xf0>)
+ 80006dc:	4a04      	ldr	r2, [pc, #16]	@ (80006f0 <SSD1306_DrawPixel+0xf0>)
  80006de:	54d1      	strb	r1, [r2, r3]
 		break;
  80006e0:	bf00      	nop
@@ -1134,11 +1134,11 @@ int main(void)
   SSD1306_Clear(BLACK);
  80009d8:	2000      	movs	r0, #0
  80009da:	f7ff fdf3 	bl	80005c4 <SSD1306_Clear>
-  SSD1306_Draw_Pixel(64, 32, WHITE);
+  SSD1306_DrawPixel(64, 32, WHITE);
  80009de:	2201      	movs	r2, #1
  80009e0:	2120      	movs	r1, #32
  80009e2:	2040      	movs	r0, #64	@ 0x40
- 80009e4:	f7ff fe0c 	bl	8000600 <SSD1306_Draw_Pixel>
+ 80009e4:	f7ff fe0c 	bl	8000600 <SSD1306_DrawPixel>
 
   SSD1306_Display(&OLED);
  80009e8:	4803      	ldr	r0, [pc, #12]	@ (80009f8 <main+0x48>)
