@@ -25,6 +25,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "SSD1306_OLED.h"
+#include "GFX_BW.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -95,7 +96,8 @@ int main(void)
   SSD1306_Display(&OLED);
   SSD1306_Clear(BLACK);
   SSD1306_DrawPixel(64, 32, WHITE);
-
+  GFX_DrawCircle(64, 32, 15, WHITE);
+  GFX_DrawLine(0, 10, 127, 10, WHITE);
   SSD1306_Display(&OLED);
 
   /* USER CODE END 2 */
