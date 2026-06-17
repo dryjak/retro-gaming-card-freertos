@@ -45,8 +45,25 @@ void SSD1306_Clear(uint8_t Color)
 	case SSD1306_BLACK:
 		memset(SSD1306_Buffer, 0x00, SSD1306_BUFFER_SIZE);
 	break;
+	}
+}
 
-
+void SSD1306_Draw_Pixel(uint16_t x, uint16_t y, uint8_t Color)
+{
+	if((y <= SSD1306_LCDHEIGHT) && (y > 0) && (x <= SSD1306_LCDWIDTH) && (x > 0))
+	{
+		switch(Color)
+		{
+		case SSD1306_WHITE:
+			SSD1306_Buffer[x + (y / 8) * SSD1306_LCDWIDTH] |= (1 << (y & 7));
+		break;
+		case SSD1306_BLACK:
+			SSD1306_Buffer[x + (y / 8) * SSD1306_LCDWIDTH] &= ~(1 << (y & 7));
+		break;
+		case SSD1306_INVERSE:
+			SSD1306_Buffer[x + (y / 8) * SSD1306_LCDWIDTH] ^= (1 << (y & 7));
+		break;
+		}
 	}
 }
 

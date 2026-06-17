@@ -2,4 +2,5 @@
 ../Core/Src/SSD1306_OLED.c:18:6:SSD1306_Data	1
 ../Core/Src/SSD1306_OLED.c:25:6:SSD1306_Display	1
 ../Core/Src/SSD1306_OLED.c:37:6:SSD1306_Clear	3
-../Core/Src/SSD1306_OLED.c:53:6:SSD1306_Init	1
+../Core/Src/SSD1306_OLED.c:51:6:SSD1306_Draw_Pixel	9
+../Core/Src/SSD1306_OLED.c:70:6:SSD1306_Init	1
