@@ -11,6 +11,10 @@
 #define SSD1306_TIMEOUT 1000
 
 
+
+#define BLACK SSD1306_BLACK
+#define WHITE SSD1306_WHITE
+
 #define SSD1306_BLACK 	0   ///< Draw 'off' pixels
 #define SSD1306_WHITE 	1   ///< Draw 'on' pixels
 #define SSD1306_INVERSE 2 	///< Invert pixels
@@ -72,5 +76,6 @@ typedef struct
 void SSD1306_Init(SSD1306_t *OLED, uint8_t Address, I2C_HandleTypeDef *I2C);
 
 void SSD1306_Display(SSD1306_t *OLED);
+void SSD1306_Clear(uint8_t Color);
 
 #endif /* INC_SSD1306_OLED_H_ */

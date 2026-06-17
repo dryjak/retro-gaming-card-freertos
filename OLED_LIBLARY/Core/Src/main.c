@@ -93,6 +93,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
   SSD1306_Init(&OLED, 0x3C, &hi2c1);
   SSD1306_Display(&OLED);
+  SSD1306_Clear(WHITE);
+  SSD1306_Display(&OLED);
 
   /* USER CODE END 2 */
 

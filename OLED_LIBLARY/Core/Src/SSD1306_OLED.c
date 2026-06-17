@@ -6,7 +6,7 @@
  */
 #include "main.h"
 #include "SSD1306_OLED.h"
-
+#include <string.h>
 
 static uint8_t SSD1306_Buffer[SSD1306_BUFFER_SIZE];
 
@@ -32,6 +32,22 @@ void SSD1306_Display(SSD1306_t *OLED)
 	SSD1306_Command(OLED, SSD1306_LCDWIDTH - 1); // Column end address
 
 	SSD1306_Data(OLED, SSD1306_Buffer, SSD1306_BUFFER_SIZE);
+}
+
+void SSD1306_Clear(uint8_t Color)
+{
+	switch(Color)
+	{
+	case SSD1306_WHITE:
+		memset(SSD1306_Buffer, 0xFF, SSD1306_BUFFER_SIZE);
+	break;
+
+	case SSD1306_BLACK:
+		memset(SSD1306_Buffer, 0x00, SSD1306_BUFFER_SIZE);
+	break;
+
+
+	}
 }
 
 void SSD1306_Init(SSD1306_t *OLED, uint8_t Address, I2C_HandleTypeDef *I2C)
