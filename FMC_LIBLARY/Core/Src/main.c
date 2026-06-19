@@ -49,11 +49,16 @@
 /* USER CODE BEGIN PV */
 SSD1306_t OLED;
 
+//Buttons
+Button_t Enter, Up, Down, Left, Right;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
+void TurnLedOff(void);
+void TurnLedOn(void);
+void ToggleLed(void);
 
 /* USER CODE END PFP */
 
@@ -101,6 +106,15 @@ int main(void)
   GFX_DrawLine(0, 10, 127, 10, WHITE);
   SSD1306_Display(&OLED);
 
+
+  //Initialize Buttons
+  ButtonInit(&Enter, ButtonEnter_GPIO_Port, ButtonEnter_Pin, 30, 500, 200);
+  ButtonRegisterPressCallback(&Enter, TurnLedOn);
+  ButtonRegisterLongPressCallback(&Enter, TurnLedOff);
+  ButtonRegisterRepeatCallback(&Enter, ToggleLed);
+  ButtonRegisterGoToIdleCallback(&Enter, TurnLedOff);
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -108,6 +122,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+	  ButtonTask (&Enter);
+	  HAL_Delay(10);
 
     /* USER CODE BEGIN 3 */
   }
@@ -161,7 +177,18 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void ToggleLed(void)
+{
+	HAL_GPIO_TogglePin(LedRed_GPIO_Port, LedRed_Pin);
+}
+void TurnLedOff(void)
+{
+	HAL_GPIO_WritePin(LedRed_GPIO_Port, LedRed_Pin, GPIO_PIN_RESET);
+}
+void TurnLedOn(void)
+{
+	HAL_GPIO_WritePin(LedRed_GPIO_Port, LedRed_Pin, GPIO_PIN_SET);
+}
 /* USER CODE END 4 */
 
 /**
