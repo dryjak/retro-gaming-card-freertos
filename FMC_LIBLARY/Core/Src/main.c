@@ -51,6 +51,7 @@ SSD1306_t OLED;
 
 //Buttons
 Button_t Enter, Up, Down, Left, Right;
+uint8_t ButtonPressedFlag;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -121,9 +122,15 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == GPIO_PIN_RESET)
+	  {
+		  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
+	  }
+	  else
+	  {
+		  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+	  }
     /* USER CODE END WHILE */
-	  ButtonTask (&Enter);
-	  HAL_Delay(10);
 
     /* USER CODE BEGIN 3 */
   }
@@ -184,10 +191,12 @@ void ToggleLed(void)
 void TurnLedOff(void)
 {
 	HAL_GPIO_WritePin(LedRed_GPIO_Port, LedRed_Pin, GPIO_PIN_RESET);
+	ButtonPressedFlag = 0;
 }
 void TurnLedOn(void)
 {
 	HAL_GPIO_WritePin(LedRed_GPIO_Port, LedRed_Pin, GPIO_PIN_SET);
+	ButtonPressedFlag = 1;
 }
 /* USER CODE END 4 */
 
