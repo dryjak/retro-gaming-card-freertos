@@ -7,27 +7,16 @@
 
 #include <GameConsoleMenu.h>
 
-static ConsoleStateMain(GameConsole_t *GameConsole)
-{
+const MenuItem_t GamesMenuItems[] = {
+    {"1. Snake", STATE_GAME_SNAKE,    NULL},
+    {"2. Pong",  STATE_MAIN_MENU,     NULL}, // we do not have game pong
+    {"3. Back",  STATE_MAIN_MENU,     NULL}  //go to main menu
+};
 
-}
-
-static ConsoleStateGames(GameConsole_t *GameConsole)
-{
-
-}
-
-static ConsoleStateSettings(GameConsole_t *GameConsole)
-{
-
-}
-
-static ConsoleStateInfo(GameConsole_t *GameConsole)
-{
-
-}
-
-void GameConsoleMenuTask(GameConsole_t *GameConsole)
-{
-}
+const MenuItem_t MainMenuItems[] = {
+    {"Games",    STATE_GAMES_MENU,    NULL},
+    {"Settings", STATE_SETTINGS_MENU, NULL},
+    {"About",    STATE_INFO_MENU,	  NULL}
+    //{"Sleep",    STATE_MAIN_MENU,     null} //Enter_Deep_Sleep_Hardware Wywoła funkcję sprzętową!
+};
 

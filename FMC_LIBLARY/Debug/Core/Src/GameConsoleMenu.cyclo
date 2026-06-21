@@ -1,0 +1,5 @@
+../Core/Src/GameConsoleMenu.c:10:8:ConsoleStateMain	1
+../Core/Src/GameConsoleMenu.c:15:8:ConsoleStateGames	1
+../Core/Src/GameConsoleMenu.c:20:8:ConsoleStateSettings	1
+../Core/Src/GameConsoleMenu.c:25:8:ConsoleStateInfo	1
+../Core/Src/GameConsoleMenu.c:30:6:GameConsoleMenuTask	1
