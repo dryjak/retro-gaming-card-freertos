@@ -122,7 +122,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == GPIO_PIN_RESET)
+	  if(HAL_GPIO_ReadPin(ButtonEnter_GPIO_Port, ButtonEnter_Pin) == GPIO_PIN_RESET)
 	  {
 		  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
 	  }
