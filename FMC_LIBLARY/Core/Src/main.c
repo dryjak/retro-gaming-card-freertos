@@ -116,6 +116,9 @@ int main(void)
   ButtonRegisterGoToIdleCallback(&Enter, TurnLedOff);
 
 
+  //TODO: add game console menu to draw display and use buttons
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
