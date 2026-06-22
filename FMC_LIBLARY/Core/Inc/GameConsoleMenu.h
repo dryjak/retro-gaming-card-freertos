@@ -38,7 +38,6 @@ typedef struct
 {
 	GameConsoleState_t CurrentSystemState;
 	uint8_t MenuCursorIndex;
-
 }GameConsole_t;
 
 #endif /* INC_GAMECONSOLEMENU_H_ */

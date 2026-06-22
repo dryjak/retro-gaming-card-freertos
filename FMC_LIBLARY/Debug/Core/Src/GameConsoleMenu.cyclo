@@ -1,5 +1,4 @@
-../Core/Src/GameConsoleMenu.c:10:8:ConsoleStateMain	1
-../Core/Src/GameConsoleMenu.c:15:8:ConsoleStateGames	1
-../Core/Src/GameConsoleMenu.c:20:8:ConsoleStateSettings	1
-../Core/Src/GameConsoleMenu.c:25:8:ConsoleStateInfo	1
-../Core/Src/GameConsoleMenu.c:30:6:GameConsoleMenuTask	1
+../Core/Src/GameConsoleMenu.c:30:6:Console_Init	1
+../Core/Src/GameConsoleMenu.c:40:13:Get_Active_Menu_Data	3
+../Core/Src/GameConsoleMenu.c:61:6:Console_MoveDown	2
+../Core/Src/GameConsoleMenu.c:79:6:Console_Enter	3
