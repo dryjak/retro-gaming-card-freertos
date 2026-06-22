@@ -79,6 +79,24 @@ void Console_MoveDown(GameConsole_t *Console) {
     Console->NeedsRedraw = 1;
 }
 
+void Console_MoveUp(GameConsole_t *Console) {
+    const MenuItem_t *CurrentMenu;
+    uint8_t MenuSize;
+
+    Get_Active_Menu_Data(Console->CurrentSystemState, &CurrentMenu, &MenuSize);
+
+    // Zabezpieczenie i zapętlenie kursora
+    if (Console->MenuCursorIndex > 0) {
+    	Console->MenuCursorIndex--; // go up
+    }
+    else
+    {
+    	Console->MenuCursorIndex = MenuSize - 1;
+    }
+
+    Console->NeedsRedraw = 1;
+}
+
 /**
  * @brief Reakcja na przycisk "ENTER". Wykonuje akcję i zmienia stan.
  */
