@@ -10,6 +10,9 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include <SSD1306_OLED.h>
+#include <GFX_BW.h>
+
 
 typedef enum{
 	STATE_MAIN_MENU = 0,
@@ -38,6 +41,15 @@ typedef struct
 {
 	GameConsoleState_t CurrentSystemState;
 	uint8_t MenuCursorIndex;
+
+	uint8_t NeedsRedraw;
 }GameConsole_t;
+
+
+void Console_Enter(GameConsole_t *Console);
+void Console_MoveDown(GameConsole_t *Console);
+void Console_Init(GameConsole_t *Console);
+void Console_Draw(GameConsole_t *Console, SSD1306_t *Display);
+
 
 #endif /* INC_GAMECONSOLEMENU_H_ */

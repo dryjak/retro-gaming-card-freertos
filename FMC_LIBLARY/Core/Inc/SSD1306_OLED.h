@@ -8,6 +8,8 @@
 #ifndef INC_SSD1306_OLED_H_
 #define INC_SSD1306_OLED_H_
 
+#include "main.h"
+
 #define SSD1306_TIMEOUT 1000
 
 

@@ -11,6 +11,7 @@
 // Kompilator obliczy rozmiar tablicy. Np. dla MainMenuItems: 3 * (wielkość MenuItem_t) / (wielkość MenuItem_t) = 3
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
+
 const MenuItem_t GamesMenuItems[] = {
     {"1. Snake", STATE_GAME_SNAKE,    NULL},
     {"2. Pong",  STATE_MAIN_MENU,     NULL}, // we do not have game pong
@@ -30,6 +31,7 @@ const MenuItem_t MainMenuItems[] = {
 void Console_Init(GameConsole_t *Console) {
     Console->CurrentSystemState = STATE_MAIN_MENU;
     Console->MenuCursorIndex = 0;
+    Console->NeedsRedraw = 1;
 }
 
 // --- 3. LOGIKA SILNIKA MENU ---
@@ -58,6 +60,8 @@ static void Get_Active_Menu_Data(GameConsoleState_t State, const MenuItem_t** Ou
 /**
  * @brief Reakcja na przycisk "W DÓŁ".
  */
+
+
 void Console_MoveDown(GameConsole_t *Console) {
     const MenuItem_t *CurrentMenu;
     uint8_t MenuSize;
@@ -71,6 +75,8 @@ void Console_MoveDown(GameConsole_t *Console) {
     } else {
     	Console->MenuCursorIndex = 0; // Jesteśmy na dole, wróć na samą górę!
     }
+
+    Console->NeedsRedraw = 1;
 }
 
 /**
@@ -95,4 +101,58 @@ void Console_Enter(GameConsole_t *Console) {
     	Console->CurrentSystemState = NextState;
     	Console->MenuCursorIndex = 0; // Reset kursora na samą górę nowego menu
     }
+
+    Console->NeedsRedraw = 1;
+}
+
+
+void Console_Draw(GameConsole_t *Console, SSD1306_t *Display)
+{
+	if(Console->NeedsRedraw != 1)
+	{
+		return;
+	}
+	Console->NeedsRedraw = 0;
+
+	const MenuItem_t *CurrentMenu; 		//current menu to show
+	uint8_t CurrentMenuSize;
+
+	Get_Active_Menu_Data(Console->CurrentSystemState, &CurrentMenu, &CurrentMenuSize);
+
+	//clear the display
+	SSD1306_Clear(BLACK);
+
+	//switch case to display titles of pages
+	uint8_t y_pos = 0;
+	switch (Console->CurrentSystemState)
+	{
+		case STATE_MAIN_MENU:		//printf title main menu
+			GFX_DrawString(0, y_pos, "--- MAIN MENU ---",  WHITE, BLACK);
+		break;
+		case STATE_GAMES_MENU:		//printf games title
+			GFX_DrawString(0, y_pos, "--- GAMES ---",  WHITE, BLACK);
+		break;
+		case STATE_SETTINGS_MENU:	//printf settings title
+			GFX_DrawString(0, y_pos, "--- SETTINGS ---",  WHITE, BLACK);
+
+		break;
+		case STATE_INFO_MENU:		//printf info title
+			GFX_DrawString(0, y_pos, "--- ABOUT ---",  WHITE, BLACK);
+		break;
+	}
+
+	//Display page all
+	for (int8_t i = 0; i < CurrentMenuSize; i++)
+	{
+		y_pos = 15 + (i * 12);
+		//draw arrow
+		if (i == Console->MenuCursorIndex)
+		{
+			GFX_DrawChar(2, y_pos, '>', WHITE, BLACK);
+		}
+
+		GFX_DrawString(15, y_pos, (char*) CurrentMenu[i].Text,  WHITE, BLACK);
+	}
+
+	SSD1306_Display(Display);
 }
