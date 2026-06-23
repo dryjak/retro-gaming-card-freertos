@@ -19,14 +19,21 @@ typedef enum{
 	STATE_GAMES_MENU,
 	STATE_SETTINGS_MENU,
 	STATE_INFO_MENU,
-	STATE_GAME_SNAKE
+	STATE_GAME_SNAKE,
 }GameConsoleState_t;
 
 typedef void (*MenuAction_t) (void);
 
+typedef enum {
+    ITEM_FOLDER, // go inside different menu
+    ITEM_ACTION, // function e.g. go play snake
+    ITEM_VALUE   // edit parameter e.g. brightness
+} MenuItemType_t;
+
 typedef struct
 {
 	const char* Text;
+	MenuItemType_t Type;
 	GameConsoleState_t NextState;
 	MenuAction_t Action;
 }MenuItem_t;
@@ -43,6 +50,7 @@ typedef struct
 	uint8_t MenuCursorIndex;
 
 	uint8_t NeedsRedraw;
+	uint8_t IsEditMode; // < 0 = just read, 1 = edit
 }GameConsole_t;
 
 

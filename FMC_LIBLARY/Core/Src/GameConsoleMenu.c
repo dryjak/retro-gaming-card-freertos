@@ -13,18 +13,24 @@
 
 
 const MenuItem_t GamesMenuItems[] = {
-    {"1. Snake", STATE_GAME_SNAKE,    NULL},
-    {"2. Pong",  STATE_MAIN_MENU,     NULL}, // we do not have game pong
-    {"3. Back",  STATE_MAIN_MENU,     NULL}  //go to main menu
+    {"1. Snake", ITEM_ACTION,	STATE_GAME_SNAKE,    NULL},
+    {"2. Pong",  ITEM_ACTION,	STATE_MAIN_MENU,     NULL}, // we do not have game pong
+    {"Back",  ITEM_FOLDER,		STATE_MAIN_MENU,     NULL}  //go to main menu
 };
 
 const MenuItem_t MainMenuItems[] = {
-    {"Games",    STATE_GAMES_MENU,    NULL},
-    {"Settings", STATE_SETTINGS_MENU, NULL},
-    {"About",    STATE_INFO_MENU,	  NULL}
+    {"Games",    ITEM_FOLDER, 	STATE_GAMES_MENU,    NULL},
+    {"Settings", ITEM_FOLDER,   STATE_SETTINGS_MENU, NULL},
+    {"About",    ITEM_FOLDER,   STATE_INFO_MENU,	 NULL}
     //{"Sleep",    STATE_MAIN_MENU,     null} //Enter_Deep_Sleep_Hardware Wywoła funkcję sprzętową!
 };
 
+const MenuItem_t SettingsMenuItems[] = {
+    // Text       // Type         // Stan docelowy (dla folderu) // Action
+    {"Brightness", ITEM_VALUE,    STATE_SETTINGS_MENU,           NULL},
+    {"Mode",       ITEM_VALUE,    STATE_SETTINGS_MENU,           NULL},
+    {"Back",       ITEM_FOLDER,   STATE_MAIN_MENU,               NULL}
+};
 /**
  * @brief Initialize console to basic state
  */
@@ -45,6 +51,10 @@ static void Get_Active_Menu_Data(GameConsoleState_t State, const MenuItem_t** Ou
             *OutMenuArray = MainMenuItems;
             *OutSize = ARRAY_SIZE(MainMenuItems);
             break;
+        case STATE_SETTINGS_MENU:
+			*OutMenuArray = SettingsMenuItems;
+			*OutSize = ARRAY_SIZE(SettingsMenuItems);
+			break;
         case STATE_GAMES_MENU:
             *OutMenuArray = GamesMenuItems;
             *OutSize = ARRAY_SIZE(GamesMenuItems);
@@ -106,21 +116,32 @@ void Console_Enter(GameConsole_t *Console) {
 
     Get_Active_Menu_Data(Console->CurrentSystemState, &CurrentMenu, &MenuSize);
 
-    // 1. Wykonanie akcji sprzętowej/programowej (Callback), jeśli istnieje
-    if (CurrentMenu[Console->MenuCursorIndex].Action != NULL) {
-    	CurrentMenu[Console->MenuCursorIndex].Action();
-    }
+    // Pobieramy aktualny element
+        MenuItem_t SelectedItem = CurrentMenu[Console->MenuCursorIndex];
 
-    // 2. Pobranie nowego stanu (pokoju) z danych wybranej pozycji
-    GameConsoleState_t NextState = CurrentMenu[Console->MenuCursorIndex].NextState;
+        // Jeśli jesteśmy w trybie edycji, Enter z niego wychodzi (zatwierdza)
+        if (Console->IsEditMode == 1) {
+            Console->IsEditMode = 0;
+            Console->NeedsRedraw = 1;
+            return;
+        }
 
-    // 3. Zmiana stanu systemu, jeśli faktycznie przechodzimy do innego menu
-    if (Console->CurrentSystemState != NextState) {
-    	Console->CurrentSystemState = NextState;
-    	Console->MenuCursorIndex = 0; // Reset kursora na samą górę nowego menu
-    }
-
-    Console->NeedsRedraw = 1;
+        // Sprawdzamy typ podświetlonego elementu
+        if (SelectedItem.Type == ITEM_VALUE) {
+            // Wchodzimy w tryb edycji!
+            Console->IsEditMode = 1;
+            Console->NeedsRedraw = 1;
+        }
+        else if (SelectedItem.Type == ITEM_FOLDER) {
+            // Przechodzimy do innego menu
+            Console->CurrentSystemState = SelectedItem.NextState;
+            Console->MenuCursorIndex = 0;
+            Console->NeedsRedraw = 1;
+        }
+        else if (SelectedItem.Type == ITEM_ACTION) {
+            // Wykonujemy akcję (np. start gry)
+            if (SelectedItem.Action != NULL) SelectedItem.Action();
+        }
 }
 
 
