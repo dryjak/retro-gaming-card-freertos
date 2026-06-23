@@ -1,10 +1,3 @@
-/*
- * GFX_BW.c
- *
- *  Created on: Jun 17, 2026
- *      Author: dryla
- */
-
 
 /*
  * GFX_BW.h

@@ -27,6 +27,8 @@
 #include "SSD1306_OLED.h"
 #include "GFX_BW.h"
 #include "Button.h"
+#include "GameConsoleMenu.h"
+#include "fonts/fonts.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -52,6 +54,10 @@ SSD1306_t OLED;
 //Buttons
 Button_t Enter, Up, Down, Left, Right;
 uint8_t ButtonPressedFlag;
+
+//Game console FSM
+GameConsole_t Console;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -60,6 +66,13 @@ void SystemClock_Config(void);
 void TurnLedOff(void);
 void TurnLedOn(void);
 void ToggleLed(void);
+
+//Wrapper
+void Action_MenuUp(void);
+void Action_MenuDown(void);
+void Action_MenuEnter(void);
+
+
 
 /* USER CODE END PFP */
 
@@ -100,29 +113,35 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   SSD1306_Init(&OLED, 0x3C, &hi2c1);
+  HAL_Delay(50);
+  GFX_SetFont(font_8x5);
+  SSD1306_Clear(WHITE);
+  GFX_DrawString(0, 0, "--- MAIN MENU ---",  WHITE, 0);
+  SSD1306_DrawPixel(64, 32, BLACK);
+  GFX_DrawCircle(64, 32, 15, BLACK);
+  GFX_DrawLine(0, 10, 127, 10, BLACK);
   SSD1306_Display(&OLED);
-  SSD1306_Clear(BLACK);
-  SSD1306_DrawPixel(64, 32, WHITE);
-  GFX_DrawCircle(64, 32, 15, WHITE);
-  GFX_DrawLine(0, 10, 127, 10, WHITE);
-  SSD1306_Display(&OLED);
+  HAL_Delay(1000);
 
+  //Game console FSM initialization
+  Console_Init(&Console);
+//  Console_Draw(&Console, &OLED);
 
   //Initialize Buttons
   ButtonInit(&Up, ButtonUp_GPIO_Port, ButtonUp_Pin, 30, 500, 200);
-  ButtonRegisterPressCallback(&Up, TurnLedOn);
+  ButtonRegisterPressCallback(&Up, Action_MenuUp);
   ButtonRegisterLongPressCallback(&Up, TurnLedOff);
   ButtonRegisterRepeatCallback(&Up, ToggleLed);
   ButtonRegisterGoToIdleCallback(&Up, TurnLedOff);
 
   ButtonInit(&Enter, ButtonEnter_GPIO_Port, ButtonEnter_Pin, 30, 500, 200);
-  ButtonRegisterPressCallback(&Enter, TurnLedOn);
+  ButtonRegisterPressCallback(&Enter, Action_MenuEnter);
   ButtonRegisterLongPressCallback(&Enter, TurnLedOff);
   ButtonRegisterRepeatCallback(&Enter, ToggleLed);
   ButtonRegisterGoToIdleCallback(&Enter, TurnLedOff);
 
   ButtonInit(&Down, ButtonDown_GPIO_Port, ButtonDown_Pin, 30, 500, 200);
-  ButtonRegisterPressCallback(&Down, TurnLedOn);
+  ButtonRegisterPressCallback(&Down, Action_MenuDown);
   ButtonRegisterLongPressCallback(&Down, TurnLedOff);
   ButtonRegisterRepeatCallback(&Down, ToggleLed);
   ButtonRegisterGoToIdleCallback(&Down, TurnLedOff);
@@ -139,7 +158,6 @@ int main(void)
   ButtonRegisterRepeatCallback(&Right, ToggleLed);
   ButtonRegisterGoToIdleCallback(&Right, TurnLedOff);
 
-  //TODO: add game console menu to draw display and use buttons
 
 
   /* USER CODE END 2 */
@@ -148,17 +166,29 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(HAL_GPIO_ReadPin(ButtonEnter_GPIO_Port, ButtonEnter_Pin) == GPIO_PIN_RESET || HAL_GPIO_ReadPin(ButtonUp_GPIO_Port, ButtonUp_Pin) == GPIO_PIN_RESET
-			  || HAL_GPIO_ReadPin(ButtonDown_GPIO_Port, ButtonDown_Pin) == GPIO_PIN_RESET
-			  || HAL_GPIO_ReadPin(ButtonLeft_GPIO_Port, ButtonLeft_Pin) == GPIO_PIN_RESET
-			  || HAL_GPIO_ReadPin(ButtonRight_GPIO_Port, ButtonRight_Pin) == GPIO_PIN_RESET)
-	  {
-		  HAL_GPIO_WritePin(LedRed_GPIO_Port, LedRed_Pin, GPIO_PIN_SET);
-	  }
-	  else
-	  {
-		  HAL_GPIO_WritePin(LedRed_GPIO_Port, LedRed_Pin, GPIO_PIN_RESET);
-	  }
+
+	ButtonTask(&Up);
+	ButtonTask(&Down);
+	ButtonTask(&Enter);
+
+/*
+	if(HAL_GPIO_ReadPin(ButtonEnter_GPIO_Port, ButtonEnter_Pin) == GPIO_PIN_RESET
+		  || HAL_GPIO_ReadPin(ButtonUp_GPIO_Port, ButtonUp_Pin) == GPIO_PIN_RESET
+		  || HAL_GPIO_ReadPin(ButtonDown_GPIO_Port, ButtonDown_Pin) == GPIO_PIN_RESET
+		  || HAL_GPIO_ReadPin(ButtonLeft_GPIO_Port, ButtonLeft_Pin) == GPIO_PIN_RESET
+		  || HAL_GPIO_ReadPin(ButtonRight_GPIO_Port, ButtonRight_Pin) == GPIO_PIN_RESET)
+	{
+	  HAL_GPIO_WritePin(LedRed_GPIO_Port, LedRed_Pin, GPIO_PIN_SET);
+	}
+	else
+	{
+	  HAL_GPIO_WritePin(LedRed_GPIO_Port, LedRed_Pin, GPIO_PIN_RESET);
+	}
+	*/
+
+	Console_Draw(&Console, &OLED);
+
+	HAL_Delay(10);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -213,6 +243,26 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+//wrapper
+void Action_MenuUp(void)
+{
+    Console_MoveUp(&Console);
+    TurnLedOn();
+}
+void Action_MenuDown(void)
+{
+    Console_MoveDown(&Console);
+    TurnLedOn();
+}
+void Action_MenuEnter(void)
+{
+    Console_Enter(&Console);
+    TurnLedOn();
+}
+
+
+//basic functions
 void ToggleLed(void)
 {
 	HAL_GPIO_TogglePin(LedRed_GPIO_Port, LedRed_Pin);

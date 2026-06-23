@@ -47,6 +47,7 @@ typedef struct
 
 
 void Console_Enter(GameConsole_t *Console);
+void Console_MoveUp(GameConsole_t *Console);
 void Console_MoveDown(GameConsole_t *Console);
 void Console_Init(GameConsole_t *Console);
 void Console_Draw(GameConsole_t *Console, SSD1306_t *Display);

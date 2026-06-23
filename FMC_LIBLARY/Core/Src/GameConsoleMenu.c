@@ -141,21 +141,21 @@ void Console_Draw(GameConsole_t *Console, SSD1306_t *Display)
 	SSD1306_Clear(BLACK);
 
 	//switch case to display titles of pages
-	uint8_t y_pos = 0;
+	uint8_t y_pos = 1;
 	switch (Console->CurrentSystemState)
 	{
 		case STATE_MAIN_MENU:		//printf title main menu
-			GFX_DrawString(0, y_pos, "--- MAIN MENU ---",  WHITE, BLACK);
+			GFX_DrawString(0, y_pos, "--- MAIN MENU ---",  WHITE, 0);
 		break;
 		case STATE_GAMES_MENU:		//printf games title
-			GFX_DrawString(0, y_pos, "--- GAMES ---",  WHITE, BLACK);
+			GFX_DrawString(0, y_pos, "--- GAMES ---",  WHITE, 0);
 		break;
 		case STATE_SETTINGS_MENU:	//printf settings title
-			GFX_DrawString(0, y_pos, "--- SETTINGS ---",  WHITE, BLACK);
+			GFX_DrawString(0, y_pos, "--- SETTINGS ---",  WHITE, 0);
 
 		break;
 		case STATE_INFO_MENU:		//printf info title
-			GFX_DrawString(0, y_pos, "--- ABOUT ---",  WHITE, BLACK);
+			GFX_DrawString(0, y_pos, "--- ABOUT ---",  WHITE, 0);
 		break;
 	}
 
@@ -166,10 +166,10 @@ void Console_Draw(GameConsole_t *Console, SSD1306_t *Display)
 		//draw arrow
 		if (i == Console->MenuCursorIndex)
 		{
-			GFX_DrawChar(2, y_pos, '>', WHITE, BLACK);
+			GFX_DrawChar(2, y_pos, '>', WHITE, 0);
 		}
 
-		GFX_DrawString(15, y_pos, (char*) CurrentMenu[i].Text,  WHITE, BLACK);
+		GFX_DrawString(15, y_pos, (char*) CurrentMenu[i].Text,  WHITE, 0);
 	}
 
 	SSD1306_Display(Display);

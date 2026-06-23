@@ -29,7 +29,7 @@
 #define WIDTH SSD1306_LCDWIDTH
 #define HEIGHT SSD1306_LCDHEIGHT
 #define PIXEL_BLACK	BLACK
-#define PIXEL_WHITE	WHITE
+#define PIXEL_WHITE WHITE
 #define PIXEL_INVERSE	INVERSE
 
 #define USING_STRINGS 1 // 0 - do not compile, 1 - compile
