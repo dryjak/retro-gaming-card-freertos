@@ -159,7 +159,9 @@ int main(void)
   ButtonRegisterGoToIdleCallback(&Right, TurnLedOff);
 
 
-
+//TODO: Add variable that shows us current brightness and mode in settings section
+//TODO: Add About section
+//TODO: Add function for left and right button
   /* USER CODE END 2 */
 
   /* Infinite loop */
