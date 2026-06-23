@@ -109,12 +109,35 @@ int main(void)
 
 
   //Initialize Buttons
+  ButtonInit(&Up, ButtonUp_GPIO_Port, ButtonUp_Pin, 30, 500, 200);
+  ButtonRegisterPressCallback(&Up, TurnLedOn);
+  ButtonRegisterLongPressCallback(&Up, TurnLedOff);
+  ButtonRegisterRepeatCallback(&Up, ToggleLed);
+  ButtonRegisterGoToIdleCallback(&Up, TurnLedOff);
+
   ButtonInit(&Enter, ButtonEnter_GPIO_Port, ButtonEnter_Pin, 30, 500, 200);
   ButtonRegisterPressCallback(&Enter, TurnLedOn);
   ButtonRegisterLongPressCallback(&Enter, TurnLedOff);
   ButtonRegisterRepeatCallback(&Enter, ToggleLed);
   ButtonRegisterGoToIdleCallback(&Enter, TurnLedOff);
 
+  ButtonInit(&Down, ButtonDown_GPIO_Port, ButtonDown_Pin, 30, 500, 200);
+  ButtonRegisterPressCallback(&Down, TurnLedOn);
+  ButtonRegisterLongPressCallback(&Down, TurnLedOff);
+  ButtonRegisterRepeatCallback(&Down, ToggleLed);
+  ButtonRegisterGoToIdleCallback(&Down, TurnLedOff);
+
+  ButtonInit(&Left, ButtonLeft_GPIO_Port, ButtonLeft_Pin, 30, 500, 200);
+  ButtonRegisterPressCallback(&Left, TurnLedOn);
+  ButtonRegisterLongPressCallback(&Left, TurnLedOff);
+  ButtonRegisterRepeatCallback(&Left, ToggleLed);
+  ButtonRegisterGoToIdleCallback(&Left, TurnLedOff);
+
+  ButtonInit(&Right, ButtonRight_GPIO_Port, ButtonRight_Pin, 30, 500, 200);
+  ButtonRegisterPressCallback(&Right, TurnLedOn);
+  ButtonRegisterLongPressCallback(&Right, TurnLedOff);
+  ButtonRegisterRepeatCallback(&Right, ToggleLed);
+  ButtonRegisterGoToIdleCallback(&Right, TurnLedOff);
 
   //TODO: add game console menu to draw display and use buttons
 
@@ -125,13 +148,16 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(HAL_GPIO_ReadPin(ButtonEnter_GPIO_Port, ButtonEnter_Pin) == GPIO_PIN_RESET)
+	  if(HAL_GPIO_ReadPin(ButtonEnter_GPIO_Port, ButtonEnter_Pin) == GPIO_PIN_RESET || HAL_GPIO_ReadPin(ButtonUp_GPIO_Port, ButtonUp_Pin) == GPIO_PIN_RESET
+			  || HAL_GPIO_ReadPin(ButtonDown_GPIO_Port, ButtonDown_Pin) == GPIO_PIN_RESET
+			  || HAL_GPIO_ReadPin(ButtonLeft_GPIO_Port, ButtonLeft_Pin) == GPIO_PIN_RESET
+			  || HAL_GPIO_ReadPin(ButtonRight_GPIO_Port, ButtonRight_Pin) == GPIO_PIN_RESET)
 	  {
-		  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
+		  HAL_GPIO_WritePin(LedRed_GPIO_Port, LedRed_Pin, GPIO_PIN_SET);
 	  }
 	  else
 	  {
-		  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+		  HAL_GPIO_WritePin(LedRed_GPIO_Port, LedRed_Pin, GPIO_PIN_RESET);
 	  }
     /* USER CODE END WHILE */
 
