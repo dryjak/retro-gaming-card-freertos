@@ -110,7 +110,14 @@ void Console_MoveRight(GameConsole_t *Console)
 
 		if(Console->Settings[currentIndex]  < Console->SettingsMaxValues[currentIndex])
 		{
-			Console->Settings[currentIndex]++;
+			if(currentIndex == 0)
+			{
+				Console->Settings[currentIndex] += 10;
+			}
+			else
+			{
+				Console->Settings[currentIndex]++;
+			}
 		}
 		else
 		{
@@ -145,9 +152,16 @@ void Console_MoveLeft(GameConsole_t *Console)
 
 		if(Console->Settings[currentIndex] > 0)
 		{
-			Console->Settings[currentIndex]--;
+			if(currentIndex == 0)
+			{
+				Console->Settings[currentIndex] -= 10;
+			}
+			else
+			{
+				Console->Settings[currentIndex]--;
+			}
 		}
-		else if(Console->Settings[currentIndex] < 0)
+		else
 		{
 			Console->Settings[currentIndex] = Console->SettingsMaxValues[currentIndex];
 		}
