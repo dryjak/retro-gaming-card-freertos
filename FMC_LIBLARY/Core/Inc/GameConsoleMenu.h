@@ -66,6 +66,7 @@ typedef struct
 
 	uint8_t Settings[2]; // 0 - brightness, 1 - edit
 	uint8_t SettingsMaxValues[2];// brightness - 100, 1 - edit- 3
+	uint8_t SettingsMinValues[2];
 
 }GameConsole_t;
 

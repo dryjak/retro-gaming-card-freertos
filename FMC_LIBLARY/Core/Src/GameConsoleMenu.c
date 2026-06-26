@@ -48,9 +48,12 @@ void Console_Init(GameConsole_t *Console) {
 
     Console->SettingsMaxValues[0] = 100;
     Console->SettingsMaxValues[1] = 2;
+    Console->SettingsMinValues[0] = 50;
+    Console->SettingsMinValues[1] = 0;
 
     Console->Settings[0] = 100;
     Console->Settings[1] = NORMAL;
+
 
 }
 
@@ -121,7 +124,7 @@ void Console_MoveRight(GameConsole_t *Console)
 		}
 		else
 		{
-			Console->Settings[currentIndex] = 0;
+			Console->Settings[currentIndex] = Console->SettingsMinValues[currentIndex];
 		}
 		Console->NeedsRedraw = 1;
 
@@ -150,7 +153,7 @@ void Console_MoveLeft(GameConsole_t *Console)
     	// decrease edited value
     	uint8_t currentIndex = Console->MenuCursorIndex;
 
-		if(Console->Settings[currentIndex] > 0)
+		if(Console->Settings[currentIndex] > Console->SettingsMinValues[currentIndex])
 		{
 			if(currentIndex == 0)
 			{
