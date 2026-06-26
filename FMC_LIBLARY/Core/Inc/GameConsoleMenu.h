@@ -65,6 +65,7 @@ typedef struct
 	uint8_t IsEditMode; // < 0 = just read, 1 = edit
 
 	uint8_t Settings[2]; // 0 - brightness, 1 - edit
+	uint8_t SettingsMaxValues[2];// brightness - 100, 1 - edit- 3
 
 }GameConsole_t;
 
@@ -72,6 +73,9 @@ typedef struct
 void Console_Enter(GameConsole_t *Console);
 void Console_MoveUp(GameConsole_t *Console);
 void Console_MoveDown(GameConsole_t *Console);
+void Console_MoveLeft(GameConsole_t *Console);
+void Console_MoveRight(GameConsole_t *Console);
+
 void Console_Init(GameConsole_t *Console);
 void Console_Draw(GameConsole_t *Console, SSD1306_t *Display);
 

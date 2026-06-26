@@ -45,6 +45,13 @@ void Console_Init(GameConsole_t *Console) {
     Console->CurrentSystemState = STATE_MAIN_MENU;
     Console->MenuCursorIndex = 0;
     Console->NeedsRedraw = 1;
+
+    Console->SettingsMaxValues[0] = 100;
+    Console->SettingsMaxValues[1] = 3;
+
+    Console->Settings[0] = 100;
+    Console->Settings[1] = NORMAL;
+
 }
 
 // --- 3. LOGIKA SILNIKA MENU ---
@@ -77,6 +84,42 @@ static void Get_Active_Menu_Data(GameConsoleState_t State, const MenuItem_t** Ou
 /**
  * @brief Reakcja na przycisk "W DÓŁ".
  */
+void Console_MoveRight(GameConsole_t *Console)
+{
+	const MenuItem_t *CurrentMenu;
+	uint8_t MenuSize;
+
+    // Pobieramy informacje o aktualnym pokoju, w którym jesteśmy
+    Get_Active_Menu_Data(Console->CurrentSystemState, &CurrentMenu, &MenuSize);
+    MenuItem_t SelectedItem = CurrentMenu[Console->MenuCursorIndex];
+
+    if(Console->IsEditMode == 0)
+    {
+    	//go in a menu
+		if (Console->CurrentSystemState != STATE_MAIN_MENU)
+		{
+            Console->CurrentSystemState = SelectedItem.NextState;
+			Console->MenuCursorIndex = 0;
+			Console->NeedsRedraw = 1;
+		}
+    }
+    else
+    {
+    	// increase edited value
+    	uint8_t currentIndex = Console->MenuCursorIndex;
+
+		if(Console->Settings[currentIndex] + 1 < Console->SettingsMaxValues[currentIndex])
+		{
+			Console->Settings[currentIndex]++;
+			Console->NeedsRedraw = 1;
+		}
+		else if(Console->Settings[currentIndex] == Console->SettingsMaxValues[currentIndex] -1)
+		{
+			Console->Settings[currentIndex] = 0;
+			Console->NeedsRedraw = 1;
+		}
+    }
+}
 
 void Console_MoveLeft(GameConsole_t *Console)
 {
@@ -104,6 +147,11 @@ void Console_MoveLeft(GameConsole_t *Console)
 		if(Console->Settings[currentIndex] > 0)
 		{
 			Console->Settings[currentIndex]--;
+			Console->NeedsRedraw = 1;
+		}
+		else if(Console->Settings[currentIndex] < 0)
+		{
+			Console->Settings[currentIndex] = Console->SettingsMaxValues[currentIndex];
 			Console->NeedsRedraw = 1;
 		}
     }

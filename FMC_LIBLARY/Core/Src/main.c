@@ -71,6 +71,9 @@ void ToggleLed(void);
 void Action_MenuUp(void);
 void Action_MenuDown(void);
 void Action_MenuEnter(void);
+void Action_MenuLeft(void);
+void Action_MenuRight(void);
+
 
 
 
@@ -172,6 +175,8 @@ int main(void)
 	ButtonTask(&Up);
 	ButtonTask(&Down);
 	ButtonTask(&Enter);
+	ButtonTask(&Left);
+	ButtonTask(&Right);
 
 /*
 	if(HAL_GPIO_ReadPin(ButtonEnter_GPIO_Port, ButtonEnter_Pin) == GPIO_PIN_RESET
@@ -261,6 +266,12 @@ void Action_MenuEnter(void)
 {
     Console_Enter(&Console);
     TurnLedOn();
+}
+void Action_MenuLeft(void) {
+    Console_MoveLeft(&Console);
+}
+void Action_MenuRight(void) {
+    Console_MoveRight(&Console);
 }
 
 
