@@ -31,6 +31,13 @@ const MenuItem_t SettingsMenuItems[] = {
     {"Mode",       ITEM_VALUE,    STATE_SETTINGS_MENU,           NULL},
     {"Back",       ITEM_FOLDER,   STATE_MAIN_MENU,               NULL}
 };
+
+const GameMode_t GameModes[] = {
+	{"EASY",   EASY},
+	{"NORMAL", NORMAL},
+	{"HARD",   HARD}
+};
+
 /**
  * @brief Initialize console to basic state
  */
@@ -71,6 +78,36 @@ static void Get_Active_Menu_Data(GameConsoleState_t State, const MenuItem_t** Ou
  * @brief Reakcja na przycisk "W DÓŁ".
  */
 
+void Console_MoveLeft(GameConsole_t *Console)
+{
+	const MenuItem_t *CurrentMenu;
+	uint8_t MenuSize;
+
+    // Pobieramy informacje o aktualnym pokoju, w którym jesteśmy
+    Get_Active_Menu_Data(Console->CurrentSystemState, &CurrentMenu, &MenuSize);
+
+    if(Console->IsEditMode == 0)
+    {
+    	//go back in a menu
+		if (Console->CurrentSystemState != STATE_MAIN_MENU) {
+			Console->CurrentSystemState = STATE_MAIN_MENU;
+			Console->MenuCursorIndex = 0;
+			Console->NeedsRedraw = 1;
+		}
+
+    }
+    else
+    {
+    	// decrease edited value
+    	uint8_t currentIndex = Console->MenuCursorIndex;
+
+		if(Console->Settings[currentIndex] > 0)
+		{
+			Console->Settings[currentIndex]--;
+			Console->NeedsRedraw = 1;
+		}
+    }
+}
 
 void Console_MoveDown(GameConsole_t *Console) {
     const MenuItem_t *CurrentMenu;
@@ -181,17 +218,48 @@ void Console_Draw(GameConsole_t *Console, SSD1306_t *Display)
 	}
 
 	//Display page all
-	for (int8_t i = 0; i < CurrentMenuSize; i++)
-	{
-		y_pos = 15 + (i * 12);
-		//draw arrow
-		if (i == Console->MenuCursorIndex)
+		for (int8_t i = 0; i < CurrentMenuSize; i++)
 		{
-			GFX_DrawChar(2, y_pos, '>', WHITE, 0);
+			y_pos = 15 + (i * 12);
+
+			// Rysujemy wskaźnik (kursor)
+			if (i == Console->MenuCursorIndex)
+			{
+				// Jeśli jesteśmy w trybie edycji, rysujemy mały kwadracik lub znak zachęty
+				if (Console->IsEditMode) {
+					GFX_DrawChar(2, y_pos, '*', WHITE, BLACK); // Tryb edycji
+				} else {
+					GFX_DrawChar(2, y_pos, '>', WHITE, BLACK); // Zwykły kursor
+				}
+			}
+
+			// RYSOWANIE ZAWARTOŚCI (Magia formatowania)
+			if (CurrentMenu[i].Type == ITEM_VALUE)
+			{
+				// Tworzymy tymczasowy bufor na sformatowany tekst (np. max 20 znaków)
+				char ValueBuffer[20];
+
+				// Zabezpieczamy się: Sprawdzamy, którą opcję z ITEM_VALUE właśnie rysujemy
+				if (i == 0) // Brightness (indeks 0 w SettingsMenuItems)
+				{
+					snprintf(ValueBuffer, sizeof(ValueBuffer), "%s: %d", CurrentMenu[i].Text, Console->Settings[0]);
+				}
+				else if (i == 1) // Mode (indeks 1 w SettingsMenuItems)
+				{
+					// Zamiast liczby 0,1,2, bierzemy tekst "EASY", "NORMAL" z naszej nowej tablicy!
+					uint8_t mode_index = Console->Settings[1];
+					snprintf(ValueBuffer, sizeof(ValueBuffer), "%s: %s", CurrentMenu[i].Text, GameModes[mode_index].Text);
+				}
+
+				// Rysujemy nasz nowy, sklejony tekst na ekranie!
+				GFX_DrawString(15, y_pos, ValueBuffer, WHITE, BLACK);
+			}
+			else
+			{
+				// Jeśli to zwykły folder (np. "Games" lub "Back"), rysujemy go normalnie z Flash
+				GFX_DrawString(15, y_pos, (char*) CurrentMenu[i].Text, WHITE, BLACK);
+			}
 		}
 
-		GFX_DrawString(15, y_pos, (char*) CurrentMenu[i].Text,  WHITE, 0);
-	}
-
-	SSD1306_Display(Display);
+		SSD1306_Display(Display);
 }

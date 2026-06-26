@@ -12,7 +12,7 @@
 #include <stddef.h>
 #include <SSD1306_OLED.h>
 #include <GFX_BW.h>
-
+#include <stdio.h>
 
 typedef enum{
 	STATE_MAIN_MENU = 0,
@@ -38,6 +38,18 @@ typedef struct
 	MenuAction_t Action;
 }MenuItem_t;
 
+typedef enum
+{
+	EASY = 0,
+	NORMAL,
+	HARD
+}GameModeState_t;
+
+typedef struct
+{
+	const char* Text;
+	GameModeState_t GameMode;
+}GameMode_t;
 // Pick game menu
 extern const MenuItem_t GamesMenuItems[];
 
@@ -51,6 +63,9 @@ typedef struct
 
 	uint8_t NeedsRedraw;
 	uint8_t IsEditMode; // < 0 = just read, 1 = edit
+
+	uint8_t Settings[2]; // 0 - brightness, 1 - edit
+
 }GameConsole_t;
 
 
