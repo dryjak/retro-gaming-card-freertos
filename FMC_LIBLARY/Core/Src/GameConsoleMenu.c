@@ -47,7 +47,7 @@ void Console_Init(GameConsole_t *Console) {
     Console->NeedsRedraw = 1;
 
     Console->SettingsMaxValues[0] = 100;
-    Console->SettingsMaxValues[1] = 3;
+    Console->SettingsMaxValues[1] = 2;
 
     Console->Settings[0] = 100;
     Console->Settings[1] = NORMAL;
@@ -89,14 +89,14 @@ void Console_MoveRight(GameConsole_t *Console)
 	const MenuItem_t *CurrentMenu;
 	uint8_t MenuSize;
 
-    // Pobieramy informacje o aktualnym pokoju, w którym jesteśmy
+	//get information about current menu
     Get_Active_Menu_Data(Console->CurrentSystemState, &CurrentMenu, &MenuSize);
     MenuItem_t SelectedItem = CurrentMenu[Console->MenuCursorIndex];
 
     if(Console->IsEditMode == 0)
     {
     	//go in a menu
-		if (Console->CurrentSystemState != STATE_MAIN_MENU)
+		if (SelectedItem.NextState != STATE_MAIN_MENU && SelectedItem.Type == ITEM_FOLDER)
 		{
             Console->CurrentSystemState = SelectedItem.NextState;
 			Console->MenuCursorIndex = 0;
@@ -108,16 +108,16 @@ void Console_MoveRight(GameConsole_t *Console)
     	// increase edited value
     	uint8_t currentIndex = Console->MenuCursorIndex;
 
-		if(Console->Settings[currentIndex] + 1 < Console->SettingsMaxValues[currentIndex])
+		if(Console->Settings[currentIndex]  < Console->SettingsMaxValues[currentIndex])
 		{
 			Console->Settings[currentIndex]++;
-			Console->NeedsRedraw = 1;
 		}
-		else if(Console->Settings[currentIndex] == Console->SettingsMaxValues[currentIndex] -1)
+		else
 		{
 			Console->Settings[currentIndex] = 0;
-			Console->NeedsRedraw = 1;
 		}
+		Console->NeedsRedraw = 1;
+
     }
 }
 
@@ -126,8 +126,8 @@ void Console_MoveLeft(GameConsole_t *Console)
 	const MenuItem_t *CurrentMenu;
 	uint8_t MenuSize;
 
-    // Pobieramy informacje o aktualnym pokoju, w którym jesteśmy
     Get_Active_Menu_Data(Console->CurrentSystemState, &CurrentMenu, &MenuSize);
+    MenuItem_t SelectedItem = CurrentMenu[Console->MenuCursorIndex];
 
     if(Console->IsEditMode == 0)
     {
@@ -137,7 +137,6 @@ void Console_MoveLeft(GameConsole_t *Console)
 			Console->MenuCursorIndex = 0;
 			Console->NeedsRedraw = 1;
 		}
-
     }
     else
     {
@@ -147,17 +146,18 @@ void Console_MoveLeft(GameConsole_t *Console)
 		if(Console->Settings[currentIndex] > 0)
 		{
 			Console->Settings[currentIndex]--;
-			Console->NeedsRedraw = 1;
 		}
 		else if(Console->Settings[currentIndex] < 0)
 		{
 			Console->Settings[currentIndex] = Console->SettingsMaxValues[currentIndex];
-			Console->NeedsRedraw = 1;
 		}
+		Console->NeedsRedraw = 1;
     }
 }
 
 void Console_MoveDown(GameConsole_t *Console) {
+	if (Console->IsEditMode == 1) return;	//stop cursor if in edit mode
+
     const MenuItem_t *CurrentMenu;
     uint8_t MenuSize;
 
@@ -175,6 +175,8 @@ void Console_MoveDown(GameConsole_t *Console) {
 }
 
 void Console_MoveUp(GameConsole_t *Console) {
+	if (Console->IsEditMode == 1) return;
+
     const MenuItem_t *CurrentMenu;
     uint8_t MenuSize;
 

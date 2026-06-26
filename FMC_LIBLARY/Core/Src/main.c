@@ -150,13 +150,13 @@ int main(void)
   ButtonRegisterGoToIdleCallback(&Down, TurnLedOff);
 
   ButtonInit(&Left, ButtonLeft_GPIO_Port, ButtonLeft_Pin, 30, 500, 200);
-  ButtonRegisterPressCallback(&Left, TurnLedOn);
+  ButtonRegisterPressCallback(&Left, Action_MenuLeft);
   ButtonRegisterLongPressCallback(&Left, TurnLedOff);
   ButtonRegisterRepeatCallback(&Left, ToggleLed);
   ButtonRegisterGoToIdleCallback(&Left, TurnLedOff);
 
   ButtonInit(&Right, ButtonRight_GPIO_Port, ButtonRight_Pin, 30, 500, 200);
-  ButtonRegisterPressCallback(&Right, TurnLedOn);
+  ButtonRegisterPressCallback(&Right, Action_MenuRight);
   ButtonRegisterLongPressCallback(&Right, TurnLedOff);
   ButtonRegisterRepeatCallback(&Right, ToggleLed);
   ButtonRegisterGoToIdleCallback(&Right, TurnLedOff);
