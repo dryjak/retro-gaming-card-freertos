@@ -10,6 +10,7 @@
 // --- 1. MAKRA POMOCNICZE ---
 // Kompilator obliczy rozmiar tablicy. Np. dla MainMenuItems: 3 * (wielkość MenuItem_t) / (wielkość MenuItem_t) = 3
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+#define MAP_VALUE(x)  ((255 * x) / 100)
 
 
 const MenuItem_t GamesMenuItems[] = {
@@ -53,8 +54,6 @@ void Console_Init(GameConsole_t *Console) {
 
     Console->Settings[0] = 100;
     Console->Settings[1] = NORMAL;
-
-
 }
 
 // --- 3. LOGIKA SILNIKA MENU ---
@@ -329,4 +328,11 @@ void Console_Draw(GameConsole_t *Console, SSD1306_t *Display)
 		}
 
 		SSD1306_Display(Display);
+}
+
+void ConsoleChangeContrast(GameConsole_t *Console, SSD1306_t *Display)
+{
+	uint8_t Value = (uint8_t) MAP_VALUE(Console->Settings[0]);
+	SSD1306_Command(Display,SSD1306_SETCONTRAST);
+	SSD1306_Command(Display,Value);
 }

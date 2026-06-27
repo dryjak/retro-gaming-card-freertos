@@ -80,6 +80,7 @@ void SSD1306_Init(SSD1306_t *OLED, uint8_t Address, I2C_HandleTypeDef *I2C);
 void SSD1306_Display(SSD1306_t *OLED);
 void SSD1306_Clear(uint8_t Color);
 void SSD1306_DrawPixel(uint16_t x, uint16_t y, uint8_t Color);
+void SSD1306_Command(SSD1306_t *OLED, uint8_t Command);
 
 
 #endif /* INC_SSD1306_OLED_H_ */
