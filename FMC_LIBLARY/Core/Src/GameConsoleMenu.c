@@ -277,17 +277,17 @@ void Console_Draw(GameConsole_t *Console, SSD1306_t *Display)
 	switch (Console->CurrentSystemState)
 	{
 		case STATE_MAIN_MENU:		//printf title main menu
-			GFX_DrawString(0, y_pos, "--- MAIN MENU ---",  WHITE, 0);
+			GFX_DrawString(13, y_pos, "--- MAIN MENU ---",  WHITE, 0);
 		break;
 		case STATE_GAMES_MENU:		//printf games title
-			GFX_DrawString(0, y_pos, "--- GAMES ---",  WHITE, 0);
+			GFX_DrawString(25, y_pos, "--- GAMES ---",  WHITE, 0);
 		break;
 		case STATE_SETTINGS_MENU:	//printf settings title
-			GFX_DrawString(0, y_pos, "--- SETTINGS ---",  WHITE, 0);
+			GFX_DrawString(16, y_pos, "--- SETTINGS ---",  WHITE, 0);
 
 		break;
 		case STATE_INFO_MENU:		//printf info title
-			GFX_DrawString(0, y_pos, "--- ABOUT ---",  WHITE, 0);
+			GFX_DrawString(25, y_pos, "--- ABOUT ---",  WHITE, 0);
 		break;
 	}
 
