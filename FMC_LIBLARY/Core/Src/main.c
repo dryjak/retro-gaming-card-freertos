@@ -122,13 +122,21 @@ int main(void)
   SSD1306_Init(&OLED, 0x3C, &hi2c1);
   HAL_Delay(50);
   GFX_SetFont(font_8x5);
-  SSD1306_Clear(WHITE);
-  GFX_DrawString(0, 0, "--- MAIN MENU ---",  WHITE, 0);
-  SSD1306_DrawPixel(64, 32, BLACK);
-  GFX_DrawCircle(64, 32, 15, BLACK);
-  GFX_DrawLine(0, 10, 127, 10, BLACK);
+  SSD1306_Clear(BLACK);
+  GFX_DrawString(10, 4, "RETRO GAME CONSOLE", WHITE, BLACK);
+  GFX_DrawLine(0, 14, 127, 14, WHITE);
+
+  GFX_DrawRectangle(44, 29, 30, 30, WHITE);
+  GFX_DrawRectangle(54, 19, 30, 30, WHITE);
+
+  GFX_DrawLine(44, 29, 54, 19, WHITE);
+  GFX_DrawLine(73, 29, 83, 19, WHITE);
+  GFX_DrawLine(44, 58, 54, 48, WHITE);
+  GFX_DrawLine(73, 58, 83, 48, WHITE);
+
+  GFX_DrawFillRectangle(56, 31, 6, 6, WHITE);
   SSD1306_Display(&OLED);
-  HAL_Delay(1000);
+  HAL_Delay(4000);
 
   //Game console FSM initialization
   Console_Init(&Console);
