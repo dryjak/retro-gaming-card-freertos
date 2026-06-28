@@ -5,44 +5,38 @@
  *      Author: dryla
  */
 
-
-/*
- * GameSnake.c
- */
-
 #include "GameSnake.h"
 #include <stdio.h>
 
-// Globalna instancja gry
+// Snake global instance
 GameSnake_t Snake;
 
-// Funkcja pomocnicza: losowanie nowego jabłka
+// random position of new apple
 static void SpawnApple(void) {
     Snake.Apple.x = rand() % SNAKE_GRID_WIDTH;
     Snake.Apple.y = rand() % SNAKE_GRID_HEIGHT;
-    // W profesjonalnej grze warto tu sprawdzić, czy jabłko nie zrespiło się wewnątrz ciała węża!
+    // We do not check if the apple appeared in the snake body
 }
 
 void Snake_Init(void) {
-    // Reset parametrów początkowych
+    // Reset start parameters
     Snake.Length = 3;
     Snake.Direction = DIR_RIGHT;
     Snake.IsDead = 0;
-    Snake.SpeedMs = 150; // Skok węża co 150 milisekund
+    Snake.SpeedMs = 150; // speed of the snake, you can pick mode hard, easy, normal in settings
     Snake.Score = 0;
     Snake.LastMoveTime = HAL_GetTick();
 
-    // Pozycja początkowa węża (środek ekranu)
+    // Start position of the snake
     Snake.Body[0].x = SNAKE_GRID_WIDTH / 2;
     Snake.Body[0].y = SNAKE_GRID_HEIGHT / 2;
 
-    // Generowanie ogona
+    // generating tail
     Snake.Body[1].x = Snake.Body[0].x - 1;
     Snake.Body[1].y = Snake.Body[0].y;
     Snake.Body[2].x = Snake.Body[0].x - 2;
     Snake.Body[2].y = Snake.Body[0].y;
 
-    // "Ziarno" dla generatora liczb pseudolosowych
     srand(HAL_GetTick());
     SpawnApple();
     Snake.NeedsRedraw = 1;
@@ -62,15 +56,15 @@ void Snake_UpdateLogic(void)
         }
         Snake.LastMoveTime = HAL_GetTick();
 
-        // Wąż się poruszył, więc musimy zlecić narysowanie nowej klatki!
+        //snake moved, draw new pixel
         Snake.NeedsRedraw = 1;
 
-    // 1. Przesuwanie ciała (od końca do głowy)
+    // 1. Moving the snake body
     for (int i = Snake.Length - 1; i > 0; i--) {
         Snake.Body[i] = Snake.Body[i - 1];
     }
 
-    // 2. Przesuwanie głowy w wybranym kierunku
+    // 2. Moving in proper direction
     switch (Snake.Direction) {
         case DIR_UP:    Snake.Body[0].y--; break;
         case DIR_DOWN:  Snake.Body[0].y++; break;
@@ -78,41 +72,39 @@ void Snake_UpdateLogic(void)
         case DIR_RIGHT: Snake.Body[0].x++; break;
     }
 
-    // 3. Kolizja ze ścianą (NAPRAWIONA)
+    // 3. Wall interferance
         if (Snake.Body[0].x < 0 || Snake.Body[0].x >= SNAKE_GRID_WIDTH ||
             Snake.Body[0].y < 0 || Snake.Body[0].y >= SNAKE_GRID_HEIGHT) {
 
-            // ZABEZPIECZENIE: Cofamy głowę w miejsce szyi, aby uniknąć wartości ujemnych
             Snake.Body[0] = Snake.Body[1];
 
             Snake.IsDead = 1;
-            Snake.NeedsRedraw = 1; // Zlecamy narysowanie napisu Game Over
+            Snake.NeedsRedraw = 1;
             return;
         }
 
-        // 4. Kolizja z własnym ciałem
+        // 4. snake eats its own tail
         for (int i = 1; i < Snake.Length; i++) {
             if (Snake.Body[0].x == Snake.Body[i].x && Snake.Body[0].y == Snake.Body[i].y) {
                 Snake.IsDead = 1;
-                Snake.NeedsRedraw = 1; // Zlecamy narysowanie napisu Game Over
+                Snake.NeedsRedraw = 1;
                 return;
             }
         }
 
-    // 5. Zjedzenie jabłka
+    // 5. Eating the apple
         if (Snake.Body[0].x == Snake.Apple.x && Snake.Body[0].y == Snake.Apple.y) {
         	Snake.Score++;
 
             if (Snake.Length < SNAKE_MAX_LENGTH) {
 
-                // NAPRAWA: Skopiuj współrzędne aktualnego ogona do nowego klocka
                 Snake.Body[Snake.Length].x = Snake.Body[Snake.Length - 1].x;
                 Snake.Body[Snake.Length].y = Snake.Body[Snake.Length - 1].y;
 
-                // Dopiero teraz oficjalnie zwiększamy długość węża
+                // Increasing snake dimensions
                 Snake.Length++;
 
-                // Delikatnie przyspieszamy grę z każdym jabłkiem! (min. 50ms)
+                // gently increase speed
                 if(Snake.SpeedMs > 50) Snake.SpeedMs -= 5;
             }
             SpawnApple();
@@ -122,13 +114,13 @@ void Snake_UpdateLogic(void)
 void Snake_Draw(SSD1306_t *Display) {
     SSD1306_Clear(BLACK);
 
-    // Rysowanie jabłka
+    // Draw apple
     GFX_DrawFillRectangle(
         Snake.Apple.x * SNAKE_BLOCK_SIZE,
         Snake.Apple.y * SNAKE_BLOCK_SIZE,
         SNAKE_BLOCK_SIZE, SNAKE_BLOCK_SIZE, WHITE);
 
-    // Rysowanie węża
+    // Draw snake
     for (int i = 0; i < Snake.Length; i++) {
         GFX_DrawFillRectangle(
             Snake.Body[i].x * SNAKE_BLOCK_SIZE,
@@ -136,20 +128,18 @@ void Snake_Draw(SSD1306_t *Display) {
             SNAKE_BLOCK_SIZE, SNAKE_BLOCK_SIZE, WHITE);
     }
 
-    // Rysowanie ekranu śmierci
+    // Draw end game - dead
         if (Snake.IsDead) {
-            // Tytuł
-            GFX_DrawString(20, 15, "GAME OVER", WHITE, BLACK);
+            // Title
+            GFX_DrawString(37, 15, "GAME OVER", WHITE, BLACK);
 
-            // Magia formatowania: Tworzymy bufor i wklejamy wynik
             char scoreText[20];
             snprintf(scoreText, sizeof(scoreText), "Score: %d", Snake.Score);
 
-            // Rysujemy wynik na środku ekranu
-            GFX_DrawString(20, 30, scoreText, WHITE, BLACK);
+            // Write score
+            GFX_DrawString(37, 27 , scoreText, WHITE, BLACK);
 
-            // Zachęta do kontynuacji
-            GFX_DrawString(10, 45, "Press ENTER", WHITE, BLACK);
+            GFX_DrawString(31, 39, "Press ENTER", WHITE, BLACK);
         }
 
         SSD1306_Display(Display);

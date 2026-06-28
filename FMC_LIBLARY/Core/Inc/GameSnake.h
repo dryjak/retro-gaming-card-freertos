@@ -9,15 +9,14 @@
 #define INC_GAMESNAKE_H_
 
 #include <stdint.h>
-#include <stdlib.h> // dla funkcji rand()
+#include <stdlib.h>
 #include "SSD1306_OLED.h"
 #include "GFX_BW.h"
 
-// Wymiary planszy (klocki 4x4 piksele)
 #define SNAKE_BLOCK_SIZE  8
-#define SNAKE_GRID_WIDTH  (128 / SNAKE_BLOCK_SIZE) // 32
-#define SNAKE_GRID_HEIGHT (64 / SNAKE_BLOCK_SIZE)  // 16
-#define SNAKE_MAX_LENGTH  100 // Oszczędzamy pamięć RAM (wąż max 100 klocków)
+#define SNAKE_GRID_WIDTH  (128 / SNAKE_BLOCK_SIZE)
+#define SNAKE_GRID_HEIGHT (64 / SNAKE_BLOCK_SIZE)
+#define SNAKE_MAX_LENGTH  100 // Max snake length
 
 typedef enum {
     DIR_UP,
@@ -26,13 +25,13 @@ typedef enum {
     DIR_RIGHT
 } SnakeDirection_t;
 
-// Struktura pojedynczego segmentu ciała
+// struct for single element of the body
 typedef struct {
     int8_t x;
     int8_t y;
 } SnakeSegment_t;
 
-// Główna struktura gry
+// main game structure
 typedef struct {
     SnakeSegment_t Body[SNAKE_MAX_LENGTH];
     uint8_t Length;
@@ -40,7 +39,7 @@ typedef struct {
     SnakeSegment_t Apple;
 
     uint8_t IsDead;
-    uint8_t NeedsRedraw; // <--- NOWA FLAGA
+    uint8_t NeedsRedraw;
 
     uint32_t LastMoveTime;
     uint32_t SpeedMs;
@@ -48,10 +47,10 @@ typedef struct {
     uint16_t Score;
 } GameSnake_t;
 
-// Zmienna globalna udostępniona dla main.c (aby widział Snake.IsDead)
+// global variable for main function
 extern GameSnake_t Snake;
 
-// Funkcje publiczne
+// Public functions
 void Snake_Init(void);
 void Snake_UpdateLogic(void);
 void Snake_Draw(SSD1306_t *Display);
