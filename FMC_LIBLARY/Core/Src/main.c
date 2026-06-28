@@ -29,6 +29,7 @@
 #include "Button.h"
 #include "GameConsoleMenu.h"
 #include "fonts/fonts.h"
+#include "GameSnake.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -63,6 +64,9 @@ GameConsole_t Console;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
+void Snake_Confirm(void);
+void Action_PlaySnake(void);
+
 void TurnLedOff(void);
 void TurnLedOn(void);
 void ToggleLed(void);
@@ -193,7 +197,20 @@ int main(void)
 	}
 	*/
 
-	Console_Draw(&Console, &OLED);
+	if (Console.CurrentSystemState == STATE_GAME_SNAKE)
+	{
+		Snake_UpdateLogic();
+
+		// Rysujemy TYLKO wtedy, gdy logika tego zażąda (ruch lub śmierć)
+		if (Snake.NeedsRedraw == 1) {
+			Snake_Draw(&OLED);
+			Snake.NeedsRedraw = 0; // Opuszczamy flagę
+		}
+	}
+	else
+	{
+		Console_Draw(&Console, &OLED);
+	}
 
 	HAL_Delay(10);
     /* USER CODE END WHILE */
@@ -250,7 +267,40 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+void Snake_Confirm(void) {
+    if (Snake.IsDead == 1) {
+        // Go back to menu
+        Console.CurrentSystemState = STATE_GAMES_MENU;
+        Console.MenuCursorIndex = 0;
+        Console.NeedsRedraw = 1;
+    }
+}
 
+//change state MENU / game
+void Action_PlaySnake(void) {
+    // 1. Zmiana stanu systemu na grę
+    Console.CurrentSystemState = STATE_GAME_SNAKE;
+
+    // 2. Inicjalizacja gry (wąż ustawia się na środku, SpeedMs domyślnie na 150)
+    Snake_Init();
+
+    // 3. NADPISANIE PRĘDKOŚCI NA PODSTAWIE MENU
+    // Zmienna Console.Settings[1] przechowuje indeks trybu (0=EASY, 1=NORMAL, 2=HARD)
+    switch (Console.Settings[1]) {
+        case EASY:
+            Snake.SpeedMs = 250;
+            break;
+        case NORMAL:
+            Snake.SpeedMs = 150;
+            break;
+        case HARD:
+            Snake.SpeedMs = 100;
+            break;
+        default:
+            Snake.SpeedMs = 150; // Zabezpieczenie (wartość domyślna)
+            break;
+    }
+}
 //change display brightness
 void Action_ChangeContrast()
 {
@@ -266,24 +316,62 @@ void Action_ChangeContrast()
 //wrapper
 void Action_MenuUp(void)
 {
-    Console_MoveUp(&Console);
+    if (Console.CurrentSystemState == STATE_GAME_SNAKE)
+    {
+        Snake_TurnUp(); // Game function
+    }
+    else
+    {
+        Console_MoveUp(&Console); // Menu up
+    }
     TurnLedOn();
 }
 void Action_MenuDown(void)
 {
-    Console_MoveDown(&Console);
+    if (Console.CurrentSystemState == STATE_GAME_SNAKE)
+    {
+        Snake_TurnDown(); // Game function
+    }
+    else
+    {
+        Console_MoveDown(&Console); // Menu up
+    }
     TurnLedOn();
 }
+
 void Action_MenuEnter(void)
 {
-    Console_Enter(&Console);
+    if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
+        Snake_Confirm(); // Np. Start po zgonie węża
+    }
+    else
+    {
+        Console_Enter(&Console); // Menu up
+    }
     TurnLedOn();
 }
+
 void Action_MenuLeft(void) {
-    Console_MoveLeft(&Console);
+    if (Console.CurrentSystemState == STATE_GAME_SNAKE)
+    {
+        Snake_TurnLeft(); // Game function
+    }
+    else
+    {
+        Console_MoveLeft(&Console); // Menu up
+    }
+    TurnLedOn();
 }
 void Action_MenuRight(void) {
-    Console_MoveRight(&Console);
+    if (Console.CurrentSystemState == STATE_GAME_SNAKE)
+    {
+        Snake_TurnRight(); // Game function
+    }
+    else
+    {
+        Console_MoveRight(&Console); // Menu up
+    }
+    TurnLedOn();
 }
 
 

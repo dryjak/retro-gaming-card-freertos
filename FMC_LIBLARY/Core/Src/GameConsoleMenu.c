@@ -12,9 +12,10 @@
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
 extern void Action_ChangeContrast(void);
+extern void Action_PlaySnake(void);
 
 const MenuItem_t GamesMenuItems[] = {
-    {"1. Snake", ITEM_ACTION,	STATE_GAME_SNAKE,    NULL},
+    {"1. Snake", ITEM_ACTION,	STATE_GAME_SNAKE,    Action_PlaySnake},
     {"2. Pong",  ITEM_ACTION,	STATE_MAIN_MENU,     NULL}, // we do not have game pong
     {"Back",  ITEM_FOLDER,		STATE_MAIN_MENU,     NULL}  //go to main menu
 };
