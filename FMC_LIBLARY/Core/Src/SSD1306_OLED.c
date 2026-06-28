@@ -103,8 +103,6 @@ void SSD1306_Init(SSD1306_t *OLED, uint8_t Address, I2C_HandleTypeDef *I2C)
 	SSD1306_Command(OLED, SSD1306_DEACTIVATE_SCROLL);
 
 	SSD1306_Command(OLED, SSD1306_DISPLAYON);
-
-
 }
 
 

@@ -10,8 +10,8 @@
 // --- 1. MAKRA POMOCNICZE ---
 // Kompilator obliczy rozmiar tablicy. Np. dla MainMenuItems: 3 * (wielkość MenuItem_t) / (wielkość MenuItem_t) = 3
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
-#define MAP_VALUE(x)  ((255 * x) / 100)
 
+extern void Action_ChangeContrast(void);
 
 const MenuItem_t GamesMenuItems[] = {
     {"1. Snake", ITEM_ACTION,	STATE_GAME_SNAKE,    NULL},
@@ -28,7 +28,7 @@ const MenuItem_t MainMenuItems[] = {
 
 const MenuItem_t SettingsMenuItems[] = {
     // Text       // Type         // Stan docelowy (dla folderu) // Action
-    {"Brightness", ITEM_VALUE,    STATE_SETTINGS_MENU,           NULL},
+    {"Brightness", ITEM_VALUE,    STATE_SETTINGS_MENU,           Action_ChangeContrast},
     {"Mode",       ITEM_VALUE,    STATE_SETTINGS_MENU,           NULL},
     {"Back",       ITEM_FOLDER,   STATE_MAIN_MENU,               NULL}
 };
@@ -47,10 +47,10 @@ void Console_Init(GameConsole_t *Console) {
     Console->MenuCursorIndex = 0;
     Console->NeedsRedraw = 1;
 
-    Console->SettingsMaxValues[0] = 100;
-    Console->SettingsMaxValues[1] = 2;
-    Console->SettingsMinValues[0] = 50;
-    Console->SettingsMinValues[1] = 0;
+    Console->SettingsMaxValues[0] = 100;	//max value of brightness
+    Console->SettingsMaxValues[1] = 2;		//max value of game modes
+    Console->SettingsMinValues[0] = 10;		//min value of brightness
+    Console->SettingsMinValues[1] = 0;		//min value of game modes
 
     Console->Settings[0] = 100;
     Console->Settings[1] = NORMAL;
@@ -88,86 +88,86 @@ static void Get_Active_Menu_Data(GameConsoleState_t State, const MenuItem_t** Ou
  */
 void Console_MoveRight(GameConsole_t *Console)
 {
-	const MenuItem_t *CurrentMenu;
-	uint8_t MenuSize;
-
-	//get information about current menu
+    const MenuItem_t *CurrentMenu;
+    uint8_t MenuSize;
     Get_Active_Menu_Data(Console->CurrentSystemState, &CurrentMenu, &MenuSize);
     MenuItem_t SelectedItem = CurrentMenu[Console->MenuCursorIndex];
 
     if(Console->IsEditMode == 0)
     {
-    	//go in a menu
-		if (SelectedItem.NextState != STATE_MAIN_MENU && SelectedItem.Type == ITEM_FOLDER)
-		{
+        // Tryb przeglądania
+        if (SelectedItem.NextState != STATE_MAIN_MENU && SelectedItem.Type == ITEM_FOLDER)
+        {
             Console->CurrentSystemState = SelectedItem.NextState;
-			Console->MenuCursorIndex = 0;
-			Console->NeedsRedraw = 1;
-		}
+            Console->MenuCursorIndex = 0;
+            Console->NeedsRedraw = 1;
+        }
     }
     else
     {
-    	// increase edited value
-    	uint8_t currentIndex = Console->MenuCursorIndex;
+        // Tryb edycji
+        uint8_t idx = Console->MenuCursorIndex;
+        uint8_t step = (idx == 0) ? 10 : 1; // Skok: 10 dla jasności, 1 dla reszty
 
-		if(Console->Settings[currentIndex]  < Console->SettingsMaxValues[currentIndex])
-		{
-			if(currentIndex == 0)
-			{
-				Console->Settings[currentIndex] += 10;
-			}
-			else
-			{
-				Console->Settings[currentIndex]++;
-			}
-		}
-		else
-		{
-			Console->Settings[currentIndex] = Console->SettingsMinValues[currentIndex];
-		}
-		Console->NeedsRedraw = 1;
+        // Sprawdzamy "przyszłość": Czy po dodaniu nie przekroczymy maksimum?
+        if((Console->Settings[idx] + step) <= Console->SettingsMaxValues[idx])
+        {
+            Console->Settings[idx] += step;
+        }
+        else
+        {
+            // Jeśli przekroczymy, zawijamy na minimum
+            Console->Settings[idx] = Console->SettingsMinValues[idx];
+        }
 
+        // Akcja na żywo (z zabezpieczeniem przed HardFault!)
+        if (SelectedItem.Action != NULL) {
+            SelectedItem.Action();
+        }
+
+        Console->NeedsRedraw = 1;
     }
 }
 
 void Console_MoveLeft(GameConsole_t *Console)
 {
-	const MenuItem_t *CurrentMenu;
-	uint8_t MenuSize;
-
+    const MenuItem_t *CurrentMenu;
+    uint8_t MenuSize;
     Get_Active_Menu_Data(Console->CurrentSystemState, &CurrentMenu, &MenuSize);
     MenuItem_t SelectedItem = CurrentMenu[Console->MenuCursorIndex];
 
     if(Console->IsEditMode == 0)
     {
-    	//go back in a menu
-		if (Console->CurrentSystemState != STATE_MAIN_MENU) {
-			Console->CurrentSystemState = STATE_MAIN_MENU;
-			Console->MenuCursorIndex = 0;
-			Console->NeedsRedraw = 1;
-		}
+        // Globalny powrót
+        if (Console->CurrentSystemState != STATE_MAIN_MENU) {
+            Console->CurrentSystemState = STATE_MAIN_MENU;
+            Console->MenuCursorIndex = 0;
+            Console->NeedsRedraw = 1;
+        }
     }
     else
     {
-    	// decrease edited value
-    	uint8_t currentIndex = Console->MenuCursorIndex;
+        // Tryb edycji
+        uint8_t idx = Console->MenuCursorIndex;
+        uint8_t step = (idx == 0) ? 10 : 1;
 
-		if(Console->Settings[currentIndex] > Console->SettingsMinValues[currentIndex])
-		{
-			if(currentIndex == 0)
-			{
-				Console->Settings[currentIndex] -= 10;
-			}
-			else
-			{
-				Console->Settings[currentIndex]--;
-			}
-		}
-		else
-		{
-			Console->Settings[currentIndex] = Console->SettingsMaxValues[currentIndex];
-		}
-		Console->NeedsRedraw = 1;
+        // Sprawdzamy "przyszłość" przed odjęciem (uwaga na underflow dla uint8_t!)
+        if(Console->Settings[idx] >= (Console->SettingsMinValues[idx] + step))
+        {
+            Console->Settings[idx] -= step;
+        }
+        else
+        {
+            // Jeśli zabrakło nam miejsca w dół, zawijamy na maksimum
+            Console->Settings[idx] = Console->SettingsMaxValues[idx];
+        }
+
+        // Akcja na żywo
+        if (SelectedItem.Action != NULL) {
+            SelectedItem.Action();
+        }
+
+        Console->NeedsRedraw = 1;
     }
 }
 
@@ -188,6 +188,7 @@ void Console_MoveDown(GameConsole_t *Console) {
     }
 
     Console->NeedsRedraw = 1;
+
 }
 
 void Console_MoveUp(GameConsole_t *Console) {
@@ -225,6 +226,12 @@ void Console_Enter(GameConsole_t *Console) {
         // Jeśli jesteśmy w trybie edycji, Enter z niego wychodzi (zatwierdza)
         if (Console->IsEditMode == 1) {
             Console->IsEditMode = 0;
+
+            // NOWOŚĆ: Jeśli opcja ma przypisaną akcję sprzętową, wykonaj ją teraz!
+			if (SelectedItem.Action != NULL)
+			{
+				SelectedItem.Action();
+			}
             Console->NeedsRedraw = 1;
             return;
         }
@@ -330,9 +337,3 @@ void Console_Draw(GameConsole_t *Console, SSD1306_t *Display)
 		SSD1306_Display(Display);
 }
 
-void ConsoleChangeContrast(GameConsole_t *Console, SSD1306_t *Display)
-{
-	uint8_t Value = (uint8_t) MAP_VALUE(Console->Settings[0]);
-	SSD1306_Command(Display,SSD1306_SETCONTRAST);
-	SSD1306_Command(Display,Value);
-}

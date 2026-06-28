@@ -162,9 +162,9 @@ int main(void)
   ButtonRegisterGoToIdleCallback(&Right, TurnLedOff);
 
 
-//TODO: Add variable that shows us current brightness and mode in settings section
+//DONE TODO: Add variable that shows us current brightness and mode in settings section
 //TODO: Add About section
-//TODO: Add function for left and right button
+//DONE TODO: Add function for left and right button
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -250,6 +250,18 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+//change display brightness
+void Action_ChangeContrast()
+{
+	    uint32_t temp = Console.Settings[0] * 255;
+	    uint8_t hardware_value = (uint8_t)(temp / 100);
+
+	    // Używamy globalnej zmiennej OLED z main.c
+	    SSD1306_Command(&OLED, SSD1306_SETCONTRAST);
+	    SSD1306_Command(&OLED, hardware_value);
+}
+
 
 //wrapper
 void Action_MenuUp(void)
