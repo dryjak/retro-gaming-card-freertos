@@ -177,6 +177,9 @@ int main(void)
 //DONE TODO: Add variable that shows us current brightness and mode in settings section
 //TODO: Add About section
 //DONE TODO: Add function for left and right button
+ //TODO: Add second game
+ //TODO: do electronic schematic in kicad
+ //TODO: how to save settingss changed by user?
   /* USER CODE END 2 */
 
   /* Infinite loop */
