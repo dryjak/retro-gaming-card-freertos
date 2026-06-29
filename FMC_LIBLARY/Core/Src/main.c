@@ -30,6 +30,7 @@
 #include "GameConsoleMenu.h"
 #include "fonts/fonts.h"
 #include "GameSnake.h"
+#include "FlappyBird.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -305,7 +306,7 @@ void Action_PlaySnake(void) {
             Snake.SpeedMs = 150;
             break;
         case HARD:
-            Snake.SpeedMs = 100;
+            Snake.SpeedMs = 130;
             break;
         default:
             Snake.SpeedMs = 150; // Zabezpieczenie (wartość domyślna)
