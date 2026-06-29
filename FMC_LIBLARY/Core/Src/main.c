@@ -68,6 +68,8 @@ void SystemClock_Config(void);
 void Snake_Confirm(void);
 void Action_PlaySnake(void);
 
+void Action_PlayFlappy(void);
+
 void TurnLedOff(void);
 void TurnLedOn(void);
 void ToggleLed(void);
@@ -219,6 +221,16 @@ int main(void)
 			Snake.NeedsRedraw = 0; // Opuszczamy flagę
 		}
 	}
+	else if(Console.CurrentSystemState == STATE_GAME_FLAPPY)
+	{
+		Flappy_UpdateLogic();
+
+		if (Snake.NeedsRedraw == 1)
+		{
+			Flappy_Draw(&OLED);
+			Flappy.NeedsRedraw = 0;
+		}
+	}
 	else
 	{
 		Console_Draw(&Console, &OLED);
@@ -313,6 +325,31 @@ void Action_PlaySnake(void) {
             break;
     }
 }
+
+void Action_PlayFlappy(void) {
+    // 1. Zmiana stanu całego urządzenia na grę Flappy Bird
+    Console.CurrentSystemState = STATE_GAME_FLAPPY;
+
+    // 2. Zresetowanie fizyki (ptak ląduje na środku, rury się ustawiają)
+    Flappy_Init();
+
+    // 3. Konfiguracja poziomu trudności na podstawie opcji w Settings
+    // Console.Settings[1] to nasz tryb (0=EASY, 1=NORMAL, 2=HARD)
+    switch (Console.Settings[1]) {
+        case EASY:
+            Flappy.FrameRateMs = 40; // Wolniejsza fizyka - łatwiej reagować
+            break;
+        case NORMAL:
+            Flappy.FrameRateMs = 30; // Standardowa prędkość
+            break;
+        case HARD:
+            Flappy.FrameRateMs = 20; // Szybsza fizyka - mało czasu na reakcję!
+            break;
+        default:
+            Flappy.FrameRateMs = 30;
+            break;
+    }
+}
 //change display brightness
 void Action_ChangeContrast()
 {
@@ -356,6 +393,16 @@ void Action_MenuEnter(void)
     if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
         Snake_Confirm(); // Np. Start po zgonie węża
     }
+    else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
+		// Jeśli ptak zginął, Enter wraca do menu. Jeśli żyje, działa jako skok!
+		if (Flappy.IsDead) {
+			Console.CurrentSystemState = STATE_GAMES_MENU;
+			Console.MenuCursorIndex = 0;
+			Console.NeedsRedraw = 1;
+		} else {
+			Flappy_Jump();
+		}
+	}
     else
     {
         Console_Enter(&Console); // Menu up

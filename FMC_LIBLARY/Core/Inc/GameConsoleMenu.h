@@ -20,6 +20,7 @@ typedef enum{
 	STATE_SETTINGS_MENU,
 	STATE_INFO_MENU,
 	STATE_GAME_SNAKE,
+	STATE_GAME_FLAPPY,
 }GameConsoleState_t;
 
 typedef void (*MenuAction_t) (void);
