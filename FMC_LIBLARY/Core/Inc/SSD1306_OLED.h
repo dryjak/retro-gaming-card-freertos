@@ -10,6 +10,10 @@
 
 #include "main.h"
 
+#define SSD1306_USE_DMA
+
+
+
 #define SSD1306_TIMEOUT 1000
 
 
@@ -20,7 +24,6 @@
 #define SSD1306_BLACK 	0   ///< Draw 'off' pixels
 #define SSD1306_WHITE 	1   ///< Draw 'on' pixels
 #define SSD1306_INVERSE 2 	///< Invert pixels
-
 //
 //REGISTERS
 //

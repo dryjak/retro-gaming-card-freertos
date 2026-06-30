@@ -17,7 +17,14 @@ void SSD1306_Command(SSD1306_t *OLED, uint8_t Command)
 
 void SSD1306_Data(SSD1306_t *OLED, uint8_t *Data, uint16_t Size)
 {
+#ifdef SSD1306_USE_DMA
+	if(OLED->I2c->hdmatx->State == HAL_DMA_STATE_READY)
+	{
+		HAL_I2C_Mem_Write_DMA(OLED->I2c, (OLED->Address<<1), 0x40, 1, Data, Size);
+	}
+#else
 	HAL_I2C_Mem_Write(OLED->I2c, (OLED->Address<<1), 0x40, 1, Data, Size, SSD1306_TIMEOUT);
+#endif
 }
 //
 // Functions

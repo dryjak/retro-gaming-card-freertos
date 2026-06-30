@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
 #include "i2c.h"
 #include "usart.h"
 #include "gpio.h"
@@ -64,6 +65,7 @@ GameConsole_t Console;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+static void MX_NVIC_Init(void);
 /* USER CODE BEGIN PFP */
 void Snake_Confirm(void);
 void Action_PlaySnake(void);
@@ -119,8 +121,12 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART2_UART_Init();
   MX_I2C1_Init();
+
+  /* Initialize interrupts */
+  MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
   SSD1306_Init(&OLED, 0x3C, &hi2c1);
   HAL_Delay(50);
@@ -220,7 +226,7 @@ int main(void)
 			Snake_Draw(&OLED);
 			Snake.NeedsRedraw = 0; // Opuszczamy flagę
 		}
-	}
+	}/*
 	else if(Console.CurrentSystemState == STATE_GAME_FLAPPY)
 	{
 		Flappy_UpdateLogic();
@@ -230,7 +236,7 @@ int main(void)
 			Flappy_Draw(&OLED);
 			Flappy.NeedsRedraw = 0;
 		}
-	}
+	}*/
 	else
 	{
 		Console_Draw(&Console, &OLED);
@@ -290,6 +296,20 @@ void SystemClock_Config(void)
   }
 }
 
+/**
+  * @brief NVIC Configuration.
+  * @retval None
+  */
+static void MX_NVIC_Init(void)
+{
+  /* I2C1_EV_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(I2C1_EV_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(I2C1_EV_IRQn);
+  /* DMA1_Stream1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream1_IRQn);
+}
+
 /* USER CODE BEGIN 4 */
 void Snake_Confirm(void) {
     if (Snake.IsDead == 1) {
@@ -325,7 +345,7 @@ void Action_PlaySnake(void) {
             break;
     }
 }
-
+/*
 void Action_PlayFlappy(void) {
     // 1. Zmiana stanu całego urządzenia na grę Flappy Bird
     Console.CurrentSystemState = STATE_GAME_FLAPPY;
@@ -350,6 +370,7 @@ void Action_PlayFlappy(void) {
             break;
     }
 }
+*/
 //change display brightness
 void Action_ChangeContrast()
 {
@@ -366,10 +387,10 @@ void Action_ChangeContrast()
 void Action_MenuUp(void) {
     if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
         Snake_TurnUp();
-    }
+    }/*
     else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
         Flappy_Jump(); // Skok ptaka!
-    }
+    }*/
     else {
         Console_MoveUp(&Console);
     }
@@ -378,10 +399,10 @@ void Action_MenuUp(void) {
 void Action_MenuDown(void) {
     if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
         Snake_TurnDown();
-    }
+    }/*
     else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
         // Puste! Ptak nie reaguje na strzałkę w dół.
-    }
+    }*/
     else {
         Console_MoveDown(&Console);
     }
@@ -391,7 +412,7 @@ void Action_MenuDown(void) {
 void Action_MenuEnter(void) {
     if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
         Snake_Confirm();
-    }
+    }/*
     else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
 		// Jeśli ptak zginął, Enter wraca do menu. Jeśli żyje, skacze!
 		if (Flappy.IsDead) {
@@ -401,7 +422,7 @@ void Action_MenuEnter(void) {
 		} else {
 			Flappy_Jump();
 		}
-	}
+	}*/
     else {
         Console_Enter(&Console);
     }
@@ -411,10 +432,10 @@ void Action_MenuEnter(void) {
 void Action_MenuLeft(void) {
     if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
         Snake_TurnLeft();
-    }
+    }/*
     else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
         // Puste!
-    }
+    }*/
     else {
         Console_MoveLeft(&Console);
     }
@@ -423,10 +444,10 @@ void Action_MenuLeft(void) {
 void Action_MenuRight(void) {
     if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
         Snake_TurnRight();
-    }
+    }/*
     else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
         // Puste!
-    }
+    }*/
     else {
         Console_MoveRight(&Console);
     }
