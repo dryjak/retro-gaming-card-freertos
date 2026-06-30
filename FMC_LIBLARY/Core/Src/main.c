@@ -225,7 +225,7 @@ int main(void)
 	{
 		Flappy_UpdateLogic();
 
-		if (Snake.NeedsRedraw == 1)
+		if (Flappy.NeedsRedraw == 1)
 		{
 			Flappy_Draw(&OLED);
 			Flappy.NeedsRedraw = 0;
@@ -363,38 +363,37 @@ void Action_ChangeContrast()
 
 
 //wrapper
-void Action_MenuUp(void)
-{
-    if (Console.CurrentSystemState == STATE_GAME_SNAKE)
-    {
-        Snake_TurnUp(); // Game function
+void Action_MenuUp(void) {
+    if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
+        Snake_TurnUp();
     }
-    else
-    {
-        Console_MoveUp(&Console); // Menu up
+    else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
+        Flappy_Jump(); // Skok ptaka!
+    }
+    else {
+        Console_MoveUp(&Console);
     }
     TurnLedOn();
 }
-void Action_MenuDown(void)
-{
-    if (Console.CurrentSystemState == STATE_GAME_SNAKE)
-    {
-        Snake_TurnDown(); // Game function
+void Action_MenuDown(void) {
+    if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
+        Snake_TurnDown();
     }
-    else
-    {
-        Console_MoveDown(&Console); // Menu up
+    else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
+        // Puste! Ptak nie reaguje na strzałkę w dół.
+    }
+    else {
+        Console_MoveDown(&Console);
     }
     TurnLedOn();
 }
 
-void Action_MenuEnter(void)
-{
+void Action_MenuEnter(void) {
     if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
-        Snake_Confirm(); // Np. Start po zgonie węża
+        Snake_Confirm();
     }
     else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
-		// Jeśli ptak zginął, Enter wraca do menu. Jeśli żyje, działa jako skok!
+		// Jeśli ptak zginął, Enter wraca do menu. Jeśli żyje, skacze!
 		if (Flappy.IsDead) {
 			Console.CurrentSystemState = STATE_GAMES_MENU;
 			Console.MenuCursorIndex = 0;
@@ -403,32 +402,33 @@ void Action_MenuEnter(void)
 			Flappy_Jump();
 		}
 	}
-    else
-    {
-        Console_Enter(&Console); // Menu up
+    else {
+        Console_Enter(&Console);
     }
     TurnLedOn();
 }
 
 void Action_MenuLeft(void) {
-    if (Console.CurrentSystemState == STATE_GAME_SNAKE)
-    {
-        Snake_TurnLeft(); // Game function
+    if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
+        Snake_TurnLeft();
     }
-    else
-    {
-        Console_MoveLeft(&Console); // Menu up
+    else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
+        // Puste!
+    }
+    else {
+        Console_MoveLeft(&Console);
     }
     TurnLedOn();
 }
 void Action_MenuRight(void) {
-    if (Console.CurrentSystemState == STATE_GAME_SNAKE)
-    {
-        Snake_TurnRight(); // Game function
+    if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
+        Snake_TurnRight();
     }
-    else
-    {
-        Console_MoveRight(&Console); // Menu up
+    else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
+        // Puste!
+    }
+    else {
+        Console_MoveRight(&Console);
     }
     TurnLedOn();
 }
