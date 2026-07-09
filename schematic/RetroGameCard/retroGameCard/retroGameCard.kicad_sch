@@ -2147,32 +2147,28 @@
 			(on_board yes)
 			(in_pos_files yes)
 			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "IC"
-				(at 41.656 20.32 0)
+			(property "Reference" "IC1"
+				(at 35.814 20.066 0)
 				(show_name no)
 				(do_not_autoplace no)
-				(hide yes)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left top)
 				)
 			)
 			(property "Value" "STM32C562KET6"
-				(at 36.322 -41.148 0)
+				(at 11.938 -41.402 0)
 				(show_name no)
 				(do_not_autoplace no)
-				(hide yes)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left top)
 				)
 			)
 			(property "Footprint" "Package_QFP:LQFP-32_7x7mm_P0.8mm"
-				(at 39.37 -79.68 0)
+				(at 2.794 -39.624 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(hide yes)
@@ -2554,7 +2550,7 @@
 						)
 					)
 				)
-				(pin power_in line
+				(pin power_out line
 					(at 33.02 -44.45 90)
 					(length 5.08)
 					(name "VCAP"
@@ -4231,12 +4227,6 @@
 		(uuid "5af8a99c-4b9a-43a1-812f-c410049a49a2")
 	)
 	(junction
-		(at 105.41 179.07)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "6213218d-f76e-406c-b1d0-70c9fa9e9425")
-	)
-	(junction
 		(at 25.4 33.02)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4345,10 +4335,6 @@
 		(uuid "3d4bf52a-ac66-4a87-b752-8ea6aa171db2")
 	)
 	(no_connect
-		(at 78.74 157.48)
-		(uuid "48d5c3e0-b404-4408-80a8-cb7a9da76f4b")
-	)
-	(no_connect
 		(at 121.92 162.56)
 		(uuid "607cd107-7256-413b-86c5-abd05dc5119d")
 	)
@@ -4375,6 +4361,10 @@
 	(no_connect
 		(at 121.92 129.54)
 		(uuid "b8473d84-07e7-46dd-90e0-7197fd9b77bb")
+	)
+	(no_connect
+		(at 121.92 147.32)
+		(uuid "ba5f734a-75f5-42c4-8f9d-552a80e4e897")
 	)
 	(no_connect
 		(at 78.74 154.94)
@@ -4591,16 +4581,6 @@
 			(type default)
 		)
 		(uuid "202cd7e7-4eb4-49dc-87c6-8889f839df5d")
-	)
-	(wire
-		(pts
-			(xy 105.41 180.34) (xy 105.41 179.07)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "21e914d8-bd10-4e04-a6ae-d83306c79936")
 	)
 	(wire
 		(pts
@@ -5024,16 +5004,6 @@
 	)
 	(wire
 		(pts
-			(xy 121.92 147.32) (xy 139.7 147.32)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6f74ae85-1897-48b1-8ee0-fa54e8426dec")
-	)
-	(wire
-		(pts
 			(xy 40.64 127) (xy 43.18 127)
 		)
 		(stroke
@@ -5244,16 +5214,6 @@
 	)
 	(wire
 		(pts
-			(xy 105.41 179.07) (xy 124.46 179.07)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8ee59550-d113-40b2-be19-fed83c629a09")
-	)
-	(wire
-		(pts
 			(xy 165.1 168.91) (xy 165.1 170.18)
 		)
 		(stroke
@@ -5264,7 +5224,7 @@
 	)
 	(wire
 		(pts
-			(xy 105.41 179.07) (xy 105.41 177.8)
+			(xy 105.41 177.8) (xy 105.41 180.34)
 		)
 		(stroke
 			(width 0)
@@ -5501,6 +5461,16 @@
 			(type default)
 		)
 		(uuid "cf31adab-549f-4662-bba1-80b4105a4f7f")
+	)
+	(wire
+		(pts
+			(xy 60.96 157.48) (xy 78.74 157.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d21f86ab-a32d-412c-9178-475504dcef53")
 	)
 	(wire
 		(pts
@@ -5792,6 +5762,16 @@
 		)
 		(uuid "06724af0-162d-492a-8fe7-a067a7a54ace")
 	)
+	(label "OLED_I2C_SCL"
+		(at 60.96 157.48 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "1cc88caa-8016-4fa3-81b4-9cd44cc14cb0")
+	)
 	(label "Vbat"
 		(at 99.06 35.56 0)
 		(effects
@@ -5933,16 +5913,6 @@
 			(justify left bottom)
 		)
 		(uuid "9425d363-e929-4ed1-895e-6503ebe85158")
-	)
-	(label "OLED_I2C_SCL"
-		(at 139.7 147.32 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "94772e9e-264e-4c97-ab15-abcef33281b2")
 	)
 	(label "LEFT"
 		(at 158.75 129.54 0)
@@ -7806,84 +7776,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 124.46 179.07 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "58dd4d68-5898-4fed-9dd9-6b9265b5ca72")
-		(property "Reference" "#FLG05"
-			(at 124.46 177.165 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 124.46 173.99 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 124.46 179.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 124.46 179.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Special symbol for telling ERC where power comes from"
-			(at 124.46 179.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "3a7aa74d-651d-471b-baeb-45731d0ef0db")
-		)
-		(instances
-			(project "retroGameCard"
-				(path "/de252b9d-dba4-4c47-b073-f66cc96c1065"
-					(reference "#FLG05")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:+3.3V")
 		(at 105.41 97.79 0)
 		(unit 1)
@@ -8875,7 +8767,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Button_Switch_THT:SW_Slide-03_Wuerth-WS-SLTV_10x2.5x6.4_P2.54mm"
+		(property "Footprint" "Button_Switch_SMD:SW_SPDT_PCM12"
 			(at 151.13 41.91 0)
 			(hide yes)
 			(show_name no)
@@ -8969,7 +8861,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Connector_USB:USB_C_Receptacle_GCT_USB4085"
+		(property "Footprint" "Connector_USB:USB_C_Receptacle_GCT_USB4110"
 			(at 246.38 118.11 0)
 			(hide yes)
 			(show_name no)
@@ -9951,7 +9843,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Button_Switch_THT:SW_Slide-03_Wuerth-WS-SLTV_10x2.5x6.4_P2.54mm"
+		(property "Footprint" "Button_Switch_SMD:SW_SPDT_PCM12"
 			(at 48.26 129.54 0)
 			(hide yes)
 			(show_name no)
