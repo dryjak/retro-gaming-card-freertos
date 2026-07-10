@@ -1674,7 +1674,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "OLED_128X64_1.3_I2C:OLED_128X64_1.3_I2C"
+		(symbol "OLED_096x64_I2C:DM-OLED096-636"
 			(pin_names
 				(offset 1.016)
 			)
@@ -1683,8 +1683,8 @@
 			(on_board yes)
 			(in_pos_files yes)
 			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "DS"
-				(at -10.16 10.922 0)
+			(property "Reference" "U"
+				(at -7.62 10.922 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(effects
@@ -1694,8 +1694,8 @@
 					(justify left bottom)
 				)
 			)
-			(property "Value" "OLED_128X64_1.3_I2C"
-				(at -10.16 -10.16 0)
+			(property "Value" "DM-OLED096-636"
+				(at -7.62 -10.16 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(effects
@@ -1705,7 +1705,7 @@
 					(justify left bottom)
 				)
 			)
-			(property "Footprint" "OLED_128X64_1.3_I2C:LCD_OLED_128X64_1.3_I2C"
+			(property "Footprint" "DM-OLED096-636:MODULE_DM-OLED096-636"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1728,7 +1728,7 @@
 					)
 				)
 			)
-			(property "Description" "Non-Touch Graphic LCD Display Module Transmissive White OLED, Monochrome I2C 1.3 (33.02mm) 128 x 64"
+			(property "Description" "0.96” 128 X 64 MONOCHROME GRAPHIC OLED DISPLAY MODULE - I2C"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1740,7 +1740,7 @@
 					(justify bottom)
 				)
 			)
-			(property "MF" "UNIVERSAL-SOLDER Electronics Ltd"
+			(property "MF" "Display Module"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1752,7 +1752,19 @@
 					(justify bottom)
 				)
 			)
-			(property "Package" "None"
+			(property "MAXIMUM_PACKAGE_HEIGHT" "11.3 mm"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify bottom)
+				)
+			)
+			(property "Package" "Package"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1776,7 +1788,7 @@
 					(justify bottom)
 				)
 			)
-			(property "Check_prices" "https://www.snapeda.com/parts/OLED%20128x64%201.3%22%20I2C/UNIVERSAL-SOLDER+Electronics+Ltd/view-part/?ref=eda"
+			(property "Check_prices" "https://www.snapeda.com/parts/DM-OLED096-636/Display+Module/view-part/?ref=eda"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1800,7 +1812,7 @@
 					(justify bottom)
 				)
 			)
-			(property "PARTREV" "NA"
+			(property "PARTREV" "2018-09-10"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1812,7 +1824,7 @@
 					(justify bottom)
 				)
 			)
-			(property "SnapEDA_Link" "https://www.snapeda.com/parts/OLED%20128x64%201.3%22%20I2C/UNIVERSAL-SOLDER+Electronics+Ltd/view-part/?ref=snap"
+			(property "SnapEDA_Link" "https://www.snapeda.com/parts/DM-OLED096-636/Display+Module/view-part/?ref=snap"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1824,7 +1836,7 @@
 					(justify bottom)
 				)
 			)
-			(property "MP" "OLED 128x64 1.3&quot; I2C"
+			(property "MP" "DM-OLED096-636"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1848,7 +1860,7 @@
 					(justify bottom)
 				)
 			)
-			(property "MANUFACTURER" "UNIVERSAL-SOLDER Electronics Ltd"
+			(property "MANUFACTURER" "Displaymodule"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1860,10 +1872,10 @@
 					(justify bottom)
 				)
 			)
-			(symbol "OLED_128X64_1.3_I2C_0_0"
+			(symbol "DM-OLED096-636_0_0"
 				(rectangle
-					(start -10.16 -7.62)
-					(end 10.16 10.16)
+					(start -7.62 -7.62)
+					(end 7.62 10.16)
 					(stroke
 						(width 0.254)
 						(type default)
@@ -1873,9 +1885,9 @@
 					)
 				)
 				(pin power_in line
-					(at 15.24 7.62 180)
+					(at 12.7 -5.08 180)
 					(length 5.08)
-					(name "VDD"
+					(name "GND"
 						(effects
 							(font
 								(size 1.016 1.016)
@@ -1891,9 +1903,9 @@
 					)
 				)
 				(pin power_in line
-					(at 15.24 -5.08 180)
+					(at 12.7 7.62 180)
 					(length 5.08)
-					(name "GND"
+					(name "VCC_IN"
 						(effects
 							(font
 								(size 1.016 1.016)
@@ -1909,9 +1921,9 @@
 					)
 				)
 				(pin input clock
-					(at -15.24 2.54 0)
+					(at 12.7 2.54 180)
 					(length 5.08)
-					(name "SCK"
+					(name "SCL"
 						(effects
 							(font
 								(size 1.016 1.016)
@@ -1927,7 +1939,7 @@
 					)
 				)
 				(pin bidirectional line
-					(at -15.24 0 0)
+					(at 12.7 0 180)
 					(length 5.08)
 					(name "SDA"
 						(effects
@@ -4454,16 +4466,6 @@
 	)
 	(wire
 		(pts
-			(xy 259.08 36.83) (xy 259.08 44.45)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0b3d6dc2-9b6a-4fbe-ba38-ce5cca9a865b")
-	)
-	(wire
-		(pts
 			(xy 64.77 57.15) (xy 64.77 52.07)
 		)
 		(stroke
@@ -4614,7 +4616,7 @@
 	)
 	(wire
 		(pts
-			(xy 210.82 49.53) (xy 228.6 49.53)
+			(xy 210.82 49.53) (xy 232.41 49.53)
 		)
 		(stroke
 			(width 0)
@@ -4954,6 +4956,16 @@
 	)
 	(wire
 		(pts
+			(xy 229.87 34.29) (xy 229.87 44.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "63e54a15-10d1-4d0a-ad12-97b00c53c1c3")
+	)
+	(wire
+		(pts
 			(xy 40.64 44.45) (xy 40.64 48.26)
 		)
 		(stroke
@@ -5081,6 +5093,16 @@
 			(type default)
 		)
 		(uuid "7ceeca57-fcaf-4af0-b605-78a1e7a11868")
+	)
+	(wire
+		(pts
+			(xy 229.87 62.23) (xy 229.87 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7e8f4794-1a5c-45d7-b8c0-97f5b0868a30")
 	)
 	(wire
 		(pts
@@ -5344,6 +5366,16 @@
 	)
 	(wire
 		(pts
+			(xy 229.87 57.15) (xy 232.41 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ae14b432-eb89-4396-8a62-681da595bf72")
+	)
+	(wire
+		(pts
 			(xy 129.54 49.53) (xy 129.54 46.99)
 		)
 		(stroke
@@ -5484,7 +5516,7 @@
 	)
 	(wire
 		(pts
-			(xy 210.82 52.07) (xy 228.6 52.07)
+			(xy 210.82 52.07) (xy 232.41 52.07)
 		)
 		(stroke
 			(width 0)
@@ -5541,6 +5573,16 @@
 			(type default)
 		)
 		(uuid "da4ae602-efb6-4688-b402-efa199b32241")
+	)
+	(wire
+		(pts
+			(xy 229.87 44.45) (xy 232.41 44.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dce16013-9d81-4332-9f31-7caa1122faa4")
 	)
 	(wire
 		(pts
@@ -5742,16 +5784,6 @@
 		)
 		(uuid "fdcedf1d-a33d-449f-b910-010b46366681")
 	)
-	(wire
-		(pts
-			(xy 259.08 67.31) (xy 259.08 57.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ff439454-4745-45b6-b0a2-9ac9aa581ed8")
-	)
 	(label "SWCLK"
 		(at 132.08 160.02 180)
 		(effects
@@ -5934,7 +5966,7 @@
 		)
 		(uuid "9bc9276f-3551-44aa-b1d5-7e6556114647")
 	)
-	(label "SWDIO"
+	(label "SWCLK"
 		(at 160.02 102.87 0)
 		(effects
 			(font
@@ -5994,7 +6026,7 @@
 		)
 		(uuid "c97e744a-61df-4320-9266-3eebe4d97230")
 	)
-	(label "SWCLK"
+	(label "SWDIO"
 		(at 160.02 105.41 0)
 		(effects
 			(font
@@ -6180,6 +6212,226 @@
 		)
 	)
 	(symbol
+		(lib_id "OLED_096x64_I2C:DM-OLED096-636")
+		(at 245.11 52.07 0)
+		(mirror y)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "00463c82-c788-408d-9d19-9df95a1d95ce")
+		(property "Reference" "U3"
+			(at 245.11 36.83 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "DM-OLED096-636"
+			(at 245.11 39.37 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "OLED_128x64_0.96_I2C:MODULE_DM-OLED096-636"
+			(at 245.11 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "Datasheet" ""
+			(at 245.11 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "0.96” 128 X 64 MONOCHROME GRAPHIC OLED DISPLAY MODULE - I2C"
+			(at 245.11 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "MF" "Display Module"
+			(at 245.11 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "MAXIMUM_PACKAGE_HEIGHT" "11.3 mm"
+			(at 245.11 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "Package" "Package"
+			(at 245.11 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "Price" "None"
+			(at 245.11 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "Check_prices" "https://www.snapeda.com/parts/DM-OLED096-636/Display+Module/view-part/?ref=eda"
+			(at 245.11 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "STANDARD" "Manufacturer Recommendations"
+			(at 245.11 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "PARTREV" "2018-09-10"
+			(at 245.11 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "SnapEDA_Link" "https://www.snapeda.com/parts/DM-OLED096-636/Display+Module/view-part/?ref=snap"
+			(at 245.11 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "MP" "DM-OLED096-636"
+			(at 245.11 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "Availability" "Not in stock"
+			(at 245.11 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(property "MANUFACTURER" "Displaymodule"
+			(at 245.11 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
+		(pin "3"
+			(uuid "bd52866d-89a8-4642-a549-f4aded7baca2")
+		)
+		(pin "1"
+			(uuid "b24ef34a-fc82-4bff-9ab1-6b75afc946a9")
+		)
+		(pin "2"
+			(uuid "0d689aaf-7438-44ca-8dba-b2c40f06277f")
+		)
+		(pin "4"
+			(uuid "1451471e-6343-432a-91fc-2670407c107a")
+		)
+		(instances
+			(project "retroGameCard"
+				(path "/de252b9d-dba4-4c47-b073-f66cc96c1065"
+					(reference "U3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:LED")
 		(at 40.64 40.64 90)
 		(unit 1)
@@ -6306,7 +6558,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_EH_S2B-EH_1x02_P2.50mm_Horizontal"
+		(property "Footprint" "TestPoint:Bez_nazwy_1"
 			(at 105.1052 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -6670,7 +6922,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 259.08 67.31 0)
+		(at 229.87 62.23 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -6681,7 +6933,7 @@
 		(fields_autoplaced yes)
 		(uuid "19d95295-b862-4512-87dc-47c8a43c4977")
 		(property "Reference" "#PWR08"
-			(at 259.08 73.66 0)
+			(at 229.87 68.58 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6692,7 +6944,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 259.08 72.39 0)
+			(at 229.87 67.31 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6702,7 +6954,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 259.08 67.31 0)
+			(at 229.87 62.23 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6713,7 +6965,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 259.08 67.31 0)
+			(at 229.87 62.23 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6724,7 +6976,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 259.08 67.31 0)
+			(at 229.87 62.23 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7855,7 +8107,7 @@
 	)
 	(symbol
 		(lib_id "power:+3.3V")
-		(at 259.08 36.83 0)
+		(at 229.87 34.29 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -7866,7 +8118,7 @@
 		(fields_autoplaced yes)
 		(uuid "68336e29-fe1e-49af-b111-ecd593f509c2")
 		(property "Reference" "#PWR03"
-			(at 259.08 40.64 0)
+			(at 229.87 38.1 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7877,7 +8129,7 @@
 			)
 		)
 		(property "Value" "+3.3V"
-			(at 259.08 31.75 0)
+			(at 229.87 29.21 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7887,7 +8139,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 259.08 36.83 0)
+			(at 229.87 34.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7898,7 +8150,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 259.08 36.83 0)
+			(at 229.87 34.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7909,7 +8161,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 259.08 36.83 0)
+			(at 229.87 34.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7966,7 +8218,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_EH_B4B-EH-A_1x04_P2.50mm_Vertical"
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal"
 			(at 173.99 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -9438,214 +9690,6 @@
 			(project "retroGameCard"
 				(path "/de252b9d-dba4-4c47-b073-f66cc96c1065"
 					(reference "C9")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "OLED_128X64_1.3_I2C:OLED_128X64_1.3_I2C")
-		(at 243.84 52.07 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "a67b71c9-e0d1-42ab-ab1b-dcda8ece8a5e")
-		(property "Reference" "DS1"
-			(at 243.84 36.83 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "OLED_128X64_1.3_I2C"
-			(at 243.84 39.37 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "OLED_128X64_1.3_I2C:LCD_OLED_128X64_1.3_I2C"
-			(at 243.84 52.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Datasheet" ""
-			(at 243.84 52.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Non-Touch Graphic LCD Display Module Transmissive White OLED, Monochrome I2C 1.3 (33.02mm) 128 x 64"
-			(at 243.84 52.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "MF" "UNIVERSAL-SOLDER Electronics Ltd"
-			(at 243.84 52.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Package" "None"
-			(at 243.84 52.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Price" "None"
-			(at 243.84 52.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Check_prices" "https://www.snapeda.com/parts/OLED%20128x64%201.3%22%20I2C/UNIVERSAL-SOLDER+Electronics+Ltd/view-part/?ref=eda"
-			(at 243.84 52.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "STANDARD" "Manufacturer Recommendations"
-			(at 243.84 52.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "PARTREV" "NA"
-			(at 243.84 52.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "SnapEDA_Link" "https://www.snapeda.com/parts/OLED%20128x64%201.3%22%20I2C/UNIVERSAL-SOLDER+Electronics+Ltd/view-part/?ref=snap"
-			(at 243.84 52.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "MP" "OLED 128x64 1.3&quot; I2C"
-			(at 243.84 52.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Availability" "Not in stock"
-			(at 243.84 52.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(property "MANUFACTURER" "UNIVERSAL-SOLDER Electronics Ltd"
-			(at 243.84 52.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-			)
-		)
-		(pin "3"
-			(uuid "a6f244ea-8b37-4453-9e5b-509a7cd55075")
-		)
-		(pin "4"
-			(uuid "dad8265c-2238-4740-9ad0-9ee8e394a50c")
-		)
-		(pin "1"
-			(uuid "d030462c-5d60-4823-a64f-47b5ddc87b54")
-		)
-		(pin "2"
-			(uuid "7874ef30-aab1-41b8-ac09-8a2272f2f629")
-		)
-		(instances
-			(project "retroGameCard"
-				(path "/de252b9d-dba4-4c47-b073-f66cc96c1065"
-					(reference "DS1")
 					(unit 1)
 				)
 			)
