@@ -4367,6 +4367,10 @@
 		(uuid "986b43da-a8e0-4c82-9741-aa444c0bf015")
 	)
 	(no_connect
+		(at 78.74 147.32)
+		(uuid "9b40b606-7d1c-4b8a-8ae5-6c85b72eee9a")
+	)
+	(no_connect
 		(at 78.74 152.4)
 		(uuid "a9f81afc-b79a-4b18-8671-dee0c9135f12")
 	)
@@ -4389,10 +4393,6 @@
 	(no_connect
 		(at 132.08 52.07)
 		(uuid "d42f268e-d0fa-41df-9117-ec2a7a9cfee5")
-	)
-	(no_connect
-		(at 121.92 132.08)
-		(uuid "e048a1d6-274c-464f-b75a-c6cdcaf5b206")
 	)
 	(wire
 		(pts
@@ -4816,6 +4816,16 @@
 	)
 	(wire
 		(pts
+			(xy 121.92 132.08) (xy 128.27 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4b6152da-e357-4694-90d7-41278933b978")
+	)
+	(wire
+		(pts
 			(xy 250.19 140.97) (xy 250.19 144.78)
 		)
 		(stroke
@@ -4873,6 +4883,16 @@
 			(type default)
 		)
 		(uuid "5523a6c7-8fc2-4146-be1a-a3d1e95ddcf9")
+	)
+	(wire
+		(pts
+			(xy 50.8 144.78) (xy 50.8 147.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "556b5d4d-52db-4a20-ba16-eecdd611c9c6")
 	)
 	(wire
 		(pts
@@ -4973,16 +4993,6 @@
 			(type default)
 		)
 		(uuid "69a9aa5d-586f-4ddb-a7aa-4e6cb1b6ce63")
-	)
-	(wire
-		(pts
-			(xy 50.8 147.32) (xy 78.74 147.32)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6b6d85a5-9735-4c44-bdcb-d315f19ec894")
 	)
 	(wire
 		(pts
@@ -5816,7 +5826,7 @@
 		)
 		(uuid "21616479-a300-4af0-a2d8-259bf6ec1027")
 	)
-	(label "LEFT"
+	(label "RIGHT"
 		(at 139.7 134.62 180)
 		(effects
 			(font
@@ -5916,7 +5926,7 @@
 		)
 		(uuid "675a7935-035d-432a-9c9b-088dd48e33d0")
 	)
-	(label "UP"
+	(label "LEFT"
 		(at 139.7 142.24 180)
 		(effects
 			(font
@@ -5965,6 +5975,26 @@
 			(justify right bottom)
 		)
 		(uuid "9bc9276f-3551-44aa-b1d5-7e6556114647")
+	)
+	(label "LED"
+		(at 128.27 132.08 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "9f02750e-b280-446f-8c25-43c66f4d928a")
+	)
+	(label "LED"
+		(at 50.8 144.78 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "a33b7360-bca4-429c-b7bf-4d48f41b22dc")
 	)
 	(label "SWCLK"
 		(at 160.02 102.87 0)
@@ -6016,7 +6046,7 @@
 		)
 		(uuid "c4fde138-455b-4d1b-b3c8-e5d76a3b3dae")
 	)
-	(label "RIGHT"
+	(label "UP"
 		(at 139.7 144.78 180)
 		(effects
 			(font
