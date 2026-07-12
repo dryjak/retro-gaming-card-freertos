@@ -14,4 +14,5 @@ Layout
 
 
 Basic schematic of STM32C562KET6
+
 <img width="300" height="300" alt="obraz" src="https://github.com/user-attachments/assets/bb8996ee-ce79-494b-9226-b3f72d0ef945" />
