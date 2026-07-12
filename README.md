@@ -3,6 +3,10 @@ The view of the PCB
 
 <img width="1337" height="754" alt="retroGameCard_Back" src="https://github.com/user-attachments/assets/2c10b8b1-eb60-4a5e-b3a9-96ff21d6ba4c" />
 
+Schematic
+[Schematic.pdf](https://github.com/user-attachments/files/29943936/Schematic.pdf)
+
+
 
 
 
