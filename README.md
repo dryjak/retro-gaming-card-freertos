@@ -10,19 +10,18 @@ The goal of this project was to merge aesthetics with robust embedded engineerin
 ## ⚙️ Hardware Architecture
 The board is designed with a focus on stability and signal integrity, featuring a sleek matte black soldermask and hidden testing interfaces.
 
-* **Microcontroller:** STM32 series (ARM Cortex-M), managing game logic and peripheral communication.
-* **Display:** I2C/SPI OLED screen for high-contrast, low-power graphics.
+* **Microcontroller:** STM32 series (prototype STM32F411RE, final version STM32C562KET), managing game logic and peripheral communication.
+* **Display:** I2C OLED screen for high-contrast, low-power graphics.
 * **Power Management:** Custom power path featuring a LiPo charging IC and a Low-Dropout Regulator (LDO) optimized for maximum battery life (minimizing voltage dropout).
 * **PCB Layout Highlights:**
-  * Solid GND copper pours on both layers (F.Cu / B.Cu) with extensive via stitching to eliminate floating ground issues and reduce EMI.
   * Mechanical collision avoidance (precise component placement avoiding mounting holes).
   * Concealed bottom-layer SWD Test Points (SWDIO, SWCLK, GND, 3.3V) to maintain a clean aesthetic on the front panel.
 
 ## 💻 Firmware & Software
-The firmware is written in **C/C++**, focusing on hardware abstraction and efficient resource management.
-* Direct register manipulation / HAL for fast GPIO and display SPI/I2C communication.
-* Power-saving modes to prevent LiPo over-discharge.
-* (Optional) RTOS implementation for task scheduling (e.g., separating rendering tasks from button input polling).
+The firmware is written in **C**, focusing on hardware abstraction and efficient resource management.
+* Custom made liblaries for menu and games.
+* (Optional for future) Power-saving modes to prevent LiPo over-discharge.
+* (Optional for future) RTOS implementation for task scheduling (e.g., separating rendering tasks from button input polling).
 
 
 The view of the PCB
