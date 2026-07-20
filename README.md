@@ -22,16 +22,6 @@ The firmware is written in **C/C++**, focusing on hardware abstraction and effic
 * Power-saving modes to prevent LiPo over-discharge.
 * (Optional) RTOS implementation for task scheduling (e.g., separating rendering tasks from button input polling).
 
-## 🗺️ System Block Diagram
-```text
-[ LiPo Battery ] --> [ Charger IC ] --> [ Low-Dropout (LDO) 3.3V ] 
-                                                 |
-                                                 v
-[ User Buttons ] ------------------------> [ STM32 MCU ]
-                                                 |
-[ SWD Test Points ] <--------------------/       v
-                                           [ OLED Display ]
-
 
 The view of the PCB
 
@@ -51,3 +41,15 @@ Layout
 Basic schematic of STM32C562KET6
 
 <img width="300" height="300" alt="obraz" src="https://github.com/user-attachments/assets/bb8996ee-ce79-494b-9226-b3f72d0ef945" />
+
+
+## 🗺️ System Block Diagram
+```text
+[ LiPo Battery ] --> [ Charger IC ] --> [ Low-Dropout (LDO) 3.3V ] 
+                                                 |
+                                                 v
+[ User Buttons ] ------------------------> [ STM32 MCU ]
+                                                 |
+[ SWD Test Points ] <--------------------/       v
+                                           [ OLED Display ]
+
