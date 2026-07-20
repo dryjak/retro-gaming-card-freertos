@@ -1,7 +1,7 @@
 # 🎮 Interactive PCB Business Card & Pocket Console
 
 ## 📖 Overview
-This project is a fully functional, credit-card-sized (53x85 mm) interactive business card that doubles as a minimalist handheld game console. Powered by an STM32 microcontroller and a LiPo battery, it was designed from scratch in KiCad to showcase complete hardware-software co-design. 
+This project is a fully functional, credit-card-sized (53x85 mm) interactive business card that doubles as a minimalist handheld game console. Powered by an STM32 (prototype STM32F411RE, final version STM32C562KET) microcontroller and a LiPo battery, it was designed from scratch in KiCad to showcase complete hardware-software co-design. 
 
 <img width="300"  alt="retroGameCard_Front" src="https://github.com/user-attachments/assets/17681c40-c87e-4877-8dce-67af8a3b0631" />
 
