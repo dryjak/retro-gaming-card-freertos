@@ -16,6 +16,8 @@
   */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "mx_gpio_default.h"
+#include "stm32c5xx_hal_gpio.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -43,7 +45,11 @@ int main(void)
     /*
       * You can start your application code here
       */
-    while (1) {}
+    while (1) 
+    {
+      HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
+      HAL_Delay(500);
+    }
   }
 } /* end main */
 
