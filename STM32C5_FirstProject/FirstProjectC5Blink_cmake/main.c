@@ -17,12 +17,16 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "mx_gpio_default.h"
+#include "stm32c5xx_drivers/hal/stm32c5xx_hal_i2c.h"
 #include "stm32c5xx_hal_gpio.h"
+#include "stm32c5xx_hal_i2c.h"
 
 /* Private typedef -----------------------------------------------------------*/
+
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+uint8_t value = 0xAE;
 /* Private functions prototype -----------------------------------------------*/
 
 /**
@@ -44,10 +48,13 @@ int main(void)
   {
     /*
       * You can start your application code here
-
-
-
       */
+
+
+
+      HAL_I2C_MASTER_Transmit(&hi2c1, (0x3C << 1), 0x00, 1, &value, 1, 100);
+      //HAL_I2C_MASTER_Transmit_DMA(&hi2c1, (0x3C << 1), 0x00, 1, &value, 1, 100);
+      //HAL_I2C_Memory_Write(&hi2c1, 0x3C << 1, 0x00, 1, &value ,1, 100);
       HAL_GPIO_WritePin(LED_PORT, LED_PIN, HAL_GPIO_PIN_SET);
       HAL_Delay(2000);
       HAL_GPIO_WritePin(LED_PORT, LED_PIN, HAL_GPIO_PIN_RESET);

@@ -17,10 +17,16 @@ include(cmake/components.cmake)
 # Stubs to be able to add compiler flag overrides, e.g. -Os
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
   # Add additional source files here
+  user_modifiable/Src/SSD1306_OLED.c
+  user_modifiable/Src/GFX_BW.c
+
+
 )
 
 target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC
   # Add additional include directories here
+  user_modifiable/Inc
+  user_modifiable/Inc/Fonts
 )
 
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC
