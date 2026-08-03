@@ -2691,7 +2691,7 @@ solution:
                   "_foreignKey": "PA3",
                   "basic": {
                     "mode": "INPUT",
-                    "pull": "DOWN",
+                    "pull": "UP",
                     "enable_exti": false
                   },
                   "label_name": []
@@ -2700,7 +2700,7 @@ solution:
                   "_foreignKey": "PA4",
                   "basic": {
                     "mode": "INPUT",
-                    "pull": "DOWN",
+                    "pull": "UP",
                     "enable_exti": false
                   },
                   "label_name": []
@@ -2709,7 +2709,7 @@ solution:
                   "_foreignKey": "PA5",
                   "basic": {
                     "mode": "INPUT",
-                    "pull": "DOWN",
+                    "pull": "UP",
                     "enable_exti": false
                   },
                   "label_name": []
@@ -2718,7 +2718,7 @@ solution:
                   "_foreignKey": "PA6",
                   "basic": {
                     "mode": "INPUT",
-                    "pull": "DOWN",
+                    "pull": "UP",
                     "enable_exti": false
                   },
                   "label_name": []
@@ -2727,7 +2727,7 @@ solution:
                   "_foreignKey": "PA7",
                   "basic": {
                     "mode": "INPUT",
-                    "pull": "DOWN",
+                    "pull": "UP",
                     "enable_exti": false
                   },
                   "label_name": []
