@@ -490,8 +490,84 @@
 "File: .settings/dma.store.json" = """
 {
   "version": 2,
-  "resourcesAllocations": [],
-  "resourcesNeeds": [],
+  "resourcesAllocations": [
+    {
+      "resourceId": "LPDMA1_CH0",
+      "componentId": "STMicroelectronics::Device:STM32CubeMX2 Config:I2C",
+      "parentResourceId": "I2C1",
+      "queryId": "I2C1",
+      "requestId": "i2c1_tx_dma",
+      "needId": "f8553ff8-36f2-456e-9ab0-4d7c65ac26a2",
+      "needType": "need.dma.channels",
+      "selector": "TX",
+      "entity": "dma.channel",
+      "swProjectURI": "cube:e083f389-ecca-4928-b0cd-6f549c28d12d/221b8ddd-b2b7-4a03-94c0-e5989cd20a84",
+      "swInstanceId": "f61ddb22-38a2-4beb-ae39-6260782c5f09"
+    },
+    {
+      "resourceId": "LPDMA1_CH1",
+      "componentId": "STMicroelectronics::Device:STM32CubeMX2 Config:I2C",
+      "parentResourceId": "I2C1",
+      "queryId": "I2C1",
+      "requestId": "i2c1_rx_dma",
+      "needId": "747dd4a9-0257-429c-8e4f-0cfad726d63a",
+      "needType": "need.dma.channels",
+      "selector": "RX",
+      "entity": "dma.channel",
+      "swProjectURI": "cube:e083f389-ecca-4928-b0cd-6f549c28d12d/221b8ddd-b2b7-4a03-94c0-e5989cd20a84",
+      "swInstanceId": "f61ddb22-38a2-4beb-ae39-6260782c5f09"
+    }
+  ],
+  "resourcesNeeds": [
+    {
+      "needType": "need.dma.channels",
+      "projectUri": "cube:e083f389-ecca-4928-b0cd-6f549c28d12d/221b8ddd-b2b7-4a03-94c0-e5989cd20a84",
+      "componentId": "STMicroelectronics::Device:STM32CubeMX2 Config:I2C",
+      "componentInstanceId": "f61ddb22-38a2-4beb-ae39-6260782c5f09",
+      "selector": "TX",
+      "id": "f8553ff8-36f2-456e-9ab0-4d7c65ac26a2",
+      "owner": "I2C1",
+      "constraints": {
+        "dma_mode": {
+          "const": 0
+        },
+        "direction": {
+          "const": "MEMORY_TO_PERIPH"
+        },
+        "dest_inc": {
+          "const": "FIXED"
+        },
+        "dest_data_width": {
+          "const": "BYTE"
+        }
+      },
+      "propertyPath": ""
+    },
+    {
+      "needType": "need.dma.channels",
+      "projectUri": "cube:e083f389-ecca-4928-b0cd-6f549c28d12d/221b8ddd-b2b7-4a03-94c0-e5989cd20a84",
+      "componentId": "STMicroelectronics::Device:STM32CubeMX2 Config:I2C",
+      "componentInstanceId": "f61ddb22-38a2-4beb-ae39-6260782c5f09",
+      "selector": "RX",
+      "id": "747dd4a9-0257-429c-8e4f-0cfad726d63a",
+      "owner": "I2C1",
+      "constraints": {
+        "dma_mode": {
+          "const": 0
+        },
+        "direction": {
+          "const": "PERIPH_TO_MEMORY"
+        },
+        "src_inc": {
+          "const": "FIXED"
+        },
+        "src_data_width": {
+          "const": "BYTE"
+        }
+      },
+      "propertyPath": ""
+    }
+  ],
   "resourceReservations": []
 }"""
 "File: .settings/envModelStore.store.json" = """
@@ -509,7 +585,7 @@
     },
     "HAL_CORTEX_PROJECT_USE_HAL": {
       "name": "HAL_CORTEX_PROJECT_USE_HAL",
-      "value": 2,
+      "value": 4,
       "originator": "sw-config-semaphore"
     },
     "HAL_ICACHE_CORE_ENABLED": {
@@ -545,6 +621,11 @@
     "HAL_I2C_PROJECT_USE_HAL": {
       "name": "HAL_I2C_PROJECT_USE_HAL",
       "value": 1,
+      "originator": "sw-config-semaphore"
+    },
+    "HAL_DMA_PROJECT_USE_HAL": {
+      "name": "HAL_DMA_PROJECT_USE_HAL",
+      "value": 2,
       "originator": "sw-config-semaphore"
     }
   }
@@ -660,12 +741,58 @@
           "priority": 15,
           "subpriority": 0,
           "used": true
+        },
+        {
+          "id": 33,
+          "name": "LPDMA1_CH0",
+          "priority": 0,
+          "subpriority": 0,
+          "used": true
+        },
+        {
+          "id": 34,
+          "name": "LPDMA1_CH1",
+          "priority": 0,
+          "subpriority": 0,
+          "used": true
         }
       ],
-      "needs": []
+      "needs": [
+        {
+          "needId": "3d300817-88bd-4a15-a113-58bfe83676e2",
+          "destination": "LPDMA1_CH0",
+          "owner": "LPDMA1_CH0"
+        },
+        {
+          "needId": "9e040aa9-9398-4702-b576-ea31db9cedc8",
+          "destination": "LPDMA1_CH1",
+          "owner": "LPDMA1_CH1"
+        }
+      ]
     }
   ],
-  "resourceNeeds": [],
+  "resourceNeeds": [
+    {
+      "needType": "need.interrupt.lines",
+      "projectUri": "cube:e083f389-ecca-4928-b0cd-6f549c28d12d/221b8ddd-b2b7-4a03-94c0-e5989cd20a84",
+      "componentId": "STMicroelectronics.stm32c5xx_hal_drivers.2.1.0$STMicroelectronics::Device:STM32 LL:DMA@2.1.0#LL",
+      "componentInstanceId": "f61ddb22-38a2-4beb-ae39-6260782c5f09",
+      "selector": "*",
+      "id": "3d300817-88bd-4a15-a113-58bfe83676e2",
+      "owner": "LPDMA1_CH0",
+      "propertyPath": ""
+    },
+    {
+      "needType": "need.interrupt.lines",
+      "projectUri": "cube:e083f389-ecca-4928-b0cd-6f549c28d12d/221b8ddd-b2b7-4a03-94c0-e5989cd20a84",
+      "componentId": "STMicroelectronics.stm32c5xx_hal_drivers.2.1.0$STMicroelectronics::Device:STM32 LL:DMA@2.1.0#LL",
+      "componentInstanceId": "f61ddb22-38a2-4beb-ae39-6260782c5f09",
+      "selector": "*",
+      "id": "9e040aa9-9398-4702-b576-ea31db9cedc8",
+      "owner": "LPDMA1_CH1",
+      "propertyPath": ""
+    }
+  ],
   "description": {
     "instances": []
   }
@@ -2328,7 +2455,7 @@ solution:
                 "user_data": false,
                 "get_last_errors": false,
                 "clk_enable_model": "HAL_CLK_ENABLE_NO",
-                "use_hal_i2c_dma": false
+                "use_hal_i2c_dma": true
               },
               "i2s_feature": {
                 "use_register_callback": false,
@@ -3024,8 +3151,62 @@ solution:
                   }
                 },
                 "dma": {
-                  "enable_dma_tx": false,
-                  "enable_dma_rx": false
+                  "enable_dma_tx": true,
+                  "enable_dma_rx": true,
+                  "dma_config_tx": {
+                    "needs": [
+                      {
+                        "needType": "need.dma.channels",
+                        "projectUri": "cube:e083f389-ecca-4928-b0cd-6f549c28d12d/221b8ddd-b2b7-4a03-94c0-e5989cd20a84",
+                        "componentId": "STMicroelectronics.stm32c5xx_hal_drivers.2.1.0$STMicroelectronics::Device:STM32CubeMX2 Config:I2C@2.1.0#HAL CORE GPIO DMA Init and I2C",
+                        "componentInstanceId": "f61ddb22-38a2-4beb-ae39-6260782c5f09",
+                        "selector": "TX",
+                        "id": "f8553ff8-36f2-456e-9ab0-4d7c65ac26a2",
+                        "owner": "I2C1",
+                        "constraints": {
+                          "dma_mode": {
+                            "const": 0
+                          },
+                          "direction": {
+                            "const": "MEMORY_TO_PERIPH"
+                          },
+                          "dest_inc": {
+                            "const": "FIXED"
+                          },
+                          "dest_data_width": {
+                            "const": "BYTE"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "dma_config_rx": {
+                    "needs": [
+                      {
+                        "needType": "need.dma.channels",
+                        "projectUri": "cube:e083f389-ecca-4928-b0cd-6f549c28d12d/221b8ddd-b2b7-4a03-94c0-e5989cd20a84",
+                        "componentId": "STMicroelectronics.stm32c5xx_hal_drivers.2.1.0$STMicroelectronics::Device:STM32CubeMX2 Config:I2C@2.1.0#HAL CORE GPIO DMA Init and I2C",
+                        "componentInstanceId": "f61ddb22-38a2-4beb-ae39-6260782c5f09",
+                        "selector": "RX",
+                        "id": "747dd4a9-0257-429c-8e4f-0cfad726d63a",
+                        "owner": "I2C1",
+                        "constraints": {
+                          "dma_mode": {
+                            "const": 0
+                          },
+                          "direction": {
+                            "const": "PERIPH_TO_MEMORY"
+                          },
+                          "src_inc": {
+                            "const": "FIXED"
+                          },
+                          "src_data_width": {
+                            "const": "BYTE"
+                          }
+                        }
+                      }
+                    ]
+                  }
                 },
                 "nvic": {
                   "enable_event_interruption": false,
@@ -3068,6 +3249,148 @@ solution:
               "enable_exti": false,
               "output_type": "OPENDRAIN",
               "speed": "LOW"
+            }
+          }
+        }
+      ],
+      "STMicroelectronics.stm32c5xx_hal_drivers.2.1.0$STMicroelectronics::Device:STM32 LL:DMA@2.1.0#LL": [
+        {
+          "index": 2,
+          "needId": "f8553ff8-36f2-456e-9ab0-4d7c65ac26a2",
+          "rootId": "f61ddb22-38a2-4beb-ae39-6260782c5f09",
+          "needType": "need.dma.channels",
+          "parentId": "f61ddb22-38a2-4beb-ae39-6260782c5f09",
+          "settings": {
+            "info": {
+              "labels": []
+            },
+            "basic": {
+              "dma_mode": 0,
+              "direction": "MEMORY_TO_PERIPH",
+              "src_inc": "FIXED",
+              "dest_inc": "FIXED",
+              "src_data_width": "BYTE",
+              "dest_data_width": "BYTE",
+              "priority": "LOW_WEIGHT_LOW",
+              "request": {
+                "id": "i2c1_tx_dma",
+                "event": "i2c1_tx_dma",
+                "instance": "I2C1",
+                "dmaInstance": "LPDMA1",
+                "signal_id": "tx",
+                "type": "request",
+                "entity": "dma.channel.interconnect.request",
+                "queryId": "5dd08545-a93a-4298-88cd-602bc282d9ef"
+              }
+            },
+            "additional": {
+              "trigger_xfer": {
+                "configuration": false,
+                "dma_channel_trigger_source": {
+                  "id": "comp1_out",
+                  "event": "comp1_out",
+                  "instance": "COMP1",
+                  "dmaInstance": "LPDMA1",
+                  "type": "trigger",
+                  "entity": "dma.channel.interconnect.trigger",
+                  "queryId": "fb1f2b20-369a-496d-a221-3b609a3edb84"
+                },
+                "dma_channel_trigger_polarity": "RISING",
+                "dma_channel_trigger_mode": "SINGLE_BURST_TRANSFER"
+              },
+              "data_handling_xfer": {
+                "configuration": false,
+                "trunc_padd": "LEFT_PADD_ZERO"
+              }
+            },
+            "system": {
+              "nvic": {
+                "enable_interruption": true,
+                "irq_handler_generation": true,
+                "nvic_config": {
+                  "needs": [
+                    {
+                      "needType": "need.interrupt.lines",
+                      "projectUri": "cube:e083f389-ecca-4928-b0cd-6f549c28d12d/221b8ddd-b2b7-4a03-94c0-e5989cd20a84",
+                      "componentId": "STMicroelectronics.stm32c5xx_hal_drivers.2.1.0$STMicroelectronics::Device:STM32 LL:DMA@2.1.0#LL",
+                      "componentInstanceId": "f61ddb22-38a2-4beb-ae39-6260782c5f09",
+                      "selector": "*",
+                      "id": "3d300817-88bd-4a15-a113-58bfe83676e2",
+                      "owner": "LPDMA1_CH0"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "index": 3,
+          "needId": "747dd4a9-0257-429c-8e4f-0cfad726d63a",
+          "rootId": "f61ddb22-38a2-4beb-ae39-6260782c5f09",
+          "needType": "need.dma.channels",
+          "parentId": "f61ddb22-38a2-4beb-ae39-6260782c5f09",
+          "settings": {
+            "info": {
+              "labels": []
+            },
+            "basic": {
+              "dma_mode": 0,
+              "direction": "PERIPH_TO_MEMORY",
+              "src_inc": "FIXED",
+              "dest_inc": "FIXED",
+              "src_data_width": "BYTE",
+              "dest_data_width": "BYTE",
+              "priority": "LOW_WEIGHT_LOW",
+              "request": {
+                "id": "i2c1_rx_dma",
+                "event": "i2c1_rx_dma",
+                "instance": "I2C1",
+                "dmaInstance": "LPDMA1",
+                "signal_id": "rx",
+                "type": "request",
+                "entity": "dma.channel.interconnect.request",
+                "queryId": "019d8f56-ca2b-4bc6-91c3-5fd4c7617552"
+              }
+            },
+            "additional": {
+              "trigger_xfer": {
+                "configuration": false,
+                "dma_channel_trigger_source": {
+                  "id": "comp1_out",
+                  "event": "comp1_out",
+                  "instance": "COMP1",
+                  "dmaInstance": "LPDMA1",
+                  "type": "trigger",
+                  "entity": "dma.channel.interconnect.trigger",
+                  "queryId": "97169fd1-2c96-488d-ad8a-5a0d52c52870"
+                },
+                "dma_channel_trigger_polarity": "RISING",
+                "dma_channel_trigger_mode": "SINGLE_BURST_TRANSFER"
+              },
+              "data_handling_xfer": {
+                "configuration": false,
+                "trunc_padd": "LEFT_PADD_ZERO"
+              }
+            },
+            "system": {
+              "nvic": {
+                "enable_interruption": true,
+                "irq_handler_generation": true,
+                "nvic_config": {
+                  "needs": [
+                    {
+                      "needType": "need.interrupt.lines",
+                      "projectUri": "cube:e083f389-ecca-4928-b0cd-6f549c28d12d/221b8ddd-b2b7-4a03-94c0-e5989cd20a84",
+                      "componentId": "STMicroelectronics.stm32c5xx_hal_drivers.2.1.0$STMicroelectronics::Device:STM32 LL:DMA@2.1.0#LL",
+                      "componentInstanceId": "f61ddb22-38a2-4beb-ae39-6260782c5f09",
+                      "selector": "*",
+                      "id": "9e040aa9-9398-4702-b576-ea31db9cedc8",
+                      "owner": "LPDMA1_CH1"
+                    }
+                  ]
+                }
+              }
             }
           }
         }
