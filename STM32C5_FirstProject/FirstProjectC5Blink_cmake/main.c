@@ -44,11 +44,29 @@ int main(void)
   {
     /*
       * You can start your application code here
+
+
+
       */
+      HAL_GPIO_WritePin(LED_PORT, LED_PIN, HAL_GPIO_PIN_SET);
+      HAL_Delay(2000);
+      HAL_GPIO_WritePin(LED_PORT, LED_PIN, HAL_GPIO_PIN_RESET);
+      HAL_Delay(1000);
     while (1) 
     {
-      HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
-      HAL_Delay(500);
+      if(HAL_GPIO_ReadPin(BUTTON_UP_PORT, BUTTON_UP_PIN) == HAL_GPIO_PIN_RESET || 
+      HAL_GPIO_ReadPin(BUTTON_DOWN_PORT, BUTTON_DOWN_PIN) == HAL_GPIO_PIN_RESET ||
+      HAL_GPIO_ReadPin(BUTTON_LEFT_PORT, BUTTON_LEFT_PIN) == HAL_GPIO_PIN_RESET ||
+      HAL_GPIO_ReadPin(BUTTON_RIGHT_PORT, BUTTON_RIGHT_PIN) == HAL_GPIO_PIN_RESET ||
+      HAL_GPIO_ReadPin(BUTTON_ENTER_PORT, BUTTON_ENTER_PIN) == HAL_GPIO_PIN_RESET)
+      {
+        HAL_GPIO_WritePin(LED_PORT, LED_PIN, HAL_GPIO_PIN_SET);
+      }
+      else
+      {
+        HAL_GPIO_WritePin(LED_PORT, LED_PIN, HAL_GPIO_PIN_RESET);
+      }
+      HAL_Delay(10);
     }
   }
 } /* end main */
