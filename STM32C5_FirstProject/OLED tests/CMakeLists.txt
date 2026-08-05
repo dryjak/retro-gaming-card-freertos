@@ -9,7 +9,9 @@ include(cmake/target.cmake)
 include(cmake/${TOOLCHAIN_FILE})
 
 project(FirstProjectC5Blink)
-add_executable(FirstProjectC5Blink)
+add_executable(FirstProjectC5Blink
+  user_modifiable/Inc/GameSnake.h
+  user_modifiable/Inc/GameConsoleMenu.h)
 include(cmake/files.cmake)
 include(cmake/flags.cmake)
 include(cmake/components.cmake)

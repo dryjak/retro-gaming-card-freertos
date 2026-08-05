@@ -27,7 +27,7 @@
 #define SSD1306_PAGEADDR 		0x22        ///< See datasheet
 #define SSD1306_SETCONTRAST 	0x81        ///< See datasheet
 #define SSD1306_CHARGEPUMP 		0x8D        ///< See datasheet
-#define SSD1306_SEGREMAP 		0xA0        ///< See datasheet
+#define SSD1306_SEGREMAP 		0xA1        ///< See datasheet
 #define SSD1306_DISPLAYALLON_RESUME 0xA4 	///< See datasheet
 #define SSD1306_DISPLAYALLON 	0xA5        ///< Not currently used
 #define SSD1306_NORMALDISPLAY 	0xA6       	///< See datasheet
