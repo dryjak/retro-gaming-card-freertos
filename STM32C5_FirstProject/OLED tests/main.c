@@ -25,7 +25,7 @@
 #include "SSD1306_OLED.h"
 #include "GFX_BW.h"
 #include "GameConsoleMenu.h"
-#include "button.h"
+#include "Button.h"
 #include "font_8x5.h"
 
 #include "GameSnake.h"
@@ -48,6 +48,8 @@ GameConsole_t Console;
 
 uint8_t value = 0xAE;
 /* Private functions prototype -----------------------------------------------*/
+void Action_ChangeContrast();
+
 //Wrapper
 void Action_MenuUp(void);
 void Action_MenuDown(void);
@@ -194,6 +196,15 @@ int main(void)
 
 
 //Private functions
+void Action_ChangeContrast()
+{
+	    uint32_t temp = Console.Settings[0] * 255;
+	    uint8_t hardware_value = (uint8_t)(temp / 100);
+
+	    // Używamy globalnej zmiennej OLED z main.c
+	    SSD1306_Command(&OLED, SSD1306_SETCONTRAST);
+	    SSD1306_Command(&OLED, hardware_value);
+}
 void Snake_Confirm(void) {
     if (Snake.IsDead == 1) {
         // Go back to menu

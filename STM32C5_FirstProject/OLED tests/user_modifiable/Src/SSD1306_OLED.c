@@ -5,6 +5,7 @@
  *      Author: dryla
  */
 #include "../../main.h"
+//#include "stm32c5xx_drivers/hal/stm32c5xx_hal_i2c.h"
 #include "SSD1306_OLED.h"
 #include <string.h>
 

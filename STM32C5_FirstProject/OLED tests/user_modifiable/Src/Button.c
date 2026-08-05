@@ -8,7 +8,7 @@
 #include "Button.h"
 
 //Init function
-void ButtonInit(Button_t* Button, GPIO_TypeDef* GpioPort, uint16_t GpioPin, uint32_t TimerDebounce,
+void ButtonInit(Button_t* Button, uint32_t GpioPort, uint16_t GpioPin, uint32_t TimerDebounce,
 		uint32_t TimerLongPress, uint32_t TimerRepeat)
 {
 	Button->State = IDLE;
@@ -54,7 +54,7 @@ void ButtonRegisterGoToIdleCallback(Button_t *Button, void *Callback)
 void ButtonIdleRoutine(Button_t *Button)
 {
 	//check if button was pressed
-	if (GPIO_PIN_RESET == HAL_GPIO_ReadPin(Button->GpioPort, Button->GpioPin))
+	if (HAL_GPIO_PIN_RESET == HAL_GPIO_ReadPin(Button->GpioPort, Button->GpioPin))
 	{
 		Button->State = DEBOUNCE;
 		Button->LastTick = HAL_GetTick();
@@ -66,7 +66,7 @@ void ButtonDebounceRoutine(Button_t *Button)
 {
 	if(HAL_GetTick() - Button->LastTick >= Button->TimerDebounce)
 	{
-		if (GPIO_PIN_RESET == HAL_GPIO_ReadPin(Button->GpioPort, Button->GpioPin))	//when button is pressed
+		if (HAL_GPIO_PIN_RESET == HAL_GPIO_ReadPin(Button->GpioPort, Button->GpioPin))	//when button is pressed
 		{
 			Button->LastTick = HAL_GetTick();
 			Button->State = PRESSED;
@@ -93,7 +93,7 @@ void ButtonPressedRoutine(Button_t *Button)
 			Button->ButtonLongPressed();
 		}
 	}
-	else if(GPIO_PIN_SET == HAL_GPIO_ReadPin(Button->GpioPort, Button->GpioPin))	//if button is released
+	else if(HAL_GPIO_PIN_SET == HAL_GPIO_ReadPin(Button->GpioPort, Button->GpioPin))	//if button is released
 	{
 		Button->State = IDLE;
 		{
@@ -104,7 +104,7 @@ void ButtonPressedRoutine(Button_t *Button)
 
 void ButtonLongPressedRoutine (Button_t *Button)
 {
-	if (GPIO_PIN_SET == HAL_GPIO_ReadPin(Button->GpioPort, Button->GpioPin))
+	if (HAL_GPIO_PIN_SET == HAL_GPIO_ReadPin(Button->GpioPort, Button->GpioPin))
 	{
 		Button->State = IDLE;
 		if(Button->ButtonReturnToIdle != NULL)
@@ -127,7 +127,7 @@ void ButtonLongPressedRoutine (Button_t *Button)
 }
 void ButtonRepeatRoutine(Button_t *Button)
 {
-	if (GPIO_PIN_SET == HAL_GPIO_ReadPin(Button->GpioPort, Button->GpioPin))
+	if (HAL_GPIO_PIN_SET == HAL_GPIO_ReadPin(Button->GpioPort, Button->GpioPin))
 	{
 		Button->State = IDLE;
 		if(Button->ButtonReturnToIdle != NULL)

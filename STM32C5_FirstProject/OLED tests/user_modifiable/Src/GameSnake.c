@@ -7,6 +7,7 @@
 
 #include "GameSnake.h"
 #include <stdio.h>
+#include "../../main.h"
 
 // Snake global instance
 GameSnake_t Snake;

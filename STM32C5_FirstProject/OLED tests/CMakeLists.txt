@@ -21,6 +21,9 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
   # Add additional source files here
   user_modifiable/Src/SSD1306_OLED.c
   user_modifiable/Src/GFX_BW.c
+  user_modifiable/Src/Button.c
+  user_modifiable/Src/GameConsoleMenu.c
+  user_modifiable/Src/GameSnake.c
 
 
 )

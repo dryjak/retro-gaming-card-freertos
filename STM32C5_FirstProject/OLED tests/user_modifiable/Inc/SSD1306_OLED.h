@@ -8,6 +8,8 @@
 #ifndef INC_SSD1306_OLED_H_
 #define INC_SSD1306_OLED_H_
 
+#include "../../main.h"
+#include "stm32c5xx_hal_i2c.h"
 #define SSD1306_TIMEOUT 1000
 
 
@@ -78,6 +80,7 @@ void SSD1306_Init(SSD1306_t *OLED, uint8_t Address, hal_i2c_handle_t *I2C);
 void SSD1306_Display(SSD1306_t *OLED);
 void SSD1306_Clear(uint8_t Color);
 void SSD1306_DrawPixel(uint16_t x, uint16_t y, uint8_t Color);
+void SSD1306_Command(SSD1306_t *OLED, uint8_t Command);
 
 
 #endif /* INC_SSD1306_OLED_H_ */
