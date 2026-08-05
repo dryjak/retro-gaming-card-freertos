@@ -27,6 +27,9 @@
 #include "GameConsoleMenu.h"
 #include "button.h"
 #include "font_8x5.h"
+
+#include "GameSnake.h"
+
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private define ------------------------------------------------------------*/
@@ -51,6 +54,12 @@ void Action_MenuDown(void);
 void Action_MenuEnter(void);
 void Action_MenuLeft(void);
 void Action_MenuRight(void);
+
+//LED
+void TurnLedOff(void);
+void TurnLedOn(void);
+void ToggleLed(void);
+
 /**
   * brief:  The application entry point.
   * retval: none but we specify int to comply with C99 standard
@@ -93,6 +102,42 @@ int main(void)
       SSD1306_Display(&OLED);
       HAL_Delay(4000);
 
+      //Game console FSM initialization
+      Console_Init(&Console);
+
+      //Initialize buttons
+      //Initialize Buttons
+      ButtonInit(&Up, BUTTON_UP_PORT, BUTTON_UP_PIN, 30, 500, 200);
+      ButtonRegisterPressCallback(&Up, Action_MenuUp);
+      ButtonRegisterLongPressCallback(&Up, TurnLedOff);
+      ButtonRegisterRepeatCallback(&Up, ToggleLed);
+      ButtonRegisterGoToIdleCallback(&Up, TurnLedOff);
+
+      ButtonInit(&Enter, BUTTON_ENTER_PORT, BUTTON_ENTER_PIN, 30, 500, 200);
+      ButtonRegisterPressCallback(&Enter, Action_MenuEnter);
+      ButtonRegisterLongPressCallback(&Enter, TurnLedOff);
+      ButtonRegisterRepeatCallback(&Enter, ToggleLed);
+      ButtonRegisterGoToIdleCallback(&Enter, TurnLedOff);
+
+      ButtonInit(&Down, BUTTON_DOWN_PORT, BUTTON_DOWN_PIN, 30, 500, 200);
+      ButtonRegisterPressCallback(&Down, Action_MenuDown);
+      ButtonRegisterLongPressCallback(&Down, TurnLedOff);
+      ButtonRegisterRepeatCallback(&Down, ToggleLed);
+      ButtonRegisterGoToIdleCallback(&Down, TurnLedOff);
+
+      ButtonInit(&Left, BUTTON_LEFT_PORT, BUTTON_LEFT_PIN, 30, 500, 200);
+      ButtonRegisterPressCallback(&Left, Action_MenuLeft);
+      ButtonRegisterLongPressCallback(&Left, TurnLedOff);
+      ButtonRegisterRepeatCallback(&Left, ToggleLed);
+      ButtonRegisterGoToIdleCallback(&Left, TurnLedOff);
+
+      ButtonInit(&Right, BUTTON_RIGHT_PORT, BUTTON_RIGHT_PIN, 30, 500, 200);
+      ButtonRegisterPressCallback(&Right, Action_MenuRight);
+      ButtonRegisterLongPressCallback(&Right, TurnLedOff);
+      ButtonRegisterRepeatCallback(&Right, ToggleLed);
+      ButtonRegisterGoToIdleCallback(&Right, TurnLedOff);
+
+
 
       //HAL_I2C_MASTER_Transmit(&hi2c1, (0x3C << 1), 0x00, 1, &value, 1, 100);
       //HAL_I2C_MASTER_Transmit_DMA(&hi2c1, (0x3C << 1), 0x00, 1, &value, 1, 100);
@@ -103,6 +148,7 @@ int main(void)
       HAL_Delay(1000);
     while (1) 
     {
+      /*
       if(HAL_GPIO_ReadPin(BUTTON_UP_PORT, BUTTON_UP_PIN) == HAL_GPIO_PIN_RESET || 
       HAL_GPIO_ReadPin(BUTTON_DOWN_PORT, BUTTON_DOWN_PIN) == HAL_GPIO_PIN_RESET ||
       HAL_GPIO_ReadPin(BUTTON_LEFT_PORT, BUTTON_LEFT_PIN) == HAL_GPIO_PIN_RESET ||
@@ -116,7 +162,156 @@ int main(void)
         HAL_GPIO_WritePin(LED_PORT, LED_PIN, HAL_GPIO_PIN_RESET);
       }
       HAL_Delay(10);
+      */
+      
+      //Button task
+      ButtonTask(&Up);
+      ButtonTask(&Down);
+      ButtonTask(&Enter);
+      ButtonTask(&Left);
+      ButtonTask(&Right);
+
+      if (Console.CurrentSystemState == STATE_GAME_SNAKE)
+      {
+        Snake_UpdateLogic();
+
+        // Rysujemy TYLKO wtedy, gdy logika tego zażąda (ruch lub śmierć)
+        if (Snake.NeedsRedraw == 1) {
+          Snake_Draw(&OLED);
+          Snake.NeedsRedraw = 0; // Opuszczamy flagę
+        }
+      }
+      else
+      {
+        Console_Draw(&Console, &OLED);
+      }
+
+      HAL_Delay(10);
     }
   }
 } /* end main */
 
+
+
+//Private functions
+void Snake_Confirm(void) {
+    if (Snake.IsDead == 1) {
+        // Go back to menu
+        Console.CurrentSystemState = STATE_GAMES_MENU;
+        Console.MenuCursorIndex = 0;
+        Console.NeedsRedraw = 1;
+    }
+}
+
+//change state MENU / game
+void Action_PlaySnake(void) {
+    // 1. Zmiana stanu systemu na grę
+    Console.CurrentSystemState = STATE_GAME_SNAKE;
+
+    // 2. Inicjalizacja gry (wąż ustawia się na środku, SpeedMs domyślnie na 150)
+    Snake_Init();
+
+    // 3. NADPISANIE PRĘDKOŚCI NA PODSTAWIE MENU
+    // Zmienna Console.Settings[1] przechowuje indeks trybu (0=EASY, 1=NORMAL, 2=HARD)
+    switch (Console.Settings[1]) {
+        case EASY:
+            Snake.SpeedMs = 250;
+            break;
+        case NORMAL:
+            Snake.SpeedMs = 150;
+            break;
+        case HARD:
+            Snake.SpeedMs = 130;
+            break;
+        default:
+            Snake.SpeedMs = 150; // Zabezpieczenie (wartość domyślna)
+            break;
+    }
+}
+//wrapper
+void Action_MenuUp(void) {
+    if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
+        Snake_TurnUp();
+    }/*
+    else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
+        Flappy_Jump(); // Skok ptaka!
+    }*/
+    else {
+        Console_MoveUp(&Console);
+    }
+    TurnLedOn();
+}
+void Action_MenuDown(void) {
+    if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
+        Snake_TurnDown();
+    }/*
+    else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
+        // Puste! Ptak nie reaguje na strzałkę w dół.
+    }*/
+    else {
+        Console_MoveDown(&Console);
+    }
+    TurnLedOn();
+}
+
+void Action_MenuEnter(void) {
+    if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
+        Snake_Confirm();
+    }/*
+    else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
+		// Jeśli ptak zginął, Enter wraca do menu. Jeśli żyje, skacze!
+		if (Flappy.IsDead) {
+			Console.CurrentSystemState = STATE_GAMES_MENU;
+			Console.MenuCursorIndex = 0;
+			Console.NeedsRedraw = 1;
+		} else {
+			Flappy_Jump();
+		}
+	}*/
+    else {
+        Console_Enter(&Console);
+    }
+    TurnLedOn();
+}
+
+void Action_MenuLeft(void) {
+    if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
+        Snake_TurnLeft();
+    }/*
+    else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
+        // Puste!
+    }*/
+    else {
+        Console_MoveLeft(&Console);
+    }
+    TurnLedOn();
+}
+void Action_MenuRight(void) {
+    if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
+        Snake_TurnRight();
+    }/*
+    else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
+        // Puste!
+    }*/
+    else {
+        Console_MoveRight(&Console);
+    }
+    TurnLedOn();
+}
+
+
+//basic functions
+void ToggleLed(void)
+{
+	HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
+}
+void TurnLedOff(void)
+{
+	HAL_GPIO_WritePin(LED_PORT, LED_PIN, HAL_GPIO_PIN_RESET);
+	ButtonPressedFlag = 0;
+}
+void TurnLedOn(void)
+{
+	HAL_GPIO_WritePin(LED_PORT, LED_PIN, HAL_GPIO_PIN_SET);
+	ButtonPressedFlag = 1;
+}
