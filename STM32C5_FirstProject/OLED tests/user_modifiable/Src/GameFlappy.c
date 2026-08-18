@@ -66,8 +66,14 @@ void Flappy_UpdateLogic(void) {
     Flappy.VelocityY += 0.6f; // Siła grawitacji przyciągająca ptaka w dół
     Flappy.BirdY += Flappy.VelocityY;
 
-    // 2. Sprawdzenie kolizji z ziemią lub sufitem
-    if (Flappy.BirdY < 0 || (Flappy.BirdY + FLAPPY_BIRD_SIZE) >= FLAPPY_SCREEN_HEIGHT) {
+    // 2. Sprawdzenie kolizji z ziemią lub sufitem (TUTAJ JEST POPRAWIONA LOGIKA)
+    if (Flappy.BirdY < 0) {
+        Flappy.BirdY = 0; // Blokujemy ptaka na górnej krawędzi
+        Flappy.IsDead = 1;
+        return;
+    } 
+    else if ((Flappy.BirdY + FLAPPY_BIRD_SIZE) >= FLAPPY_SCREEN_HEIGHT) {
+        Flappy.BirdY = FLAPPY_SCREEN_HEIGHT - FLAPPY_BIRD_SIZE; // Blokujemy ptaka na dolnej krawędzi
         Flappy.IsDead = 1;
         return;
     }
@@ -104,26 +110,49 @@ void Flappy_UpdateLogic(void) {
     }
 }
 
-void Flappy_Draw(SSD1306_t *Display) {
+void Flappy_Draw(SSD1306_t *Display) 
+{
+
+    while (HAL_I2C_GetState(Display->I2c) != HAL_I2C_STATE_IDLE)
+    {
+        __NOP(); 
+    }
     SSD1306_Clear(BLACK);
 
-    // 1. Rysowanie rur
+    // 1. Rysowanie rur (Z BEZPIECZNYM OBCINANIEM / CLIPPINGIEM)
     for (int i = 0; i < 2; i++) {
-        // Górna rura
-        GFX_DrawFillRectangle(
-            Flappy.Pipes[i].x, 
-            0, 
-            FLAPPY_PIPE_WIDTH, 
-            Flappy.Pipes[i].gap_y, 
-            WHITE);
-            
-        // Dolna rura
-        GFX_DrawFillRectangle(
-            Flappy.Pipes[i].x, 
-            Flappy.Pipes[i].gap_y + FLAPPY_GAP_SIZE, 
-            FLAPPY_PIPE_WIDTH, 
-            FLAPPY_SCREEN_HEIGHT - (Flappy.Pipes[i].gap_y + FLAPPY_GAP_SIZE), 
-            WHITE);
+        int16_t draw_x = Flappy.Pipes[i].x;
+        int16_t draw_w = FLAPPY_PIPE_WIDTH;
+
+        // A. Obcinanie z lewej strony ekranu (gdy rura wylatuje)
+        if (draw_x < 0) {
+            draw_w += draw_x; // Zmniejszamy szerokość (draw_x jest ujemne)
+            draw_x = 0;       // Zaczynamy rysować równo z lewą krawędzią
+        }
+
+        // B. Obcinanie z prawej strony ekranu (gdy rura wlatuje)
+        if (draw_x + draw_w > FLAPPY_SCREEN_WIDTH) {
+            draw_w = FLAPPY_SCREEN_WIDTH - draw_x; // Skracamy szerokość do krawędzi
+        }
+
+        // C. Rysuj tylko, jeśli rura jest chociaż trochę widoczna na ekranie (draw_w > 0)
+        if (draw_w > 0 && draw_x < FLAPPY_SCREEN_WIDTH) {
+            // Górna rura
+            GFX_DrawFillRectangle(
+                draw_x, 
+                0, 
+                draw_w, 
+                Flappy.Pipes[i].gap_y, 
+                WHITE);
+                
+            // Dolna rura
+            GFX_DrawFillRectangle(
+                draw_x, 
+                Flappy.Pipes[i].gap_y + FLAPPY_GAP_SIZE, 
+                draw_w, 
+                FLAPPY_SCREEN_HEIGHT - (Flappy.Pipes[i].gap_y + FLAPPY_GAP_SIZE), 
+                WHITE);
+        }
     }
 
     // 2. Rysowanie ptaka (rzutujemy pozycję float na int)
@@ -134,7 +163,7 @@ void Flappy_Draw(SSD1306_t *Display) {
         FLAPPY_BIRD_SIZE, 
         WHITE);
 
-    // 3. Nakładka Game Over (identyczna jak w Snake)
+    // 3. Nakładka Game Over
     if (Flappy.IsDead) {
         GFX_DrawString(37, 15, "GAME OVER", WHITE, BLACK);
 
