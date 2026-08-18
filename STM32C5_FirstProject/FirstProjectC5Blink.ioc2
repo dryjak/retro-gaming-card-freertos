@@ -665,7 +665,7 @@
     },
     "HAL_GPIO_PROJECT_USE_HAL": {
       "name": "HAL_GPIO_PROJECT_USE_HAL",
-      "value": 10,
+      "value": 6,
       "originator": "sw-config-semaphore"
     },
     "HAL_I2C_PROJECT_USE_HAL": {
@@ -834,8 +834,8 @@
           "used": true
         },
         {
-          "id": 52,
-          "name": "TIM6",
+          "id": 54,
+          "name": "I2C1_EV",
           "priority": 0,
           "subpriority": 0,
           "used": true
@@ -858,9 +858,9 @@
           "owner": "LPDMA1_CH2"
         },
         {
-          "needId": "5f4596f6-2a67-4688-b01a-da021645a0fd",
-          "destination": "TIM6",
-          "owner": "TIM6"
+          "needId": "2f286676-8f76-4d44-8674-f49afd7f63e9",
+          "destination": "I2C1_EV",
+          "owner": "I2C1"
         }
       ]
     }
@@ -899,11 +899,11 @@
     {
       "needType": "need.interrupt.lines",
       "projectUri": "cube:e083f389-ecca-4928-b0cd-6f549c28d12d/221b8ddd-b2b7-4a03-94c0-e5989cd20a84",
-      "componentId": "STMicroelectronics.stm32c5xx_hal_drivers.2.1.0$STMicroelectronics::Device:STM32CubeMX2 Config:TIM@2.1.0#HAL CORE GPIO DMA Init and TIM",
-      "componentInstanceId": "25aee9a4-ddde-4b63-87eb-231dc6cd1eb0",
-      "selector": "GLOBAL",
-      "id": "5f4596f6-2a67-4688-b01a-da021645a0fd",
-      "owner": "TIM6",
+      "componentId": "STMicroelectronics.stm32c5xx_hal_drivers.2.1.0$STMicroelectronics::Device:STM32CubeMX2 Config:I2C@2.1.0#HAL CORE GPIO DMA Init and I2C",
+      "componentInstanceId": "f61ddb22-38a2-4beb-ae39-6260782c5f09",
+      "selector": "EV",
+      "id": "2f286676-8f76-4d44-8674-f49afd7f63e9",
+      "owner": "I2C1",
       "propertyPath": ""
     }
   ],
@@ -3613,8 +3613,22 @@ solution:
                   }
                 },
                 "nvic": {
-                  "enable_event_interruption": false,
-                  "enable_error_interruption": false
+                  "enable_event_interruption": true,
+                  "enable_error_interruption": false,
+                  "event_irq_handler_generation": true,
+                  "nvic_config_event": {
+                    "needs": [
+                      {
+                        "needType": "need.interrupt.lines",
+                        "projectUri": "cube:e083f389-ecca-4928-b0cd-6f549c28d12d/221b8ddd-b2b7-4a03-94c0-e5989cd20a84",
+                        "componentId": "STMicroelectronics.stm32c5xx_hal_drivers.2.1.0$STMicroelectronics::Device:STM32CubeMX2 Config:I2C@2.1.0#HAL CORE GPIO DMA Init and I2C",
+                        "componentInstanceId": "f61ddb22-38a2-4beb-ae39-6260782c5f09",
+                        "selector": "EV",
+                        "id": "2f286676-8f76-4d44-8674-f49afd7f63e9",
+                        "owner": "I2C1"
+                      }
+                    ]
+                  }
                 }
               }
             }
@@ -3865,21 +3879,7 @@ solution:
               },
               "system": {
                 "nvic": {
-                  "enable_interruption_global": true,
-                  "irq_handler_generation_global": true,
-                  "nvic_config_global": {
-                    "needs": [
-                      {
-                        "needType": "need.interrupt.lines",
-                        "projectUri": "cube:e083f389-ecca-4928-b0cd-6f549c28d12d/221b8ddd-b2b7-4a03-94c0-e5989cd20a84",
-                        "componentId": "STMicroelectronics.stm32c5xx_hal_drivers.2.1.0$STMicroelectronics::Device:STM32CubeMX2 Config:TIM@2.1.0#HAL CORE GPIO DMA Init and TIM",
-                        "componentInstanceId": "25aee9a4-ddde-4b63-87eb-231dc6cd1eb0",
-                        "selector": "GLOBAL",
-                        "id": "5f4596f6-2a67-4688-b01a-da021645a0fd",
-                        "owner": "TIM6"
-                      }
-                    ]
-                  }
+                  "enable_interruption_global": false
                 },
                 "dma": {
                   "enable_dma_upd": false
@@ -4078,7 +4078,7 @@ solution:
             "basic": {
               "dma_mode": 0,
               "direction": "MEMORY_TO_PERIPH",
-              "src_inc": "FIXED",
+              "src_inc": "INCREMENTED",
               "dest_inc": "FIXED",
               "src_data_width": "BYTE",
               "dest_data_width": "BYTE",
@@ -4149,7 +4149,7 @@ solution:
               "dma_mode": 0,
               "direction": "PERIPH_TO_MEMORY",
               "src_inc": "FIXED",
-              "dest_inc": "FIXED",
+              "dest_inc": "INCREMENTED",
               "src_data_width": "BYTE",
               "dest_data_width": "BYTE",
               "priority": "LOW_WEIGHT_LOW",
@@ -4236,7 +4236,7 @@ solution:
             },
             "additional": {
               "trigger_xfer": {
-                "configuration": true,
+                "configuration": false,
                 "dma_channel_trigger_polarity": "RISING",
                 "dma_channel_trigger_mode": "SINGLE_BURST_TRANSFER",
                 "dma_channel_trigger_source": {
