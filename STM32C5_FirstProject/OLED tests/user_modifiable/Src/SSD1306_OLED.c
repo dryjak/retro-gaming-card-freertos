@@ -5,6 +5,7 @@
  *      Author: dryla
  */
 #include "../../main.h"
+#include "stm32c5xx_hal_dma.h"
 //#include "stm32c5xx_drivers/hal/stm32c5xx_hal_i2c.h"
 #include "SSD1306_OLED.h"
 #include <string.h>
@@ -18,7 +19,13 @@ void SSD1306_Command(SSD1306_t *OLED, uint8_t Command)
 
 void SSD1306_Data(SSD1306_t *OLED, uint8_t *Data, uint16_t Size)
 {
-	HAL_I2C_MASTER_MemWrite(OLED->I2c, (OLED->Address<<1), 0x40, 1, Data, Size, SSD1306_TIMEOUT);
+	if(OLED->I2c->hdma_tx->global_state != HAL_I2C_STATE_IDLE)
+	{
+		__NOP();
+	}
+	HAL_I2C_MASTER_MemWrite_DMA(OLED->I2c, (OLED->Address<<1), 0x40, 1, Data, Size);
+
+	//HAL_I2C_MASTER_MemWrite(OLED->I2c, (OLED->Address<<1), 0x40, 1, Data, Size, SSD1306_TIMEOUT);
 }
 //
 // Functions

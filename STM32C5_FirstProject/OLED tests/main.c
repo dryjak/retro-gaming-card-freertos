@@ -18,6 +18,7 @@
 #include "main.h"
 #include "mx_gpio_default.h"
 #include "stm32c5xx_drivers/hal/stm32c5xx_hal_i2c.h"
+#include "stm32c5xx_hal_adc.h"
 #include "stm32c5xx_hal_gpio.h"
 #include "stm32c5xx_hal_i2c.h"
 #include "mx_i2c1.h"
@@ -29,12 +30,26 @@
 #include "font_8x5.h"
 
 #include "GameSnake.h"
+#include "stm32c5xx_hal_tim.h"
 
+#include <stdio.h>
+#include <string.h>
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+//table for ADC DMA
+volatile uint16_t ADC_Value[10];
+volatile uint16_t ADC_Temp = 1;
+volatile uint8_t Debug = 1;
+
+// W sekcji zmiennych:
+volatile uint32_t timer_counter = 0;
+
+//uart buffer
+//char uart_buf[50];
+
 //OLED
 SSD1306_t OLED; 
 uint8_t OledAddress = 0x3C; // OLED I2C address
@@ -82,6 +97,13 @@ int main(void)
     /*
       * You can start your application code here
       */
+      //initialize timer and adc
+        HAL_ADC_REG_StartConv_DMA(mx_adc1_gethandle(), (uint8_t*)ADC_Value, sizeof(ADC_Value));
+        HAL_TIM_Start(mx_tim6_gethandle());
+        
+        //HAL_TIM_Base_Start(mx_tim6_gethandle());
+
+       //(&HAL_ADC_CHANNEL_6, (uint32_t*)ADC_Value, 10);
       //Initialize OLED
       SSD1306_Init(&OLED, OledAddress, mx_i2c1_i2c_gethandle());
       GFX_SetFont(font_8x5);
@@ -148,6 +170,11 @@ int main(void)
       HAL_Delay(2000);
       HAL_GPIO_WritePin(LED_PORT, LED_PIN, HAL_GPIO_PIN_RESET);
       HAL_Delay(1000);
+
+      Debug = 0;
+
+        //char test_msg[] = "Start Systemu!\r\n";
+        //HAL_UART_Transmit(mx_usart1_uart_gethandle(), (uint8_t*)test_msg, strlen(test_msg), 100);
     while (1) 
     {
       /*
@@ -165,6 +192,7 @@ int main(void)
       }
       HAL_Delay(10);
       */
+
       
       //Button task
       ButtonTask(&Up);
@@ -187,15 +215,35 @@ int main(void)
       {
         Console_Draw(&Console, &OLED);
       }
+/*if(ADC_Temp > 5000) 
+      {
+          // Ten kod nigdy się nie wykona (ADC to 12 bitów, max 4095), 
+          // ale kompilator musi zachować ADC_Temp, by sprawdzać ten warunek.
+          __NOP(); 
+
+      }
+                 ADC_Temp = ADC_Value[0];
+                 */
+      
 
       HAL_Delay(10);
+
+
+        //HAL_Delay(1000);
+        //sprintf(uart_buf, "Wartosc ADC: %u\r\n", ADC_Value[0]);
+        
+        //HAL_UART_Transmit(mx_usart1_uart_gethandle(), (uint8_t*)uart_buf, strlen(uart_buf), 100);
+        timer_counter = HAL_TIM_GetCounter(mx_tim6_gethandle());
+
     }
   }
+ 
 } /* end main */
 
 
 
 //Private functions
+
 void Action_ChangeContrast()
 {
 	    uint32_t temp = Console.Settings[0] * 255;
@@ -251,6 +299,7 @@ void Action_MenuUp(void) {
         Console_MoveUp(&Console);
     }
     TurnLedOn();
+    Debug++;
 }
 void Action_MenuDown(void) {
     if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
@@ -263,6 +312,7 @@ void Action_MenuDown(void) {
         Console_MoveDown(&Console);
     }
     TurnLedOn();
+    Debug--;
 }
 
 void Action_MenuEnter(void) {
@@ -326,3 +376,4 @@ void TurnLedOn(void)
 	HAL_GPIO_WritePin(LED_PORT, LED_PIN, HAL_GPIO_PIN_SET);
 	ButtonPressedFlag = 1;
 }
+
