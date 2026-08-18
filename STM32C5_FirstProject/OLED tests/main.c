@@ -30,6 +30,7 @@
 #include "font_8x5.h"
 
 #include "GameSnake.h"
+#include "GameFlappy.h"
 #include "stm32c5xx_hal_tim.h"
 
 #include <stdio.h>
@@ -212,6 +213,16 @@ int main(void)
           Snake.NeedsRedraw = 0; // Opuszczamy flagę
         }
       }
+      else if (Console.CurrentSystemState == STATE_GAME_FLAPPY)
+      {
+        Flappy_UpdateLogic();
+
+        // Rysujemy TYLKO wtedy, gdy logika tego zażąda (ruch lub śmierć)
+        if (Flappy.NeedsRedraw == 1) {
+          Flappy_Draw(&OLED);
+          Flappy.NeedsRedraw = 0; // Opuszczamy flagę
+        }
+      }
       else
       {
         Console_Draw(&Console, &OLED);
@@ -288,27 +299,48 @@ void Action_PlaySnake(void) {
             break;
     }
 }
+void Action_PlayFlappy(void) {
+    Console.CurrentSystemState = STATE_GAME_FLAPPY;
+    Flappy_Init();
+
+    // Opcjonalne sterowanie poziomem trudności we Flappy Bird (szybkość odświeżania klatek)
+    switch (Console.Settings[1]) {
+        case EASY:
+            Flappy.SpeedMs = 50; // Wolniej
+            break;
+        case NORMAL:
+            Flappy.SpeedMs = 40; // Standard
+            break;
+        case HARD:
+            Flappy.SpeedMs = 25; // Szybko
+            break;
+        default:
+            Flappy.SpeedMs = 40; 
+            break;
+    }
+}
 //wrapper
 void Action_MenuUp(void) {
     if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
         Snake_TurnUp();
-    }/*
+    }
     else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
-        Flappy_Jump(); // Skok ptaka!
-    }*/
+        Flappy_Jump(); // Skok ptaka odkomentowany!
+    }
     else {
         Console_MoveUp(&Console);
     }
     TurnLedOn();
     Debug++;
 }
+
 void Action_MenuDown(void) {
     if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
         Snake_TurnDown();
-    }/*
+    }
     else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
-        // Puste! Ptak nie reaguje na strzałkę w dół.
-    }*/
+        // Puste! Ptak nie reaguje na strzałkę w dół, ale przechwytujemy kliknięcie
+    }
     else {
         Console_MoveDown(&Console);
     }
@@ -319,17 +351,16 @@ void Action_MenuDown(void) {
 void Action_MenuEnter(void) {
     if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
         Snake_Confirm();
-    }/*
+    }
     else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
-		// Jeśli ptak zginął, Enter wraca do menu. Jeśli żyje, skacze!
-		if (Flappy.IsDead) {
-			Console.CurrentSystemState = STATE_GAMES_MENU;
-			Console.MenuCursorIndex = 0;
-			Console.NeedsRedraw = 1;
-		} else {
-			Flappy_Jump();
-		}
-	}*/
+        if (Flappy.IsDead) {
+            Console.CurrentSystemState = STATE_GAMES_MENU;
+            Console.MenuCursorIndex = 0;
+            Console.NeedsRedraw = 1;
+        } else {
+            Flappy_Jump(); // Skok ptaka też pod Enterem
+        }
+    }
     else {
         Console_Enter(&Console);
     }
@@ -339,10 +370,10 @@ void Action_MenuEnter(void) {
 void Action_MenuLeft(void) {
     if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
         Snake_TurnLeft();
-    }/*
+    }
     else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
-        // Puste!
-    }*/
+        // Puste! Przechwytujemy kliknięcie, żeby nie wyjść do menu.
+    }
     else {
         Console_MoveLeft(&Console);
     }
@@ -351,10 +382,10 @@ void Action_MenuLeft(void) {
 void Action_MenuRight(void) {
     if (Console.CurrentSystemState == STATE_GAME_SNAKE) {
         Snake_TurnRight();
-    }/*
+    }
     else if (Console.CurrentSystemState == STATE_GAME_FLAPPY) {
-        // Puste!
-    }*/
+        // Puste! Przechwytujemy kliknięcie, żeby nie wejść w ustawienia.
+    }
     else {
         Console_MoveRight(&Console);
     }
