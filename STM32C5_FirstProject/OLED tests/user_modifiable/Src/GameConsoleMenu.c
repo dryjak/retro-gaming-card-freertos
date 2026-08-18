@@ -6,6 +6,7 @@
  */
 
 #include "GameConsoleMenu.h"
+extern uint16_t Mean;
 
 // --- 1. MAKRA POMOCNICZE ---
 // Kompilator obliczy rozmiar tablicy. Np. dla MainMenuItems: 3 * (wielkość MenuItem_t) / (wielkość MenuItem_t) = 3
@@ -32,6 +33,7 @@ const MenuItem_t SettingsMenuItems[] = {
     // Text       // Type         // Stan docelowy (dla folderu) // Action
     {"Brightness", ITEM_VALUE,    STATE_SETTINGS_MENU,           Action_ChangeContrast},
     {"Mode",       ITEM_VALUE,    STATE_SETTINGS_MENU,           NULL},
+    {"Battery",    ITEM_VALUE,    STATE_SETTINGS_MENU,           NULL},
     {"Back",       ITEM_FOLDER,   STATE_MAIN_MENU,               NULL}
 };
 
@@ -240,6 +242,11 @@ void Console_Enter(GameConsole_t *Console) {
 
         // Sprawdzamy typ podświetlonego elementu
         if (SelectedItem.Type == ITEM_VALUE) {
+            if (Console->CurrentSystemState == STATE_SETTINGS_MENU && Console->MenuCursorIndex == 2) 
+            {
+                // To jest pole tylko do odczytu - ignorujemy wciśnięcie Enter
+                return; 
+            }
             // Wchodzimy w tryb edycji!
             Console->IsEditMode = 1;
             Console->NeedsRedraw = 1;
@@ -325,10 +332,22 @@ void Console_Draw(GameConsole_t *Console, SSD1306_t *Display)
 					uint8_t mode_index = Console->Settings[1];
 					snprintf(ValueBuffer, sizeof(ValueBuffer), "%s: %s", CurrentMenu[i].Text, GameModes[mode_index].Text);
 				}
+                else if (i == 2) // Battery (indeks 2 w SettingsMenuItems)
+                {
+                    // Obliczenie napięcia w miliwoltach. 
+                    // Wzór: (Odczyt * Vref * Dzielnik) / Rozdzielczość
+                    // Vref = 3300 mV, Dzielnik 1:2 (mnożymy x2, czyli x6600), Max ADC = 4095
+                    uint32_t battery_mV = (Mean * 6600) / 4095;
+                    
+                    // Formatujemy jako Volty (np. 4.12V).
+                    // Dzielimy przez 1000 by uzyskać Volty, a modulo załatwia końcówkę dziesiętną.
+                    snprintf(ValueBuffer, sizeof(ValueBuffer), "%s: %lu.%02luV", CurrentMenu[i].Text, battery_mV / 1000, (battery_mV % 1000) / 10);
+                }
 
 				// Rysujemy nasz nowy, sklejony tekst na ekranie!
 				GFX_DrawString(15, y_pos, ValueBuffer, WHITE, BLACK);
 			}
+            
 			else
 			{
 				// Jeśli to zwykły folder (np. "Games" lub "Back"), rysujemy go normalnie z Flash

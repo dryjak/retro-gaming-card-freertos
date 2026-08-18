@@ -43,6 +43,7 @@
 volatile uint16_t ADC_Value[10];
 volatile uint16_t ADC_Temp = 1;
 volatile uint8_t Debug = 1;
+uint16_t Mean = 2000;
 
 // W sekcji zmiennych:
 volatile uint32_t timer_counter = 0;
