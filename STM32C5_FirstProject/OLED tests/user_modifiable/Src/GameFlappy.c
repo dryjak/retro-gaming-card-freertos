@@ -83,10 +83,17 @@ void Flappy_UpdateLogic(void) {
         // Przesuwanie rury w lewo
         Flappy.Pipes[i].x -= 3; 
 
-        // Przydzielanie punktu za minięcie rury
+// Przydzielanie punktu za minięcie rury
         if (!Flappy.Pipes[i].Passed && (Flappy.Pipes[i].x + FLAPPY_PIPE_WIDTH < FLAPPY_BIRD_X)) {
             Flappy.Pipes[i].Passed = 1;
             Flappy.Score++;
+
+            // --- NOWOŚĆ: Przyspieszanie gry ---
+            // Zmniejszamy opóźnienie między klatkami (SpeedMs).
+            // Ustawiamy bezpieczny limit (np. 15 ms), aby gra nie stała się niemożliwa!
+            if (Flappy.SpeedMs > 15) {
+                Flappy.SpeedMs -= 1; // Z każdym punktem odejmujemy 1 milisekundę
+            }
         }
 
         // Zwijanie rury: jeśli wyleciała za ekran z lewej, przerzucamy ją na prawą stronę
