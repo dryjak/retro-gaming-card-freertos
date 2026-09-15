@@ -54,3 +54,8 @@ Basic schematic of STM32C562KET6
 [ SWD Test Points ] <--------------------/       v
                                            [ OLED Display ]
 
+
+```
+Things to change:
+1) Footprint 0.96 inch display - I used different pcb size - mistake
+2) 
