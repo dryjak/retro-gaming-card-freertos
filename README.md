@@ -58,4 +58,6 @@ Basic schematic of STM32C562KET6
 ```
 Things to change:
 1) Footprint 0.96 inch display - I used different pcb size - mistake
-2) 
+2) Add Rx and Tx pins for debugging
+3) Change voltage devider placement, connection - connect it after on/off switch
+4) Change footprint for battery connection 
