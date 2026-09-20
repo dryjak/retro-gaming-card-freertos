@@ -25,6 +25,8 @@
 volatile uint16_t ADC_Values[10] = {0}; /* ADC values buffer */
 uint16_t Mean = 0; /* Variable to store the mean of ADC values */
 uint16_t Sum = 0; /* Variable to store the sum of ADC values */
+
+uint32_t TimeNow = 0; /* Variable to store the current time in milliseconds */
 /* Private functions prototype -----------------------------------------------*/
 
 /**
@@ -47,9 +49,14 @@ int main(void)
     /*
       * You can start your application code here
       */
-    HAL_ADC_REG_StartConv_DMA(mx_adc1_gethandle(), (uint8_t *)ADC_Values, sizeof(ADC_Values)/sizeof(ADC_Values[0])); /* Start ADC conversion in DMA mode */
+    HAL_ADC_REG_StartConv_DMA(mx_adc1_gethandle(), (uint8_t *)ADC_Values, 10); /* Start ADC conversion in DMA mode */
+    TimeNow = HAL_GetTick();
+    
     while (1) {
-  
+      if(HAL_GetTick() - TimeNow >= 1000) /* Check if 1 second has passed */
+      {
+        TimeNow = HAL_GetTick(); /* Update the current time */
+
       Sum = 0; /* Reset sum before calculation */
       for (uint8_t i = 0; i < sizeof(ADC_Values)/sizeof(ADC_Values[0]); i++)
       {
@@ -59,4 +66,5 @@ int main(void)
     }
   }
 } /* end main */
+
 
