@@ -42,6 +42,7 @@ uint16_t AdcAverage = 0;
 uint8_t BatteryPercentage = 0;
 
 float v_pin = 0.0f; // Voltage at the ADC pin (after voltage divider)
+uint8_t BatteryEmptyFlag = 0; // Flag to indicate if battery is empty (below minimum voltage)
 
 uint32_t TimeNow = 0;
 /* Private functions prototype -----------------------------------------------*/
@@ -73,8 +74,17 @@ int main(void)
 
     while (1) 
     {
+
       if(HAL_GetTick() - TimeNow >= 1000) // Check if 1 second has passed
       {
+        if(BatteryEmptyFlag)
+        {
+          HAL_GPIO_WritePin(LED_PORT, LED_PIN, 1); // Turn on LED
+        }
+        else
+        {
+          HAL_GPIO_WritePin(LED_PORT, LED_PIN, 0); // Turn off LED
+        }
         TimeNow = HAL_GetTick(); // Update the time
         // Read ADC values into AdcData array
         for (int i = 0; i < ADC_SIZE; i++)
@@ -85,7 +95,14 @@ int main(void)
         AdcSum = 0; // Reset sum for next iteration
 
         BatteryPercentage = Calculate_Battery_Percentage(AdcAverage); // Calculate battery percentage
-
+        if (BatteryPercentage <= 50) // Check if battery is below 50%
+        {
+          BatteryEmptyFlag = 1; // Set flag if battery is low
+        }
+        else
+        {
+          BatteryEmptyFlag = 0; // Clear flag if battery is sufficient
+        }
 
       }
     }
