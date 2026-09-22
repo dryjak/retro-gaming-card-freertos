@@ -22,7 +22,7 @@
 #include <stdint.h>
 
 /* Private typedef -----------------------------------------------------------*/
-#define ADC_SIZE 10
+#define ADC_SIZE 5
 
 /*Configure adc*/
 #define ADC_RESOLUTION      4095.0f // Max value for 12-bit ADC (2^12 - 1)
@@ -40,6 +40,8 @@ volatile uint16_t AdcData[ADC_SIZE];
 uint16_t AdcSum = 0;
 uint16_t AdcAverage = 0;
 uint8_t BatteryPercentage = 0;
+
+volatile uint8_t DataReadyFlag = 0;
 
 float v_pin = 0.0f; // Voltage at the ADC pin (after voltage divider)
 uint8_t BatteryEmptyFlag = 0; // Flag to indicate if battery is empty (below minimum voltage)
@@ -68,13 +70,16 @@ int main(void)
     /*
       * You can start your application code here
       */
-    HAL_ADC_Start(mx_adc1_gethandle());
+    //HAL_ADC_Start(mx_adc1_gethandle());
     HAL_ADC_REG_StartConv_DMA(mx_adc1_gethandle(), (uint8_t*)AdcData, ADC_SIZE * sizeof(uint16_t));
+    HAL_TIM_Start(mx_tim2_gethandle());
+    
+    
     TimeNow = HAL_GetTick();
 
     while (1) 
     {
-
+/*
       if(HAL_GetTick() - TimeNow >= 1000) // Check if 1 second has passed
       {
         if(BatteryEmptyFlag)
@@ -105,6 +110,20 @@ int main(void)
         }
 
       }
+  */
+      if(DataReadyFlag)
+      {
+        DataReadyFlag = 0; // Reset the flag
+        // Read ADC values into AdcData array
+        for (int i = 0; i < ADC_SIZE; i++)
+        {
+          AdcSum += AdcData[i]; // Sum the ADC values
+        }
+        AdcAverage = AdcSum / ADC_SIZE;
+        AdcSum = 0; // Reset sum for next iteration
+      }
+
+      HAL_Delay(10); // Delay for 100 ms to avoid busy waiting
     }
   }
 } 
@@ -136,3 +155,13 @@ uint8_t Calculate_Battery_Percentage(uint16_t adc_value)
 
 /* end main */
 
+void HAL_ADC_REG_DataTransferCpltCallback(hal_adc_handle_t *hadc)
+{
+  if (hadc->instance == mx_adc1_gethandle()->instance)
+  {
+    // ADC conversion complete callback
+    // You can add any additional processing here if needed
+    DataReadyFlag = 1;
+    HAL_GPIO_TogglePin(LED_PORT, LED_PIN); // Toggle the LED state
+  }
+}

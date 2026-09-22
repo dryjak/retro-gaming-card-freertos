@@ -604,7 +604,7 @@ extern "C" {
   * @{
   */
 /* ########################## HAL_TIM Config #################################### */
-#define USE_HAL_TIM_MODULE                      0U
+#define USE_HAL_TIM_MODULE                      1U
 #define USE_HAL_TIM_CLK_ENABLE_MODEL            HAL_CLK_ENABLE_NO
 #define USE_HAL_TIM_REGISTER_CALLBACKS          0U
 #define USE_HAL_TIM_USER_DATA                   0U

@@ -1,7 +1,7 @@
 {
   "disclaimer": "Do not modify this file as it is used by STM32CubeMX2 to determine what and how to update your project with new configuration",
   "version": "1.0.0",
-  "timestamp": "2026-09-20T19:55:39.068Z",
+  "timestamp": "2026-09-22T19:24:26.689Z",
   "files": [
     {
       "fileGroup": "project_file",
@@ -39,7 +39,7 @@
       "fileGroup": "generated",
       "checksum": {
         "algo": "sha256",
-        "digest": "7716c807db4d518a92404e1e5f4de7fd5a291419b797a545ffaf5b9ff73ba54f"
+        "digest": "4ed346549720e1e84cc72acff904180207a58e15cfb72ed5af19ee044a0e3ffc"
       },
       "file": "cmake/components.cmake"
     },
@@ -79,7 +79,7 @@
       "fileGroup": "project_file",
       "checksum": {
         "algo": "sha256",
-        "digest": "33778c4f91db3968cce171fcc5acd943c5d3d2738c1184c022fd797357e5a1bc"
+        "digest": "43f2967834fa94cb6e67fd7198e281db9a7d58ba2bec7cfc25902ff3b94caad2"
       },
       "file": "stm32c5xx_dfp/CMakeLists.txt"
     },
@@ -103,7 +103,7 @@
       "fileGroup": "pack",
       "checksum": {
         "algo": "sha256",
-        "digest": "23a6cd6dec61f4feca7b05a8851aea7f6c0a3a530c6c872b95767ac8f0fc3901"
+        "digest": "253316e5a48335df29db61a884d2a49834d74784130e486bbb7bc0b5f3152dd1"
       },
       "file": "stm32c5xx_dfp/RTE_Components.h"
     },
@@ -191,7 +191,7 @@
       "fileGroup": "generated",
       "checksum": {
         "algo": "sha256",
-        "digest": "eb5170987c386e5adee7f83072a9a0c18280835c987d210d4ddefd23a5129ba2"
+        "digest": "54f80052de8a48905fcda8640b34467fcb15ee75bb5f11596f9d72d1eb71df03"
       },
       "file": "generated/hal/mx_adc1.c"
     },
@@ -279,7 +279,7 @@
       "fileGroup": "generated",
       "checksum": {
         "algo": "sha256",
-        "digest": "292cbf75bb085f7d9e15929fcf9f501c21d020a1d68345e2099be104faf15281"
+        "digest": "aeed9c8a1c962ea2913bf0124f6020597d08bfacfc7d98580dfd5f4f4b8ebdcb"
       },
       "file": "generated/hal/mx_hal_def.h"
     },
@@ -327,7 +327,7 @@
       "fileGroup": "generated",
       "checksum": {
         "algo": "sha256",
-        "digest": "0e403ea871d9af55a9e7ae6d277ea22a62dc65d1756d446cef34ad060de99394"
+        "digest": "18da854e2bfd9a997f25f62ec1f7157972ac510ea3821b2a24925d70c63b27e0"
       },
       "file": "generated/hal/mx_system.c"
     },
@@ -343,6 +343,22 @@
       "fileGroup": "generated",
       "checksum": {
         "algo": "sha256",
+        "digest": "2396afb558dc3bde84159e7475df8f785432083c982a43766bd7df3a00cb90d3"
+      },
+      "file": "generated/hal/mx_tim2.c"
+    },
+    {
+      "fileGroup": "generated",
+      "checksum": {
+        "algo": "sha256",
+        "digest": "b5a6fefc98f287765b426660e6bc0703277cd145a3d729fae68b17055c927bac"
+      },
+      "file": "generated/hal/mx_tim2.h"
+    },
+    {
+      "fileGroup": "generated",
+      "checksum": {
+        "algo": "sha256",
         "digest": "c6f3ec0b61bfbe0530fb28abd0c9e4af4ecadf52bb4351abdfa2e8ef46cd2714"
       },
       "file": "generated/hal/Pre_Include_Global.h"
@@ -351,7 +367,7 @@
       "fileGroup": "generated",
       "checksum": {
         "algo": "sha256",
-        "digest": "5d036edf4f38965e0ce50a7977af7c2e14c2e8487f06b41f1ff8ccdf899d92a3"
+        "digest": "991a0360f88be39673432f5c3688ccce85f29bfd58243ac23b3c486ca7b197c7"
       },
       "file": "generated/hal/stm32c5xx_hal_conf.h"
     },
@@ -367,7 +383,7 @@
       "fileGroup": "generated",
       "checksum": {
         "algo": "sha256",
-        "digest": "d070d9d57fbce7a951a8626652b81fe904f8c2fa484449352c18b54d7be05b61"
+        "digest": "caccf908989f37e131ee648656986b821ea46941c069b229edf1d71bf910b948"
       },
       "file": "generated/hal/STM32_HAL_Driver_codegen.cmake"
     },
@@ -375,7 +391,7 @@
       "fileGroup": "generated",
       "checksum": {
         "algo": "sha256",
-        "digest": "38a83095adde0dfb2c912b3fdd6b73f5d52975eaa1433516741459f220524e50"
+        "digest": "abb23c2479f82ec9624424edb74f9227b7a3982dde0eaebbee1c23e1231370de"
       },
       "file": "generated/hal/STM32_HAL_Driver_codegen.gpdsc"
     },

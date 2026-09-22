@@ -41,6 +41,7 @@ if(CMSIS_ENTIRE_generated_STMicroelectronics_stm32c5xx_hal_drivers_0_0_1)
   list(APPEND CMSIS_COMPONENTS_LIST "Cvendor:STMicroelectronics#Cclass:Device#Cgroup:STM32CubeMX2 Config#Csub:ICACHE#Cversion:2.1.0#generated:true")
   list(APPEND CMSIS_COMPONENTS_LIST "Cvendor:STMicroelectronics#Cclass:Device#Cgroup:STM32CubeMX2 Config#Csub:RCC#Cversion:2.1.0#generated:true")
   list(APPEND CMSIS_COMPONENTS_LIST "Cvendor:STMicroelectronics#Cclass:Device#Cgroup:STM32CubeMX2 Config#Csub:System#Cversion:2.1.0#generated:true")
+  list(APPEND CMSIS_COMPONENTS_LIST "Cvendor:STMicroelectronics#Cclass:Device#Cgroup:STM32CubeMX2 Config#Csub:TIM#Cversion:2.1.0#generated:true")
 endif()
 
 # All conditions used by this package
@@ -248,7 +249,7 @@ endif()
 # condition: generated_STMicroelectronics.stm32c5xx_hal_drivers.0.0.1:HAL CORE GPIO DMA Init and TIM
 # description: STMicroelectronics HAL TIM Init dependencies
 if((CMSIS_Dname MATCHES "STM32C5.*" AND CMSIS_Dvendor STREQUAL "STMicroelectronics:13"))
-  set(generated_STMicroelectronics.stm32c5xx_hal_drivers.0.0.1_HAL_CORE_GPIO_DMA_Init_and_TIM "$<AND:$<AND:$<NOT:$<STREQUAL:$<FILTER:${CMSIS_COMPONENTS_LIST},INCLUDE,.*Cclass:CMSIS#.*Cgroup:CORE(#.*|$)>,>>,$<NOT:$<STREQUAL:$<FILTER:${CMSIS_COMPONENTS_LIST},INCLUDE,.*Cclass:Device#.*Cgroup:STM32 HAL#.*Csub:GPIO(#.*|$)>,>>,$<NOT:$<STREQUAL:$<FILTER:${CMSIS_COMPONENTS_LIST},INCLUDE,.*Cclass:Device#.*Cgroup:STM32 HAL#.*Csub:DMA(#.*|$)>,>>>,$<NOT:$<STREQUAL:$<FILTER:${CMSIS_COMPONENTS_LIST},INCLUDE,.*Cclass:Device#.*Cgroup:STM32 LL#.*Csub:TIM(#.*|$)>,>>>")
+  set(generated_STMicroelectronics.stm32c5xx_hal_drivers.0.0.1_HAL_CORE_GPIO_DMA_Init_and_TIM "$<AND:$<AND:$<NOT:$<STREQUAL:$<FILTER:${CMSIS_COMPONENTS_LIST},INCLUDE,.*Cclass:CMSIS#.*Cgroup:CORE(#.*|$)>,>>,$<NOT:$<STREQUAL:$<FILTER:${CMSIS_COMPONENTS_LIST},INCLUDE,.*Cclass:Device#.*Cgroup:STM32 HAL#.*Csub:GPIO(#.*|$)>,>>,$<NOT:$<STREQUAL:$<FILTER:${CMSIS_COMPONENTS_LIST},INCLUDE,.*Cclass:Device#.*Cgroup:STM32 HAL#.*Csub:DMA(#.*|$)>,>>>,$<NOT:$<STREQUAL:$<FILTER:${CMSIS_COMPONENTS_LIST},INCLUDE,.*Cclass:Device#.*Cgroup:STM32 HAL#.*Csub:TIM(#.*|$)>,>>>")
   message(DEBUG "CMSIS condition generated_STMicroelectronics.stm32c5xx_hal_drivers.0.0.1_HAL_CORE_GPIO_DMA_Init_and_TIM enabled")
 else()
   set(generated_STMicroelectronics.stm32c5xx_hal_drivers.0.0.1_HAL_CORE_GPIO_DMA_Init_and_TIM 0)
@@ -1057,5 +1058,12 @@ if("Cvendor:STMicroelectronics#Cclass:Device#Cgroup:STM32CubeMX2 Config#Csub:Sys
   target_compile_definitions(generated_STMicroelectronics_stm32c5xx_hal_drivers_0_0_1 INTERFACE "$<${generated_STMicroelectronics.stm32c5xx_hal_drivers.0.0.1_HAL_System_Init}:-DCMSIS_USE_generated_Device_STM32CubeMX2_Config_System_2_1_0=1>")
   target_include_directories(generated_STMicroelectronics_stm32c5xx_hal_drivers_0_0_1 INTERFACE "$<${generated_STMicroelectronics.stm32c5xx_hal_drivers.0.0.1_HAL_System_Init}:${CMAKE_CURRENT_LIST_DIR}/.>")
   target_sources(generated_STMicroelectronics_stm32c5xx_hal_drivers_0_0_1 INTERFACE "$<${generated_STMicroelectronics.stm32c5xx_hal_drivers.0.0.1_HAL_System_Init}:${CMAKE_CURRENT_LIST_DIR}/mx_system.c>")
+endif()
+
+if("Cvendor:STMicroelectronics#Cclass:Device#Cgroup:STM32CubeMX2 Config#Csub:TIM#Cversion:2.1.0#generated:true" IN_LIST CMSIS_COMPONENTS_LIST)  # TO BE DEFINED
+  message(DEBUG "Using component generated_Device_STM32CubeMX2_Config_TIM_2_1_0")
+  target_compile_definitions(generated_STMicroelectronics_stm32c5xx_hal_drivers_0_0_1 INTERFACE "$<${generated_STMicroelectronics.stm32c5xx_hal_drivers.0.0.1_HAL_CORE_GPIO_DMA_Init_and_TIM}:-DCMSIS_USE_generated_Device_STM32CubeMX2_Config_TIM_2_1_0=1>")
+  target_include_directories(generated_STMicroelectronics_stm32c5xx_hal_drivers_0_0_1 INTERFACE "$<${generated_STMicroelectronics.stm32c5xx_hal_drivers.0.0.1_HAL_CORE_GPIO_DMA_Init_and_TIM}:${CMAKE_CURRENT_LIST_DIR}/.>")
+  target_sources(generated_STMicroelectronics_stm32c5xx_hal_drivers_0_0_1 INTERFACE "$<${generated_STMicroelectronics.stm32c5xx_hal_drivers.0.0.1_HAL_CORE_GPIO_DMA_Init_and_TIM}:${CMAKE_CURRENT_LIST_DIR}/mx_tim2.c>")
 endif()
 

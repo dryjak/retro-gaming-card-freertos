@@ -57,15 +57,40 @@ hal_adc_handle_t *mx_adc1_init(void)
 
 /* ==================== Group Regular ====================*/
   hal_adc_reg_config_t reg_config;
-  reg_config.trigger_src        = HAL_ADC_REG_TRIG_SOFTWARE;
-  reg_config.sequencer_length   = 1;
+  reg_config.trigger_src        = HAL_ADC_REG_TRIG_TIM2_TRGO;
+  reg_config.trigger_edge       = HAL_ADC_REG_TRIG_EDGE_RISING;
+  reg_config.sequencer_length   = 5;
   reg_config.sequencer_discont  = HAL_ADC_REG_SEQ_DISCONT_DISABLE;
-  reg_config.continuous         = HAL_ADC_REG_CONV_CONTINUOUS;
+  reg_config.continuous         = HAL_ADC_REG_CONV_SINGLE;
   reg_config.overrun            = HAL_ADC_REG_OVR_DATA_OVERWRITTEN;
   HAL_ADC_REG_SetConfig(&hADC1, &reg_config);
 
   adc_channel_config.group           = HAL_ADC_GROUP_REGULAR;
   adc_channel_config.sequencer_rank  = 1;
+  adc_channel_config.sampling_time   = HAL_ADC_SAMPLING_TIME_289CYCLES;
+  adc_channel_config.input_mode      = HAL_ADC_IN_SINGLE_ENDED;
+  HAL_ADC_SetConfigChannel(&hADC1, HAL_ADC_CHANNEL_0, &adc_channel_config);
+
+  adc_channel_config.group           = HAL_ADC_GROUP_REGULAR;
+  adc_channel_config.sequencer_rank  = 2;
+  adc_channel_config.sampling_time   = HAL_ADC_SAMPLING_TIME_289CYCLES;
+  adc_channel_config.input_mode      = HAL_ADC_IN_SINGLE_ENDED;
+  HAL_ADC_SetConfigChannel(&hADC1, HAL_ADC_CHANNEL_0, &adc_channel_config);
+
+  adc_channel_config.group           = HAL_ADC_GROUP_REGULAR;
+  adc_channel_config.sequencer_rank  = 3;
+  adc_channel_config.sampling_time   = HAL_ADC_SAMPLING_TIME_289CYCLES;
+  adc_channel_config.input_mode      = HAL_ADC_IN_SINGLE_ENDED;
+  HAL_ADC_SetConfigChannel(&hADC1, HAL_ADC_CHANNEL_0, &adc_channel_config);
+
+  adc_channel_config.group           = HAL_ADC_GROUP_REGULAR;
+  adc_channel_config.sequencer_rank  = 4;
+  adc_channel_config.sampling_time   = HAL_ADC_SAMPLING_TIME_289CYCLES;
+  adc_channel_config.input_mode      = HAL_ADC_IN_SINGLE_ENDED;
+  HAL_ADC_SetConfigChannel(&hADC1, HAL_ADC_CHANNEL_0, &adc_channel_config);
+
+  adc_channel_config.group           = HAL_ADC_GROUP_REGULAR;
+  adc_channel_config.sequencer_rank  = 5;
   adc_channel_config.sampling_time   = HAL_ADC_SAMPLING_TIME_289CYCLES;
   adc_channel_config.input_mode      = HAL_ADC_IN_SINGLE_ENDED;
   HAL_ADC_SetConfigChannel(&hADC1, HAL_ADC_CHANNEL_0, &adc_channel_config);

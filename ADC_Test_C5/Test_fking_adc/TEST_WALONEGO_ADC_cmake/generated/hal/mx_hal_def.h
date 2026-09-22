@@ -34,6 +34,7 @@ extern "C" {
 #include "mx_gpio_default.h"
 #include "mx_icache.h"
 #include "mx_rcc.h"
+#include "mx_tim2.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
@@ -96,6 +97,12 @@ extern "C" {
       As a result, no aliases are generated for mx_rcc_init
     ************************************************************* */
 
+  /* *************************************************************
+    TIM2: No software label has been defined for this peripheral instance
+      in the STM32CubeMX2 configuration panel.
+      As a result, no aliases are generated for mx_tim2_init
+    ************************************************************* */
+
 /* ########################################################### */
 
 /* ########### Aliases to De-Initialization functions ########### */
@@ -141,6 +148,12 @@ extern "C" {
       As a result, no aliases are generated for mx_icache_deinit
     ************************************************************* */
 
+  /* *************************************************************
+    TIM2: No software label has been defined for this peripheral instance
+      in the STM32CubeMX2 configuration panel.
+      As a result, no aliases are generated for mx_tim2_deinit
+    ************************************************************* */
+
 /* ########################################################### */
 
 /* ########### Aliases to get HAL handle functions ########### */
@@ -155,6 +168,12 @@ extern "C" {
     ICACHE: No software label has been defined for this peripheral instance
       in the STM32CubeMX2 configuration panel.
       As a result, no aliases are generated for mx_icache_gethandle
+    ************************************************************* */
+
+  /* *************************************************************
+    TIM2: No software label has been defined for this peripheral instance
+      in the STM32CubeMX2 configuration panel.
+      As a result, no aliases are generated for mx_tim2_gethandle
     ************************************************************* */
 
 /* ########################################################### */
