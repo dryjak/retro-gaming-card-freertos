@@ -41,9 +41,9 @@ hal_tim_handle_t *mx_tim2_init(void)
 
   /* Timer configuration to reach the output frequency at 0 Hz */
   hal_tim_config_t config;
-  config.prescaler              = 39321;
+  config.prescaler              = 9999;
   config.counter_mode           = HAL_TIM_COUNTER_UP;
-  config.period                 = 0x383F;
+  config.period                 = 0x2327F;
   config.repetition_counter     = 0;
   config.clock_sel.clock_source = HAL_TIM_CLK_INTERNAL;
   if (HAL_TIM_SetConfig(&hTIM2, &config) != HAL_OK)

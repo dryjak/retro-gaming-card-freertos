@@ -3427,7 +3427,7 @@ solution:
                 "time_base": {
                   "clock_source_configuration": {
                     "clock_source": "INTERNAL",
-                    "prescaler": 39321,
+                    "prescaler": 9999,
                     "kernel_clock_frequency": "144 MHz",
                     "kernel_clock_source": "TIMx_Input_Clock"
                   },
@@ -3436,7 +3436,7 @@ solution:
                     "counter_mode": "UP",
                     "dithering": false,
                     "period_dithering_pattern": 0,
-                    "period": 14399
+                    "period": 143999
                   },
                   "frequency": "0 Hz"
                 },

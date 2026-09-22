@@ -70,7 +70,7 @@ int main(void)
     /*
       * You can start your application code here
       */
-    //HAL_ADC_Start(mx_adc1_gethandle());
+    HAL_ADC_Start(mx_adc1_gethandle());
     HAL_ADC_REG_StartConv_DMA(mx_adc1_gethandle(), (uint8_t*)AdcData, ADC_SIZE * sizeof(uint16_t));
     HAL_TIM_Start(mx_tim2_gethandle());
     
