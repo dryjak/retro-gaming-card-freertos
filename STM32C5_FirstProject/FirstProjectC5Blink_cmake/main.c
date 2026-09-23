@@ -433,6 +433,7 @@ void HAL_ADC_REG_DataTransferCpltCallback(hal_adc_handle_t *hadc)
     // ADC conversion complete callback
     // You can add any additional processing here if needed
     DataReadyFlag = 1;
-    HAL_GPIO_TogglePin(LED_PORT, LED_PIN); // Toggle the LED state
+    //HAL_GPIO_TogglePin(LED_PORT, LED_PIN); // Toggle the LED state
+    Console.NeedsRedraw = 1; // Request a redraw of the console
   }
 }
