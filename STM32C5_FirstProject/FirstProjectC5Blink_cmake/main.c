@@ -38,20 +38,30 @@
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private define ------------------------------------------------------------*/
-#define ADC_BUFFER_SIZE 10
+
+/*Configure adc*/
+#define ADC_RESOLUTION      4095.0f // Max value for 12-bit ADC (2^12 - 1)
+#define V_REF               3.3f    // Ref voltage for ADC (3.3V)
+#define DIVIDER_RATIO       2.0f    // Voltage divider ratio (assuming equal resistors, Vout = Vin / 2)
+#define ADC_SIZE 5
+
+/*Lipo 1s*/
+#define LIPO_MAX_VOLTAGE    4.2f    // Max voltage for fully charged LiPo battery
+#define LIPO_MIN_VOLTAGE    3.2f    // Min safe voltage for LiPo battery
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+
 //table for ADC DMA
-volatile uint16_t ADC_Value[ADC_BUFFER_SIZE] = {0};
-volatile uint16_t ADC_Temp = 1;
+volatile uint16_t AdcData[ADC_SIZE] = {0};
+uint8_t DataReadyFlag = 0; //ADC data ready flag
 volatile uint8_t Debug = 1;
+uint8_t BatteryPercentage = 0;
 volatile uint16_t Mean = 0; //Mean value of ADC, calculated in main loop
 
-// W sekcji zmiennych:
-volatile uint32_t timer_counter = 0;
+float v_pin = 0.0f; // Voltage at the ADC pin (after voltage divider)
+uint8_t BatteryEmptyFlag = 0; // Flag to indicate if battery is empty (below minimum voltage)
 
-//uart buffer
-//char uart_buf[50];
+volatile uint32_t timer_counter = 0;
 
 //OLED
 SSD1306_t OLED; 
@@ -70,6 +80,7 @@ void Action_ChangeContrast();
 
 //ADC mean value calculation
 void CalculateMeanADC(void);
+uint8_t Calculate_Battery_Percentage(uint16_t adc_value);
 
 //Wrapper
 void Action_MenuUp(void);
@@ -82,6 +93,8 @@ void Action_MenuRight(void);
 void TurnLedOff(void);
 void TurnLedOn(void);
 void ToggleLed(void);
+
+
 
 /**
   * brief:  The application entry point.
@@ -103,30 +116,11 @@ int main(void)
     /*
       * You can start your application code here
       */
-      //initialize timer and adc
+    //initialize timer and start adc
+    HAL_ADC_Start(mx_adc1_gethandle());
+    HAL_ADC_REG_StartConv_DMA(mx_adc1_gethandle(), (uint8_t*)AdcData, ADC_SIZE * sizeof(uint16_t));
+    HAL_TIM_Start(mx_tim2_gethandle());
 
-      // 2. Start DMA. Używamy STAŁEJ określającej liczbę elementów, a nie rozmiar w bajtach!
-      // (Standardowa funkcja to HAL_ADC_Start_DMA, ale zostawiam Twój wrapper, 
-      // pamiętaj jednak, że standardowo rzutuje się to na (uint32_t*)).
-      if (HAL_ADC_REG_StartConv_DMA(mx_adc1_gethandle(), (uint8_t*)ADC_Value, ADC_BUFFER_SIZE) != HAL_OK)
-      {
-          // DMA NIE WYSTARTOWAŁO!
-          // Brak obsługi tego błędu to powód "cichych awarii".
-          TurnLedOn();
-          while(1); 
-      }
-
-      // 3. Uruchomienie timera wyzwalającego ADC.
-      // Standardową funkcją HAL do uruchamiania timerów podstawowych (np. TIM6) 
-      // jest HAL_TIM_Base_Start. Upewnij się, że generuje on TRGO (Trigger Output) w CubeMX!
-      if (HAL_TIM_Start(mx_tim6_gethandle()) != HAL_OK)
-      {
-          TurnLedOn();
-          while(1);
-      }
-        //HAL_TIM_Base_Start(mx_tim6_gethandle());
-
-       //(&HAL_ADC_CHANNEL_6, (uint32_t*)ADC_Value, 10);
       //Initialize OLED
       SSD1306_Init(&OLED, OledAddress, mx_i2c1_i2c_gethandle());
       GFX_SetFont(font_8x5);
@@ -183,12 +177,8 @@ int main(void)
       ButtonRegisterLongPressCallback(&Right, TurnLedOff);
       ButtonRegisterRepeatCallback(&Right, ToggleLed);
       ButtonRegisterGoToIdleCallback(&Right, TurnLedOff);
-
-
-
-      //HAL_I2C_MASTER_Transmit(&hi2c1, (0x3C << 1), 0x00, 1, &value, 1, 100);
-      //HAL_I2C_MASTER_Transmit_DMA(&hi2c1, (0x3C << 1), 0x00, 1, &value, 1, 100);
-      //HAL_I2C_Memory_Write(&hi2c1, 0x3C << 1, 0x00, 1, &value ,1, 100);
+    
+      //test and blink led
       HAL_GPIO_WritePin(LED_PORT, LED_PIN, HAL_GPIO_PIN_SET);
       HAL_Delay(2000);
       HAL_GPIO_WritePin(LED_PORT, LED_PIN, HAL_GPIO_PIN_RESET);
@@ -196,27 +186,8 @@ int main(void)
 
       Debug = 0;
 
-        //char test_msg[] = "Start Systemu!\r\n";
-        //HAL_UART_Transmit(mx_usart1_uart_gethandle(), (uint8_t*)test_msg, strlen(test_msg), 100);
     while (1) 
-    {
-      /*
-      if(HAL_GPIO_ReadPin(BUTTON_UP_PORT, BUTTON_UP_PIN) == HAL_GPIO_PIN_RESET || 
-      HAL_GPIO_ReadPin(BUTTON_DOWN_PORT, BUTTON_DOWN_PIN) == HAL_GPIO_PIN_RESET ||
-      HAL_GPIO_ReadPin(BUTTON_LEFT_PORT, BUTTON_LEFT_PIN) == HAL_GPIO_PIN_RESET ||
-      HAL_GPIO_ReadPin(BUTTON_RIGHT_PORT, BUTTON_RIGHT_PIN) == HAL_GPIO_PIN_RESET ||
-      HAL_GPIO_ReadPin(BUTTON_ENTER_PORT, BUTTON_ENTER_PIN) == HAL_GPIO_PIN_RESET)
-      {
-        HAL_GPIO_WritePin(LED_PORT, LED_PIN, HAL_GPIO_PIN_SET);
-      }
-      else
-      {
-        HAL_GPIO_WritePin(LED_PORT, LED_PIN, HAL_GPIO_PIN_RESET);
-      }
-      HAL_Delay(10);
-      */
-
-      
+    {      
       //Button task
       ButtonTask(&Up);
       ButtonTask(&Down);
@@ -228,46 +199,36 @@ int main(void)
       {
         Snake_UpdateLogic();
 
-        // Rysujemy TYLKO wtedy, gdy logika tego zażąda (ruch lub śmierć)
+        //Draw only when the logic requires it (movement or death)
         if (Snake.NeedsRedraw == 1) {
           Snake_Draw(&OLED);
-          Snake.NeedsRedraw = 0; // Opuszczamy flagę
+          Snake.NeedsRedraw = 0; // Clear the flag
         }
       }
       else if (Console.CurrentSystemState == STATE_GAME_FLAPPY)
       {
         Flappy_UpdateLogic();
 
-        // Rysujemy TYLKO wtedy, gdy logika tego zażąda (ruch lub śmierć)
+        //Draw only when the logic requires it (movement or death)
         if (Flappy.NeedsRedraw == 1) {
           Flappy_Draw(&OLED);
-          Flappy.NeedsRedraw = 0; // Opuszczamy flagę
+          Flappy.NeedsRedraw = 0; //Clear the flag
         }
       }
       else
       {
         Console_Draw(&Console, &OLED);
       }
-/*if(ADC_Temp > 5000) 
-      {
-          // Ten kod nigdy się nie wykona (ADC to 12 bitów, max 4095), 
-          // ale kompilator musi zachować ADC_Temp, by sprawdzać ten warunek.
-          __NOP(); 
 
+      if(DataReadyFlag == 1)
+      {
+        DataReadyFlag = 0; // Clear the flag
+        CalculateMeanADC();
+        BatteryPercentage = Calculate_Battery_Percentage(Mean);
       }
-                 ADC_Temp = ADC_Value[0];
-                 */
-      
-      CalculateMeanADC();
       HAL_Delay(10);
 
-
-        //HAL_Delay(1000);
-        //sprintf(uart_buf, "Wartosc ADC: %u\r\n", ADC_Value[0]);
-        
-        //HAL_UART_Transmit(mx_usart1_uart_gethandle(), (uint8_t*)uart_buf, strlen(uart_buf), 100);
-        timer_counter = HAL_TIM_GetCounter(mx_tim6_gethandle());
-
+    timer_counter = HAL_TIM_GetCounter(mx_tim2_gethandle());
     }
   }
  
@@ -277,13 +238,37 @@ int main(void)
 
 //Private functions
 
+uint8_t Calculate_Battery_Percentage(uint16_t adc_value)
+{
+    // 1. Obliczenie napięcia na wejściu ADC (za dzielnikiem)
+    v_pin = ((float)adc_value / ADC_RESOLUTION) * V_REF;
+    
+    // 2. Obliczenie rzeczywistego napięcia baterii (przed dzielnikiem)
+    float v_battery = v_pin * DIVIDER_RATIO;
+    
+    // 3. Zabezpieczenie przed wartościami poza zakresem (clamping)
+    if (v_battery >= LIPO_MAX_VOLTAGE)
+    {
+        return 100;
+    }
+    if (v_battery <= LIPO_MIN_VOLTAGE)
+    {
+        return 0;
+    }
+    
+    // 4. Obliczenie procentu naładowania (liniowo pomiędzy MIN a MAX)
+    float percentage = ((v_battery - LIPO_MIN_VOLTAGE) / (LIPO_MAX_VOLTAGE - LIPO_MIN_VOLTAGE)) * 100.0f;
+    
+    return (uint8_t)percentage;
+}
+
 void CalculateMeanADC(void)
 {
     uint32_t sum = 0;
-    for (int i = 0; i < ADC_BUFFER_SIZE; i++) {
-        sum += ADC_Value[i];
+    for (int i = 0; i < ADC_SIZE; i++) {
+        sum += AdcData[i];
     }
-    Mean = sum / ADC_BUFFER_SIZE;
+    Mean = sum / ADC_SIZE;
 }
 
 void Action_ChangeContrast()
@@ -437,4 +422,17 @@ void TurnLedOn(void)
 {
 	HAL_GPIO_WritePin(LED_PORT, LED_PIN, HAL_GPIO_PIN_SET);
 	ButtonPressedFlag = 1;
+}
+
+
+//callbacks
+void HAL_ADC_REG_DataTransferCpltCallback(hal_adc_handle_t *hadc)
+{
+  if (hadc->instance == mx_adc1_gethandle()->instance)
+  {
+    // ADC conversion complete callback
+    // You can add any additional processing here if needed
+    DataReadyFlag = 1;
+    HAL_GPIO_TogglePin(LED_PORT, LED_PIN); // Toggle the LED state
+  }
 }
