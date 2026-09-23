@@ -6,7 +6,7 @@
  */
 
 #include "GameConsoleMenu.h"
-extern uint16_t Mean;
+extern uint8_t BatteryPercentage; // Global variable to hold battery percentage
 
 // --- 1. MAKRA POMOCNICZE ---
 // Kompilator obliczy rozmiar tablicy. Np. dla MainMenuItems: 3 * (wielkość MenuItem_t) / (wielkość MenuItem_t) = 3
@@ -334,14 +334,10 @@ void Console_Draw(GameConsole_t *Console, SSD1306_t *Display)
 				}
                 else if (i == 2) // Battery (indeks 2 w SettingsMenuItems)
                 {
-                    // Obliczenie napięcia w miliwoltach. 
-                    // Wzór: (Odczyt * Vref * Dzielnik) / Rozdzielczość
-                    // Vref = 3300 mV, Dzielnik 1:2 (mnożymy x2, czyli x6600), Max ADC = 4095
-                    uint32_t battery_mV = (Mean * 6600) / 4095;
+
                     
-                    // Formatujemy jako Volty (np. 4.12V).
-                    // Dzielimy przez 1000 by uzyskać Volty, a modulo załatwia końcówkę dziesiętną.
-                    snprintf(ValueBuffer, sizeof(ValueBuffer), "%s: %lu.%02luV", CurrentMenu[i].Text, battery_mV / 1000, (battery_mV % 1000) / 10);
+                    // Używamy globalnej zmiennej BatteryPercentage z main.c
+                    snprintf(ValueBuffer, sizeof(ValueBuffer), "%s: %d%%", CurrentMenu[i].Text, BatteryPercentage);
                 }
 
 				// Rysujemy nasz nowy, sklejony tekst na ekranie!
